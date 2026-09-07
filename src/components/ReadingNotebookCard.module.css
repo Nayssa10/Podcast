@@ -1,0 +1,336 @@
+/* Lined Notebook Paper Card for Book / Reading Episodes */
+
+.cardWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 275px;
+  height: 100%;
+  min-height: 395px;
+  display: flex;
+  flex-direction: column;
+  margin: 0.8rem auto;
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.cardWrapper:hover {
+  transform: translateY(-4px) rotate(-0.5deg);
+}
+
+/* Background Decorative Mini Polaroids */
+.polaroidBackdropLeft {
+  position: absolute;
+  top: -12px;
+  left: -14px;
+  transform: rotate(-12deg);
+  z-index: 1;
+  pointer-events: none;
+  transition: transform 0.3s ease;
+}
+
+.cardWrapper:hover .polaroidBackdropLeft {
+  transform: rotate(-16deg) translateY(-2px);
+}
+
+.polaroidBackdropRight {
+  position: absolute;
+  bottom: -10px;
+  right: -12px;
+  transform: rotate(14deg);
+  z-index: 1;
+  pointer-events: none;
+  transition: transform 0.3s ease;
+}
+
+.cardWrapper:hover .polaroidBackdropRight {
+  transform: rotate(18deg) translateY(2px);
+}
+
+.polaroidFrame {
+  background: #ffffff;
+  padding: 3px 3px 10px 3px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.14);
+  border-radius: 1.5px;
+  width: 58px;
+}
+
+.polaroidInnerImg {
+  width: 52px;
+  height: 52px;
+  overflow: hidden;
+  background: #f0ebe4;
+}
+
+.polaroidImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: sepia(0.25) contrast(1.05);
+}
+
+/* Main Lined Notebook Sheet */
+.notebookSheet {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  min-height: 395px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #F5F5EB;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 21px,
+    #E1DACA 22px
+  );
+  border-radius: 3px 6px 4px 6px;
+  box-shadow: 
+    0 8px 24px rgba(43, 35, 29, 0.08),
+    0 2px 6px rgba(0, 0, 0, 0.04);
+  padding: 1.3rem 0.9rem 1rem 2rem;
+  border: 1px solid #C1B6A3;
+  overflow: visible;
+}
+
+/* Red Pushpin at Top Center */
+.pushPin {
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 11px;
+  height: 11px;
+  background: radial-gradient(circle at 35% 35%, #B3907A 0%, #5E4331 70%, #3D2B1F 100%);
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
+  z-index: 10;
+}
+
+.pushPin::before {
+  content: "";
+  position: absolute;
+  top: 9px;
+  left: 4px;
+  width: 2px;
+  height: 6px;
+  background: #888;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
+  transform: rotate(-10deg);
+}
+
+/* Binder Holes on Left */
+.binderHoles {
+  position: absolute;
+  left: 7px;
+  top: 24px;
+  bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.hole {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #C1B6A3;
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* Vertical Red Margin Line */
+.marginLine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 22px;
+  width: 1.5px;
+  background-color: rgba(179, 144, 122, 0.5);
+  pointer-events: none;
+}
+
+/* Sheet Content */
+.sheetContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+}
+
+.sheetHeader {
+  margin-bottom: 0.35rem;
+  border-bottom: 1px dashed #C1B6A3;
+  padding-bottom: 0.25rem;
+}
+
+.categoryRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  margin-bottom: 0.15rem;
+}
+
+.categoryTag {
+  font-family: var(--font-family-monospace);
+  font-size: 0.55rem;
+  font-weight: 800;
+  color: #B3907A;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  border-bottom: 1.5px solid #B3907A;
+  padding-bottom: 1px;
+}
+
+.tbrLabel {
+  font-family: var(--font-family-monospace);
+  font-size: 0.55rem;
+  color: #B3907A;
+  font-weight: 800;
+  letter-spacing: 1px;
+  display: block;
+  text-transform: uppercase;
+}
+
+.tbrSub {
+  font-family: var(--font-family-sans);
+  font-size: 0.62rem;
+  color: #2B231D;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  margin: 1px 0 2px 0;
+  text-transform: uppercase;
+}
+
+.episodeMeta {
+  font-family: var(--font-family-monospace);
+  font-size: 0.5rem;
+  color: #6B5C52;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Title & Mini Cover Row */
+.bookTitleRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.4rem;
+  margin-bottom: 0.4rem;
+}
+
+.titleInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.notebookTitle {
+  font-family: var(--font-family-satisfy);
+  font-size: 1.35rem;
+  color: #221c16;
+  font-weight: 400;
+  line-height: 1.2;
+  margin: 0 0 0.15rem 0;
+}
+
+.notebookAuthor {
+  font-family: var(--font-family-sans);
+  font-size: 0.7rem;
+  color: #635244;
+  margin: 0;
+  font-style: italic;
+}
+
+/* Extra Small Mini Cover */
+.miniCoverContainer {
+  flex-shrink: 0;
+  transform: rotate(3deg);
+  box-shadow: 1.5px 2.5px 5px rgba(0, 0, 0, 0.25);
+  border-radius: 2px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  transition: transform 0.2s ease;
+}
+
+.cardWrapper:hover .miniCoverContainer {
+  transform: rotate(5deg) scale(1.04);
+}
+
+.miniCover {
+  width: 40px;
+  height: 56px;
+  object-fit: cover;
+  display: block;
+}
+
+/* Checklist */
+.checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-family: var(--font-family-satisfy);
+  font-size: 0.88rem;
+  color: #2e261f;
+}
+
+.checkItem {
+  display: flex;
+  align-items: center;
+  line-height: 1.2;
+}
+
+.checkIcon {
+  font-family: var(--font-family-sans);
+  font-size: 0.75rem;
+  color: #15803d;
+  font-weight: bold;
+  margin-right: 0.3rem;
+  flex-shrink: 0;
+}
+
+/* Audio Player */
+.sheetAudio {
+  border-top: 1px dashed rgba(0, 0, 0, 0.1);
+  padding-top: 0.45rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Action Button */
+.readMoreBtn {
+  font-family: var(--font-family-monospace);
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #43302b;
+  border: 1px solid #b8a695;
+  background: transparent;
+  padding: 0.35rem 0;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  text-align: center;
+}
+
+.readMoreBtn:hover {
+  background: #43302b;
+  color: #ffffff;
+  border-color: #43302b;
+}
+
+@media (max-width: 480px) {
+  .cardWrapper {
+    max-width: 100%;
+  }
+
+  .polaroidBackdropLeft,
+  .polaroidBackdropRight {
+    display: none;
+  }
+}

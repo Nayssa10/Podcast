@@ -1,0 +1,594 @@
+/* =========================================
+   MODAL OVERLAY & CONTAINER
+   ========================================= */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(18, 15, 13, 0.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 1.5rem;
+  overflow-y: auto;
+  animation: overlayFadeIn 0.25s ease-out;
+}
+
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.folderDossier {
+  width: 100%;
+  max-width: 980px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  background: #FBF9F5; /* Crisp Ivory / Alabaster Editorial Paper */
+  border-radius: 16px;
+  box-shadow: 
+    0 30px 70px rgba(18, 15, 13, 0.35),
+    0 10px 25px rgba(18, 15, 13, 0.15);
+  border: 1px solid #E5DED0;
+  position: relative;
+  animation: modalScaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+@keyframes modalScaleUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =========================================
+   EDITORIAL TOP HEADER TAB
+   ========================================= */
+.folderTopTab {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #F4EFE6;
+  border-bottom: 1px solid #E5DED0;
+  padding: 0.85rem 1.75rem;
+  position: relative;
+}
+
+.tabMetalClip {
+  display: none; /* Removed cartoonish metal clip for clean editorial look */
+}
+
+.tabCaseStamp {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.tabBadge {
+  font-family: var(--font-family-monospace);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #1E1A17;
+  text-transform: uppercase;
+}
+
+.tabCaseNumber {
+  font-family: var(--font-family-monospace);
+  font-size: 0.78rem;
+  font-weight: 800;
+  background: #1E1A17;
+  color: #FBF9F5;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  letter-spacing: 0.8px;
+}
+
+.closeFolderBtn {
+  background: transparent;
+  border: 1px solid #D1C7B7;
+  color: #1E1A17;
+  font-family: var(--font-family-monospace);
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 0.35rem 0.85rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.closeFolderBtn:hover {
+  background: #1E1A17;
+  color: #FBF9F5;
+  border-color: #1E1A17;
+}
+
+/* =========================================
+   INNER DOSSIER SHEET (Scrollable Document)
+   ========================================= */
+.dossierSheet {
+  padding: 2.25rem 2.5rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  background: #FBF9F5;
+  position: relative;
+}
+
+/* Delicate Left Margin Line */
+.dossierSheet::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 28px;
+  width: 1px;
+  background: rgba(158, 42, 43, 0.15);
+  pointer-events: none;
+}
+
+/* =========================================
+   HEADER: INVESTIGATIVE SEAL & REFS
+   ========================================= */
+.dossierHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1.5px solid #1E1A17;
+  padding-bottom: 1.25rem;
+  gap: 1.5rem;
+}
+
+.headerLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sealBadge {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sealIcon {
+  font-size: 1.6rem;
+}
+
+.sealText strong {
+  display: block;
+  font-family: var(--font-family-serif);
+  font-size: 1.2rem;
+  letter-spacing: 0.8px;
+  color: #1E1A17;
+}
+
+.sealText span {
+  font-family: var(--font-family-monospace);
+  font-size: 0.68rem;
+  letter-spacing: 0.8px;
+  color: #7A6F62;
+}
+
+.caseReferenceLine {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  font-family: var(--font-family-monospace);
+  font-size: 0.75rem;
+  color: #1E1A17;
+  background: #F4EFE6;
+  padding: 0.45rem 0.85rem;
+  border-radius: 6px;
+  border: 1px solid #E5DED0;
+}
+
+.headerStamps {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.stampClassified {
+  font-family: var(--font-family-monospace);
+  font-size: 0.75rem;
+  font-weight: 900;
+  color: #9E2A2B;
+  border: 1.5px solid #9E2A2B;
+  padding: 0.25rem 0.65rem;
+  border-radius: 4px;
+  letter-spacing: 1.2px;
+  transform: rotate(-2deg);
+  display: inline-block;
+}
+
+.stampVerified {
+  font-family: var(--font-family-monospace);
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #2D5A3C;
+  border: 1px solid #2D5A3C;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  letter-spacing: 0.8px;
+  transform: rotate(1deg);
+}
+
+/* =========================================
+   CASE TITLE SECTION
+   ========================================= */
+.caseTitleSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.caseOverline {
+  font-family: var(--font-family-monospace);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #9E2A2B;
+}
+
+.caseMainTitle {
+  font-family: var(--font-family-serif);
+  font-size: 2.1rem;
+  color: #1E1A17;
+  line-height: 1.15;
+}
+
+.caseBookSub {
+  font-family: var(--font-family-sans);
+  font-size: 0.92rem;
+  color: #6E6458;
+}
+
+/* =========================================
+   GRID LAYOUT (EVIDENCE & REPORT)
+   ========================================= */
+.dossierGrid {
+  display: grid;
+  grid-template-columns: 310px 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+/* Left Column: Evidence Photo & Chain of Custody */
+.evidenceCol {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.evidencePhotoFrame {
+  background: #FFFFFF;
+  padding: 0.75rem;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(18, 15, 13, 0.08);
+  border: 1px solid #E5DED0;
+  position: relative;
+}
+
+.photoTape {
+  display: none;
+}
+
+.photoContainer {
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid #EFE9DC;
+}
+
+.evidencePhoto {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.photoStampLabel {
+  background: #1E1A17;
+  color: #FBF9F5;
+  font-family: var(--font-family-monospace);
+  font-size: 0.65rem;
+  padding: 0.4rem;
+  text-align: center;
+  letter-spacing: 0.6px;
+}
+
+.photoCaption {
+  margin-top: 0.65rem;
+  font-family: var(--font-family-monospace);
+  font-size: 0.72rem;
+  color: #7A6F62;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* Chain of Custody Box */
+.chainOfCustodyBox {
+  background: #F4EFE6;
+  border: 1px solid #E5DED0;
+  border-radius: 10px;
+  padding: 1.25rem;
+}
+
+.chainHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.85rem;
+  border-bottom: 1px solid #E5DED0;
+  padding-bottom: 0.5rem;
+}
+
+.chainIcon {
+  font-size: 1rem;
+}
+
+.chainHeader h4 {
+  font-family: var(--font-family-monospace);
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #1E1A17;
+  letter-spacing: 0.5px;
+}
+
+.evidenceItemList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.evidenceTagItem {
+  display: flex;
+  flex-direction: column;
+  background: #FFFFFF;
+  border: 1px solid #E5DED0;
+  border-left: 3px solid #9E2A2B;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  gap: 0.2rem;
+}
+
+.evidenceNumber {
+  font-family: var(--font-family-monospace);
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: #9E2A2B;
+  letter-spacing: 0.5px;
+}
+
+.evidenceText {
+  font-family: var(--font-family-sans);
+  font-size: 0.82rem;
+  color: #1E1A17;
+  font-weight: 600;
+}
+
+/* Right Column: Report & Findings */
+.reportCol {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.typewriterSheet {
+  background: #FFFFFF;
+  border: 1px solid #E5DED0;
+  border-radius: 10px;
+  padding: 1.5rem 1.75rem;
+  box-shadow: 0 4px 16px rgba(18, 15, 13, 0.04);
+}
+
+.typewriterHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #E5DED0;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.typewriterHeader h5 {
+  font-family: var(--font-family-monospace);
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #1E1A17;
+  letter-spacing: 0.8px;
+}
+
+.typewriterPageNum {
+  font-family: var(--font-family-monospace);
+  font-size: 0.68rem;
+  color: #7A6F62;
+}
+
+.typewriterParagraph {
+  font-family: var(--font-family-monospace);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: #1E1A17;
+}
+
+.literaryContextBlock {
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px dashed #E5DED0;
+  font-family: var(--font-family-sans);
+  font-size: 0.85rem;
+  color: #6E6458;
+  line-height: 1.55;
+}
+
+.literaryContextBlock strong {
+  display: block;
+  font-family: var(--font-family-monospace);
+  font-size: 0.7rem;
+  color: #1E1A17;
+  margin-bottom: 0.25rem;
+}
+
+/* Criminology Dictum Box */
+.criminologyDictum {
+  background: #F4EFE6;
+  border: 1px solid #E5DED0;
+  border-left: 4px solid #1E1A17;
+  border-radius: 10px;
+  padding: 1.35rem;
+}
+
+.dictumTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.65rem;
+}
+
+.dictumTitle h4 {
+  font-family: var(--font-family-serif);
+  font-size: 1.1rem;
+  color: #1E1A17;
+  font-weight: 700;
+}
+
+.dictumContent {
+  font-family: var(--font-family-sans);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #1E1A17;
+}
+
+.forensicFocusBadge {
+  margin-top: 0.85rem;
+  background: #FFFFFF;
+  border: 1px solid #E5DED0;
+  padding: 0.65rem 0.95rem;
+  border-radius: 6px;
+}
+
+.focusLabel {
+  display: block;
+  font-family: var(--font-family-monospace);
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #9E2A2B;
+  letter-spacing: 0.6px;
+}
+
+.focusValue {
+  font-family: var(--font-family-sans);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #1E1A17;
+  margin-top: 0.15rem;
+}
+
+/* Handwritten Sticky Note */
+.handwrittenStickyNote {
+  background: #FEFAF0; /* Crisp Soft Cream Card */
+  border: 1px solid #EAE2D2;
+  border-left: 3px solid #D4AF37;
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 4px 14px rgba(18, 15, 13, 0.05);
+  position: relative;
+}
+
+.pinDot {
+  display: none;
+}
+
+.stickyTitle {
+  display: block;
+  font-family: var(--font-family-monospace);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: #8A6D1C;
+  margin-bottom: 0.5rem;
+}
+
+.stickyQuote {
+  font-family: var(--font-family-satisfy), cursive;
+  font-size: 1.22rem;
+  line-height: 1.55;
+  color: #1E1A17;
+}
+
+/* =========================================
+   AUDIO EVIDENCE REEL BAR
+   ========================================= */
+.audioEvidenceBar {
+  background: #F4EFE6;
+  border: 1px solid #E5DED0;
+  border-radius: 10px;
+  padding: 1.15rem 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.audioTapeLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-family-monospace);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  color: #1E1A17;
+}
+
+.audioRecDot {
+  width: 8px;
+  height: 8px;
+  background: #9E2A2B;
+  border-radius: 50%;
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+@media (max-width: 850px) {
+  .folderDossier {
+    max-height: 95vh;
+  }
+
+  .dossierSheet {
+    padding: 1.5rem;
+  }
+
+  .dossierGrid {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+  }
+
+  .evidencePhotoFrame {
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  .dossierHeader {
+    flex-direction: column;
+  }
+
+  .headerStamps {
+    align-items: flex-start;
+  }
+}

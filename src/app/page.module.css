@@ -1,0 +1,1656 @@
+/* Page Layout Container */
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--color-bg);
+}
+
+/* Navigation Header - Solid Editorial Style */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9rem 2.5rem;
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-bg);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 10px rgba(43, 35, 29, 0.03);
+}
+
+.navBrand {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.brandLogoFrame {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border-dark);
+  background-color: var(--color-bg-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(43, 35, 29, 0.04);
+}
+
+.brandLogoImg {
+  object-fit: cover;
+}
+
+.brandTextGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.brandTitle {
+  font-family: var(--font-family-serif);
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: var(--color-text);
+  line-height: 1.1;
+  transition: color 0.25s ease;
+}
+
+.navBrand:hover .brandTitle {
+  color: var(--color-accent-1);
+}
+
+.brandSubtitle {
+  font-family: var(--font-family-sans);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--color-accent-1);
+  margin-top: 2px;
+}
+
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.navLink {
+  font-family: var(--font-family-sans);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-text);
+  opacity: 0.85;
+  position: relative;
+  padding: 0.35rem 0;
+  transition: all 0.2s ease;
+}
+
+.navLink::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background-color: var(--color-border-dark);
+  transition: width 0.25s ease;
+}
+
+.navLink:hover {
+  opacity: 1;
+  color: var(--color-accent-1);
+}
+
+.navLink:hover::after {
+  width: 100%;
+}
+
+.navAction {
+  display: flex;
+  align-items: center;
+}
+
+.navCtaBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--palette-taupe);
+  color: var(--color-text);
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-family: var(--font-family-sans);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  border: 1px solid var(--color-border-dark);
+  transition: all 0.25s ease;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(43, 35, 29, 0.06);
+}
+
+.navCtaBtn:hover {
+  background-color: var(--palette-sand);
+  border-color: var(--color-border-dark);
+  color: var(--color-text);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(43, 35, 29, 0.1);
+}
+
+.ctaIcon {
+  font-size: 0.95rem;
+}
+
+/* Hero Section */
+.heroSection {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  align-items: center;
+  gap: 3.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 4rem 2rem 2rem;
+}
+
+.heroContentLeft {
+  display: flex;
+  flex-direction: column;
+}
+
+.heroBadgeGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.heroBadge {
+  font-family: var(--font-family-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #6E6254;
+  background-color: var(--palette-cream);
+  border: 1px solid var(--palette-taupe);
+  padding: 0.35rem 0.95rem;
+  border-radius: 20px;
+  width: fit-content;
+  box-shadow: 0 2px 5px rgba(43, 35, 29, 0.04);
+}
+
+.heroTitle {
+  font-family: var(--font-family-serif);
+  font-size: 3.8rem;
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0 0 0.4rem 0;
+  color: var(--color-text);
+}
+
+.heroSubtitle {
+  font-family: var(--font-family-script);
+  font-size: 2.6rem;
+  font-weight: 400;
+  color: #8E7F6E;
+  margin: 0 0 1.25rem 0;
+  line-height: 1.1;
+}
+
+.heroDescription {
+  font-family: var(--font-family-sans);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--color-text);
+  opacity: 0.85;
+  margin-bottom: 2rem;
+  max-width: 520px;
+}
+
+.heroCtas {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.heroPrimaryBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--palette-taupe);
+  color: var(--color-text);
+  border: 1px solid var(--palette-taupe);
+  padding: 0.8rem 1.5rem;
+  border-radius: 6px;
+  font-family: var(--font-family-sans);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(43, 35, 29, 0.08);
+  cursor: pointer;
+}
+
+.heroPrimaryBtn:hover {
+  background-color: var(--palette-sand);
+  border-color: var(--palette-taupe);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(43, 35, 29, 0.12);
+}
+
+.heroSecondaryBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: transparent;
+  color: var(--color-text);
+  border: 1px solid var(--color-border-dark);
+  padding: 0.8rem 1.4rem;
+  border-radius: 6px;
+  font-family: var(--font-family-sans);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.heroSecondaryBtn:hover {
+  background-color: var(--palette-cream);
+  border-color: var(--color-border-dark);
+  transform: translateY(-2px);
+}
+
+.heroQuoteFooter {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-family-serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: #7D6E5F;
+  border-left: 2px solid var(--palette-taupe);
+  padding-left: 0.85rem;
+}
+
+.heroStar {
+  font-size: 0.75rem;
+  color: var(--palette-taupe);
+}
+
+.heroTagline {
+  letter-spacing: 0.3px;
+}
+
+.heroContentRight {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logoFramelessContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 480px;
+  filter: drop-shadow(0 15px 35px rgba(43, 35, 29, 0.08));
+  transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+.logoFramelessContainer:hover {
+  transform: translateY(-4px) scale(1.02);
+  filter: drop-shadow(0 20px 45px rgba(43, 35, 29, 0.12));
+}
+
+.heroLogoFrameless {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* About Section - Carta Epistolar / Manuscrito Vintage */
+.aboutSection {
+  background-color: var(--color-bg-subtle);
+  border-top: 1px solid var(--color-border-dark);
+  border-bottom: 1px solid var(--color-border-dark);
+  padding: 5.5rem 2rem;
+}
+
+.epistolarySectionHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.epistolaryDivider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 240px;
+  margin-bottom: 1rem;
+}
+
+.epistolaryOverline {
+  font-family: var(--font-family-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-accent-1);
+  margin-bottom: 0.4rem;
+}
+
+.epistolarySectionTitle {
+  font-family: var(--font-family-serif);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.manuscriptSheet {
+  max-width: 820px;
+  margin: 0 auto;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  outline: 1px solid var(--color-border-subtle);
+  outline-offset: -10px;
+  border-radius: 4px;
+  padding: 3.5rem 4rem;
+  box-shadow: 0 15px 45px rgba(43, 35, 29, 0.08);
+  position: relative;
+}
+
+.sheetHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2.25rem;
+}
+
+.sheetMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.sheetLocation {
+  font-family: var(--font-family-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--color-accent-1);
+}
+
+.sheetDate {
+  font-family: var(--font-family-serif);
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--color-text);
+  opacity: 0.75;
+}
+
+.vintageStamp {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stampInner {
+  border: 2px dashed var(--color-accent-1);
+  background-color: var(--color-bg-subtle);
+  padding: 6px 10px;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  transform: rotate(3deg);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.stampLogo {
+  object-fit: contain;
+}
+
+.stampText {
+  font-family: var(--font-family-sans);
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--color-text);
+}
+
+.stampValue {
+  font-family: var(--font-family-serif);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--color-accent-1);
+}
+
+.stampCancelPostmark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-18deg);
+  border: 1.5px solid rgba(139, 115, 85, 0.45);
+  border-radius: 50%;
+  width: 58px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.48rem;
+  letter-spacing: 1px;
+  font-weight: 800;
+  color: var(--color-accent-1);
+  pointer-events: none;
+}
+
+.sheetBody {
+  margin-bottom: 2.5rem;
+}
+
+.letterSalutation {
+  font-family: var(--font-family-serif);
+  font-size: 1.25rem;
+  font-style: italic;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 1.5rem;
+}
+
+.letterParagraph {
+  font-family: var(--font-family-sans);
+  font-size: 1.02rem;
+  line-height: 1.85;
+  color: var(--color-text);
+  opacity: 0.9;
+  margin-bottom: 1.25rem;
+}
+
+.dropCap {
+  float: left;
+  font-family: var(--font-family-serif);
+  font-size: 3.6rem;
+  line-height: 0.8;
+  font-weight: 700;
+  color: var(--color-accent-1);
+  padding-top: 4px;
+  padding-right: 12px;
+  padding-bottom: 2px;
+}
+
+.letterMotto {
+  font-family: var(--font-family-serif);
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--color-text);
+  border-left: 3px solid var(--color-accent-1);
+  padding: 0.75rem 1.25rem;
+  margin: 1.75rem 0;
+  background-color: rgba(139, 115, 85, 0.05);
+  border-radius: 0 4px 4px 0;
+}
+
+.sheetFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-top: 1px dashed var(--color-border);
+  padding-top: 2rem;
+  gap: 2rem;
+}
+
+.signatureBlock {
+  display: flex;
+  flex-direction: column;
+}
+
+.signatureAttribution {
+  font-family: var(--font-family-serif);
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--color-text);
+  opacity: 0.7;
+  margin-bottom: 0.35rem;
+}
+
+.cursiveSignature {
+  font-family: var(--font-family-serif);
+  font-size: 1.85rem;
+  font-weight: 700;
+  font-style: italic;
+  color: var(--color-text);
+  letter-spacing: 0.5px;
+}
+
+.signatureRole {
+  font-family: var(--font-family-sans);
+  font-size: 0.75rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--color-accent-1);
+  font-weight: 600;
+  margin-top: 0.2rem;
+}
+
+.sealActionWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.waxSealBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: var(--font-family-sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-bg);
+  background-color: var(--color-accent-1);
+  border: 1px solid var(--color-accent-1);
+  padding: 0.85rem 1.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px rgba(43, 35, 29, 0.15);
+}
+
+.waxSealBtn:hover {
+  background-color: var(--color-text);
+  border-color: var(--color-text);
+  color: var(--color-bg);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(43, 35, 29, 0.22);
+}
+
+.waxSealIcon {
+  font-size: 0.75rem;
+}
+
+.waxSealArrow {
+  font-size: 0.95rem;
+  transition: transform 0.25s ease;
+}
+
+.waxSealBtn:hover .waxSealArrow {
+  transform: translateX(3px);
+}
+
+/* Episodes Grid Section */
+.episodesSection {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem 5rem;
+}
+
+.sectionHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 2.75rem;
+}
+
+.sectionDivider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 260px;
+  margin-bottom: 1.25rem;
+}
+
+.dividerLine {
+  flex: 1;
+  height: 1px;
+  background-color: var(--color-border-dark);
+  opacity: 0.6;
+}
+
+.dividerStar {
+  font-size: 0.75rem;
+  color: var(--palette-taupe);
+}
+
+.sectionOverline {
+  font-family: var(--font-family-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #8E7F6E;
+  margin-bottom: 0.4rem;
+}
+
+.sectionTitle {
+  font-family: var(--font-family-serif);
+  font-size: 2.6rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  color: var(--color-text);
+}
+
+.sectionSubtitle {
+  font-family: var(--font-family-sans);
+  font-size: 0.95rem;
+  color: var(--color-text);
+  opacity: 0.75;
+  max-width: 500px;
+  line-height: 1.5;
+  margin: 0 auto;
+}
+
+.episodesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 275px));
+  gap: 2.5rem 2rem;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  overflow: visible;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.episodeCardHorizontal {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  background-color: var(--color-bg-subtle);
+  border: 1px solid var(--color-border);
+  padding: 1.25rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.02);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.episodeCardHorizontal:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.04);
+}
+
+.episodeMetaHorizontal {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.episodeTitleHorizontal {
+  font-family: var(--font-family-satisfy);
+  font-size: 1.6rem;
+  color: var(--color-text);
+  font-weight: 400;
+  margin-bottom: 0.25rem;
+  line-height: 1.3;
+}
+
+.playbackControlsHorizontal {
+  flex: 1.5;
+}
+
+.cardOutlineBtnHorizontal {
+  font-family: var(--font-family-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  background-color: transparent;
+  padding: 0.7rem 1.5rem;
+  text-align: center;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 120px;
+}
+
+.cardOutlineBtnHorizontal:hover {
+  background-color: var(--color-text);
+  color: var(--color-bg);
+  border-color: var(--color-text);
+}
+
+.episodeCard {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-bg-subtle);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1.3rem 1.2rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.02);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  max-width: 275px;
+  margin: 0.8rem auto;
+}
+
+.episodeCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.04);
+}
+
+.episodeArchFrame {
+  border-radius: 100px 100px 0 0;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.episodeCover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.episodeCard:hover .episodeCover {
+  transform: scale(1.05);
+}
+
+.episodeMeta {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.25rem;
+}
+
+.episodeNumberDate {
+  font-family: var(--font-family-sans);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-accent-1);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.episodeTitle {
+  font-family: var(--font-family-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+
+.episodeDescription {
+  font-family: var(--font-family-sans);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--color-text);
+  opacity: 0.75;
+  margin-bottom: 1.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.playbackControls {
+  margin-bottom: 1.5rem;
+  border-top: 1px solid var(--color-border);
+  padding-top: 1rem;
+}
+
+.cardOutlineBtn {
+  font-family: var(--font-family-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  background-color: transparent;
+  padding: 0.7rem 0;
+  text-align: center;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.cardOutlineBtn:hover {
+  background-color: var(--color-text);
+  color: var(--color-bg);
+  border-color: var(--color-text);
+}
+
+/* Skills Section */
+.skillsSection {
+  background-color: var(--color-bg-subtle);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  padding: 6rem 2rem;
+}
+
+.skillsGrid {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.skillItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  border-radius: 8px;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  transition: transform 0.3s ease;
+}
+
+.skillItem:hover {
+  transform: translateY(-3px);
+}
+
+.skillIcon {
+  font-size: 2.5rem;
+  margin-bottom: 1.25rem;
+  opacity: 0.9;
+}
+
+.skillTitle {
+  font-family: var(--font-family-serif);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 0.75rem;
+}
+
+.skillDesc {
+  font-family: var(--font-family-sans);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--color-text);
+  opacity: 0.7;
+}
+
+/* Edgar Allan Poe Quote Section (Literary Manifesto Bridge) */
+.quoteSection {
+  background-color: #F7F3EC;
+  padding: 4.5rem 2rem;
+  text-align: center;
+  border-top: 1px solid #EAE3D5;
+  border-bottom: 1px solid #EAE3D5;
+  position: relative;
+}
+
+.quoteContainer {
+  max-width: 840px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.quoteDecorativeStar {
+  font-size: 0.75rem;
+  letter-spacing: 8px;
+  color: #8E7F6E;
+  margin-bottom: 1.25rem;
+  opacity: 0.8;
+}
+
+.poeQuote {
+  font-family: var(--font-family-serif);
+  font-size: 1.95rem;
+  line-height: 1.55;
+  font-style: italic;
+  color: #1E1A17;
+  margin-bottom: 1.5rem;
+  position: relative;
+  letter-spacing: -0.3px;
+}
+
+.quoteAuthor {
+  font-family: var(--font-family-monospace);
+  font-size: 0.78rem;
+  font-style: normal;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: #8E7F6E;
+  font-weight: 800;
+  display: inline-block;
+  border-top: 1px solid rgba(142, 127, 110, 0.3);
+  padding-top: 0.75rem;
+}
+
+/* Contact & Footer Section */
+.footerSection {
+  background-color: var(--color-bg-subtle);
+  border-top: 1px solid var(--color-border-dark);
+  padding: 5.5rem 2rem 3rem 2rem;
+}
+
+.contactWrapper {
+  max-width: 1100px;
+  margin: 0 auto 5rem auto;
+}
+
+.contactLayout {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 4.5rem;
+  align-items: start;
+}
+
+.contactInfoCol {
+  display: flex;
+  flex-direction: column;
+}
+
+.contactOverlineGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.contactDividerLine {
+  width: 28px;
+  height: 1px;
+  background-color: var(--color-accent-1);
+}
+
+.contactOverline {
+  font-family: var(--font-family-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-accent-1);
+}
+
+.contactTitle {
+  font-family: var(--font-family-serif);
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+}
+
+.contactDescription {
+  font-family: var(--font-family-sans);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--color-text);
+  opacity: 0.82;
+  margin-bottom: 2rem;
+}
+
+.socialChannelsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.socialChannelItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 1.2rem;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--color-text);
+  transition: all 0.25s ease;
+}
+
+.socialChannelItem:hover {
+  border-color: var(--color-accent-1);
+  transform: translateX(4px);
+  box-shadow: 0 4px 14px rgba(43, 35, 29, 0.06);
+}
+
+.socialIconBadge {
+  color: var(--color-accent-1);
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  background-color: var(--color-bg-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.socialChannelItem:hover .socialIconBadge {
+  background-color: var(--color-accent-1);
+  color: var(--color-bg);
+}
+
+.socialChannelMeta {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.socialChannelName {
+  font-family: var(--font-family-serif);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.socialChannelTag {
+  font-family: var(--font-family-sans);
+  font-size: 0.72rem;
+  color: var(--color-text);
+  opacity: 0.65;
+}
+
+.socialChannelArrow {
+  font-size: 0.85rem;
+  color: var(--color-accent-1);
+  opacity: 0.7;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.socialChannelItem:hover .socialChannelArrow {
+  transform: translateX(3px);
+  opacity: 1;
+}
+
+.directEmailNote {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--color-text);
+  opacity: 0.85;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--color-border);
+}
+
+.directEmailLabel {
+  font-weight: 600;
+}
+
+.directEmailLink {
+  color: var(--color-accent-1);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 500;
+}
+
+/* Right Column: Clean Form */
+.contactFormCol {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 2.5rem;
+  box-shadow: 0 10px 30px rgba(43, 35, 29, 0.04);
+}
+
+.formHeader {
+  margin-bottom: 1.5rem;
+}
+
+.formOverline {
+  font-family: var(--font-family-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--color-accent-1);
+}
+
+.formHeading {
+  font-family: var(--font-family-serif);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-top: 0.2rem;
+}
+
+.contactFormClean {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.formGroupClean {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.formLabelClean {
+  font-family: var(--font-family-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-text);
+  opacity: 0.8;
+}
+
+.formInputClean,
+.formTextareaClean {
+  font-family: var(--font-family-sans);
+  font-size: 0.95rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background-color: var(--color-bg-subtle);
+  color: var(--color-text);
+  outline: none;
+  transition: border-color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.formInputClean:focus,
+.formTextareaClean:focus {
+  border-color: var(--color-accent-1);
+  background-color: var(--color-bg);
+  box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.12);
+}
+
+.formTextareaClean {
+  resize: vertical;
+  min-height: 115px;
+}
+
+.successMessageClean {
+  font-family: var(--font-family-sans);
+  font-size: 0.85rem;
+  color: #15803d;
+  font-weight: 600;
+}
+
+.errorMessageClean {
+  font-family: var(--font-family-sans);
+  font-size: 0.85rem;
+  color: #b91c1c;
+  font-weight: 600;
+}
+
+.formSubmitBtnClean {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  font-family: var(--font-family-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-bg);
+  background-color: var(--color-accent-1);
+  border: 1px solid var(--color-accent-1);
+  padding: 0.9rem 1.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(43, 35, 29, 0.15);
+  margin-top: 0.5rem;
+}
+
+.formSubmitBtnClean:hover {
+  background-color: var(--color-text);
+  border-color: var(--color-text);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(43, 35, 29, 0.2);
+}
+
+.formSubmitBtnClean:disabled {
+  background-color: var(--color-accent-2);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.btnArrow {
+  font-size: 0.9rem;
+  transition: transform 0.2s ease;
+}
+
+.formSubmitBtnClean:hover .btnArrow {
+  transform: translateX(3px);
+}
+
+/* Footer Bottom Bar */
+.footerBottomBar {
+  max-width: 1100px;
+  margin: 0 auto;
+  border-top: 1px solid var(--color-border-dark);
+  padding-top: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+}
+
+.footerBrandGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.footerBrand {
+  font-family: var(--font-family-serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-accent-1);
+  letter-spacing: 1px;
+}
+
+.footerBrandSubtitle {
+  font-family: var(--font-family-sans);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--color-text);
+  opacity: 0.6;
+}
+
+.footerLinks {
+  display: flex;
+  gap: 2rem;
+  margin: 0.5rem 0;
+}
+
+.footerLink {
+  font-family: var(--font-family-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-text);
+  opacity: 0.75;
+  text-decoration: none;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.footerLink:hover {
+  opacity: 1;
+  color: var(--color-accent-1);
+}
+
+.footerCopyright {
+  font-family: var(--font-family-sans);
+  font-size: 0.75rem;
+  color: var(--color-text);
+  opacity: 0.55;
+}
+
+/* Modals System */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  background: rgba(46, 46, 46, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.modalWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 650px;
+  animation: modalEnter 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.closeModalBtn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  font-size: 1.25rem;
+  color: var(--color-text);
+  opacity: 0.5;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+}
+
+.closeModalBtn:hover {
+  opacity: 1;
+}
+
+/* Minimalist Modal Card Layout */
+.minimalModalCard {
+  background-color: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 3rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.modalHeader {
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.modalBadge {
+  font-family: var(--font-family-sans);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--color-accent-1);
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+
+.modalTitle {
+  font-family: var(--font-family-serif);
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.2;
+  margin: 0;
+}
+
+.modalSubtitle,
+.modalTypeLabel {
+  font-family: var(--font-family-sans);
+  font-size: 0.9rem;
+  color: var(--color-text);
+  opacity: 0.6;
+  margin-top: 0.5rem;
+}
+
+.modalBody {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.modalDescription {
+  font-family: var(--font-family-sans);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--color-text);
+  opacity: 0.85;
+}
+
+.modalSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.modalSection h3 {
+  font-family: var(--font-family-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.modalSection p {
+  font-family: var(--font-family-sans);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--color-text);
+  opacity: 0.8;
+}
+
+.modalQuote {
+  font-family: var(--font-family-serif);
+  font-size: 1.2rem;
+  line-height: 1.6;
+  font-style: italic;
+  color: var(--color-text);
+  border-left: 2px solid var(--color-accent-1);
+  padding-left: 1.5rem;
+  margin: 1rem 0;
+}
+
+.modalAnnotations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.modalAnnotationTag {
+  background-color: var(--color-accent-3);
+  font-family: var(--font-family-sans);
+  font-size: 0.8rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 30px;
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.modalEvidenceList {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modalEvidenceList li {
+  font-family: var(--font-family-sans);
+  font-size: 0.95rem;
+  color: var(--color-text);
+  opacity: 0.8;
+}
+
+.gothicHighlight {
+  background-color: rgba(212, 178, 167, 0.3); /* soft dust rose high-contrast highlight */
+  color: inherit;
+  padding: 0 4px;
+}
+
+/* Responsiveness */
+@media (max-width: 992px) {
+  .heroSection {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 3rem;
+    padding: 3rem 1.5rem;
+  }
+  
+  .heroTitle {
+    font-size: 3rem;
+  }
+  
+  .heroContentLeft {
+    align-items: center;
+  }
+  
+  .aboutProfileContainer {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .contactLayout {
+    grid-template-columns: 1fr;
+    gap: 3.5rem;
+  }
+  
+  .skillsGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0.8rem 1.25rem;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .navBrand {
+    gap: 0.6rem;
+  }
+
+  .brandLogoFrame {
+    width: 32px;
+    height: 32px;
+  }
+
+  .brandTitle {
+    font-size: 1.05rem;
+  }
+
+  .brandSubtitle {
+    font-size: 0.55rem;
+  }
+
+  .navLinks {
+    order: 3;
+    width: 100%;
+    justify-content: space-between;
+    gap: 0.5rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 0.6rem;
+  }
+
+  .navLink {
+    font-size: 0.75rem;
+  }
+
+  .navAction {
+    order: 2;
+  }
+
+  .navCtaBtn {
+    padding: 0.45rem 0.85rem;
+    font-size: 0.72rem;
+  }
+  
+  .episodeCardHorizontal {
+    flex-direction: column;
+    padding: 1.25rem;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .playbackControlsHorizontal {
+    width: 100%;
+  }
+
+  .cardOutlineBtnHorizontal {
+    width: 100%;
+  }
+  
+  .skillsGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .minimalModalCard {
+    padding: 2rem 1.5rem;
+  }
+
+  .aboutSection {
+    padding: 3.5rem 1.25rem;
+  }
+
+  .manuscriptSheet {
+    padding: 2.2rem 1.5rem;
+    outline-offset: -6px;
+  }
+
+  .sheetHeader {
+    flex-direction: column-reverse;
+    gap: 1.5rem;
+    align-items: flex-start;
+  }
+
+  .sheetFooter {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.75rem;
+  }
+
+  .waxSealBtn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .epistolarySectionTitle {
+    font-size: 2rem;
+  }
+
+  .footerSection {
+    padding: 3.5rem 1.25rem 2rem 1.25rem;
+  }
+
+  .contactWrapper {
+    margin-bottom: 3.5rem;
+  }
+
+  .contactTitle {
+    font-size: 1.8rem;
+  }
+
+  .contactFormCol {
+    padding: 1.75rem 1.25rem;
+  }
+
+  .footerLinks {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.25rem;
+  }
+}

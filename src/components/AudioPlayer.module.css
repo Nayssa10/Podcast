@@ -1,0 +1,244 @@
+.playerContainer {
+  background-color: #fbf9f5;
+  background-image: 
+    radial-gradient(rgba(46, 30, 28, 0.04) 1px, transparent 1px),
+    radial-gradient(rgba(46, 30, 28, 0.04) 1px, transparent 1px);
+  background-size: 12px 12px;
+  background-position: 0 0, 6px 6px;
+  border: 2px solid #d2c4b1;
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  box-shadow: 
+    3px 3px 10px rgba(0, 0, 0, 0.06), 
+    inset 0 0 30px rgba(194, 141, 93, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  min-width: 0;
+  position: relative;
+}
+
+.trackDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.trackTitle {
+  font-family: var(--font-family-monospace);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-accent-1);
+  margin: 0;
+  letter-spacing: -0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.trackDescription {
+  font-family: var(--font-family-monospace);
+  font-size: 0.75rem;
+  color: var(--color-text);
+  opacity: 0.85;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.controlsRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.playButton {
+  background-color: var(--color-accent-1);
+  color: #fbf9f5;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--color-text);
+  box-shadow: 0 3px 6px rgba(46, 30, 28, 0.2);
+  flex-shrink: 0;
+  transition: var(--transition-smooth);
+}
+
+.playButton:hover {
+  background-color: var(--color-text);
+  transform: scale(1.05);
+}
+
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.progressContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-grow: 1;
+  min-width: 130px;
+}
+
+.timeLabel {
+  font-family: var(--font-family-monospace);
+  font-size: 0.7rem;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+  min-width: 2.2rem;
+  text-align: center;
+}
+
+.sliderWrapper {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+}
+
+.progressBar, .volumeBar {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+}
+
+/* Chrome, Safari, Opera, Edge */
+.progressBar::-webkit-slider-thumb, .volumeBar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-accent-1);
+  cursor: pointer;
+  border: 1px solid var(--color-text);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: transform 0.1s ease;
+}
+
+.progressBar::-webkit-slider-thumb:hover, .volumeBar::-webkit-slider-thumb:hover {
+  transform: scale(1.25);
+}
+
+/* Firefox */
+.progressBar::-moz-range-thumb, .volumeBar::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-accent-1);
+  cursor: pointer;
+  border: 1px solid var(--color-text);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: transform 0.1s ease;
+}
+
+.progressBar::-moz-range-thumb:hover, .volumeBar::-moz-range-thumb:hover {
+  transform: scale(1.25);
+}
+
+.volumeContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  width: 100px;
+  min-width: 80px;
+  flex-shrink: 1;
+}
+
+.muteButton {
+  color: var(--color-accent-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  transition: var(--transition-smooth);
+}
+
+.muteButton:hover {
+  color: var(--color-text);
+}
+
+.volumeIcon {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .controlsRow {
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .controlsRow {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+  
+  .progressContainer {
+    width: 100%;
+  }
+
+  .volumeContainer {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+/* Compact variant styles */
+.playerContainer.compact {
+  background: transparent;
+  background-image: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  gap: 0;
+}
+
+.playerContainer.compact .controlsRow {
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+}
+
+.playerContainer.compact .playButton {
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
+.playerContainer.compact .progressContainer {
+  min-width: 0;
+}
+
+.compactVolume {
+  width: auto;
+  min-width: unset;
+}
+
+@media (max-width: 480px) {
+  .playerContainer.compact .controlsRow {
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+  }
+  .playerContainer.compact .progressContainer {
+    width: auto !important;
+    flex-grow: 1;
+  }
+  .playerContainer.compact .compactVolume {
+    width: auto !important;
+  }
+}
+

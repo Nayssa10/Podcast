@@ -1,0 +1,63 @@
+schema: spec-driven
+
+strict_tdd: false
+
+context: |
+  Project: team SUPERNOVA (podcast website)
+  Tech stack: Next.js (Planned)
+  Architecture: App Router (Planned)
+  Testing: None (No test runner detected)
+  Style: None configured
+
+testing:
+  strict_tdd: false
+  detected: "2026-08-05T14:49:36-05:00"
+  test_runner:
+    command: ""
+    framework: ""
+  test_layers:
+    unit:
+      available: false
+      tool: ""
+    integration:
+      available: false
+      tool: ""
+    e2e:
+      available: false
+      tool: ""
+  coverage:
+    available: false
+    command: ""
+  quality_tools:
+    linter:
+      available: false
+      command: ""
+    type_checker:
+      available: false
+      command: ""
+    formatter:
+      available: false
+      command: ""
+
+rules:
+  proposal:
+    - Include rollback plan for risky changes
+  specs:
+    - Use Given/When/Then for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+  design:
+    - Include sequence diagrams for complex flows
+    - Document architecture decisions with rationale
+  tasks:
+    - Group by phase, use hierarchical numbering
+    - Keep tasks completable in one session
+  apply:
+    - Follow existing code patterns
+    tdd: false
+    test_command: ""
+  verify:
+    test_command: ""
+    build_command: ""
+    coverage_threshold: 0
+  archive:
+    - Warn before merging destructive deltas

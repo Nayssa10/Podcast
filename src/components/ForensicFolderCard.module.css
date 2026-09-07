@@ -1,0 +1,337 @@
+/* Skeuomorphic Folder Card for Criminology / Forensic Episodes - Portrait Layout */
+
+.folderCardContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: linear-gradient(to bottom, #EFE7DA 0%, #E1DACA 100%);
+  border-radius: 6px 0 12px 12px;
+  box-shadow: 
+    0 8px 20px rgba(43, 35, 29, 0.08),
+    0 3px 8px rgba(0, 0, 0, 0.04),
+    inset 1px 1px 0px rgba(255, 255, 255, 0.5);
+  padding: 1.3rem 1.1rem 1.1rem 1.3rem;
+  margin: 0.8rem auto;
+  width: 100%;
+  max-width: 275px;
+  min-height: 395px;
+  height: 100%;
+  overflow: visible;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease;
+  border: 1px solid #C1B6A3;
+}
+
+.folderCardContainer::before {
+  /* Inner folder crease */
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 20px;
+  bottom: 0;
+  width: 1px;
+  background: rgba(0, 0, 0, 0.08);
+  box-shadow: 1px 0 0 rgba(255, 255, 255, 0.15);
+  pointer-events: none;
+}
+
+.folderCardContainer:hover {
+  transform: translateY(-4px) rotate(0.5deg);
+  box-shadow: 
+    0 12px 28px rgba(43, 35, 29, 0.12),
+    0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* Folder Tab at the Top-Right */
+.folderTab {
+  position: absolute;
+  right: -14px;
+  top: 25px;
+  width: 14px;
+  height: 90px;
+  background-color: #E1DACA;
+  border: 1px solid #C1B6A3;
+  border-left: none;
+  border-radius: 0 8px 8px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.08);
+  z-index: 2;
+}
+
+.tabStamp {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-family: var(--font-family-monospace);
+  font-weight: 700;
+  font-size: 0.55rem;
+  color: #531c1c; /* Blood/Ink stamp red */
+  letter-spacing: 1.5px;
+  border: 1px solid #531c1c;
+  padding: 4px 1px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  opacity: 0.8;
+  transform: rotate(-1deg);
+  user-select: none;
+}
+
+/* Crease Line representation on folder */
+.creaseLine {
+  position: absolute;
+  top: 0;
+  left: 18px;
+  bottom: 0;
+  width: 2px;
+  background-color: rgba(0, 0, 0, 0.04);
+  pointer-events: none;
+}
+
+/* Direct Folder Content (written on folder) */
+.folderContent {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  z-index: 3;
+  margin-bottom: 0.8rem;
+}
+
+.folderHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.categoryTag {
+  font-family: var(--font-family-monospace);
+  font-size: 0.55rem;
+  font-weight: 800;
+  color: #7a2222;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  border-bottom: 1.5px solid #7a2222;
+  padding-bottom: 1px;
+}
+
+.subHeader {
+  display: flex;
+  margin-bottom: 0.4rem;
+}
+
+.blackStamp {
+  font-family: var(--font-family-monospace);
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #1f1b18;
+  border: 1.5px solid #1f1b18;
+  padding: 2px 6px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transform: rotate(-2deg);
+  opacity: 0.85;
+  user-select: none;
+}
+
+.redStamp {
+  font-family: var(--font-family-monospace);
+  font-size: 0.6rem;
+  font-weight: 800;
+  color: #8b1e1e;
+  border: 1.5px solid #8b1e1e;
+  padding: 2px 5px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  transform: rotate(5deg);
+  opacity: 0.9;
+  user-select: none;
+}
+
+.titleWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0.6rem 0 0.8rem 0;
+  padding: 0.2rem 0;
+}
+
+.folderTitle {
+  font-family: var(--font-family-satisfy);
+  font-size: 1.7rem;
+  font-weight: 400;
+  color: #231c16;
+  line-height: 1.2;
+  transform: rotate(-5deg);
+  transform-origin: left center;
+  text-shadow: 0.5px 0.5px 0px rgba(0, 0, 0, 0.08);
+  flex: 1;
+  padding-left: 0.2rem;
+}
+
+.greenStamp {
+  font-family: var(--font-family-monospace);
+  font-size: 0.58rem;
+  font-weight: 800;
+  color: #1b5e20;
+  border: 1.5px dashed #1b5e20;
+  padding: 3px 6px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transform: rotate(7deg);
+  opacity: 0.88;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.folderAudio {
+  width: 100%;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  padding-top: 0.8rem;
+}
+
+/* Pocket Watch decoration */
+.pocketWatchContainer {
+  position: absolute;
+  bottom: -10px;
+  right: -10px;
+  width: 80px;
+  height: 80px;
+  pointer-events: none;
+  z-index: 8;
+  filter: drop-shadow(3px 4px 5px rgba(0, 0, 0, 0.35));
+}
+
+.pocketWatch {
+  width: 100%;
+  height: 100%;
+}
+
+/* Folder Bottom Panel */
+.folderBottom {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px dashed rgba(0, 0, 0, 0.12);
+  padding-top: 0.75rem;
+  z-index: 4;
+  gap: 0.4rem;
+}
+
+.evidenceStampContainer {
+  display: flex;
+  flex-direction: column;
+  transform: rotate(-3deg);
+  border: 1px double #531c1c;
+  padding: 2px 5px;
+  border-radius: 2px;
+  color: #531c1c;
+  font-family: var(--font-family-monospace);
+  text-transform: uppercase;
+  opacity: 0.85;
+  max-width: 105px;
+}
+
+.evidenceDate {
+  font-size: 0.5rem;
+  font-weight: 700;
+}
+
+.evidenceLabel {
+  font-size: 0.45rem;
+  letter-spacing: 0.5px;
+  margin-top: 1px;
+}
+
+.openDossierBtn {
+  font-family: var(--font-family-monospace);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #fcfaf6;
+  background-color: #2b2520;
+  border: 1px solid #1a1613;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1.5px 3px rgba(0, 0, 0, 0.15);
+  margin-right: 8px; /* leaves room for watch overlap */
+}
+
+.openDossierBtn:hover {
+  background-color: #531c1c;
+  border-color: #3b1313;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Overrides */
+@media (max-width: 768px) {
+  .folderCardContainer {
+    max-width: 300px;
+    padding: 1.4rem 1.1rem 1.1rem 1.3rem;
+  }
+
+  .pocketWatchContainer {
+    width: 70px;
+    height: 70px;
+    bottom: -8px;
+    right: -8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .folderCardContainer {
+    padding: 1.3rem 1rem 1rem 1.2rem;
+    max-width: 100%;
+  }
+  
+  .folderTab {
+    right: -10px;
+    height: 80px;
+    top: 20px;
+  }
+  
+  .tabStamp {
+    font-size: 0.5rem;
+    padding: 3px 1px;
+    letter-spacing: 0.8px;
+  }
+  
+  .folderTitle {
+    font-size: 1.3rem;
+  }
+  
+  .pocketWatchContainer {
+    width: 65px;
+    height: 65px;
+    bottom: -8px;
+    right: -8px;
+  }
+  
+  .folderBottom {
+    flex-direction: column;
+    gap: 0.6rem;
+    align-items: stretch;
+  }
+  
+  .evidenceStampContainer {
+    max-width: none;
+    align-items: center;
+    transform: rotate(-2deg);
+  }
+  
+  .openDossierBtn {
+    text-align: center;
+    margin-right: 0;
+  }
+}
