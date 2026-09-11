@@ -220,7 +220,7 @@ const DEFAULT_DATA: StoreData = {
     contactNotificationEmail: 'nayssakristel@gmail.com',
     resendApiKey: '',
     spotifyUrl: 'https://open.spotify.com',
-    instagramUrl: 'https://instagram.com/teamsupernova',
+    instagramUrl: 'https://www.instagram.com/team__supernova?stkn=b2VhdThlYXduaTVj',
     youtubeUrl: 'https://youtube.com',
     tiktokUrl: 'https://tiktok.com/@teamsupernova'
   }

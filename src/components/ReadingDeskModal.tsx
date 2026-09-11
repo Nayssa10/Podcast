@@ -102,7 +102,14 @@ export default function ReadingDeskModal({ episode, onClose }: ReadingDeskModalP
           <div className={styles.headerInfoCol}>
             <div className={styles.brandBadgeRow}>
               <span className={styles.brandBadge}>✦ DIARIO DEL CLUB ✦</span>
-              <span className={styles.brandHandlePill}>@teamsupernova</span>
+              <a
+                href="https://www.instagram.com/team__supernova?stkn=b2VhdThlYXduaTVj"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.brandHandlePill}
+              >
+                @team__supernova
+              </a>
             </div>
 
             <div className={styles.bubbleTitleRow}>

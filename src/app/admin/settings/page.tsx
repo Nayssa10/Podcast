@@ -9,7 +9,7 @@ const DEFAULT_SETTINGS: SiteSettings = {
   contactNotificationEmail: "nayssakristel@gmail.com",
   resendApiKey: "",
   spotifyUrl: "https://open.spotify.com",
-  instagramUrl: "https://instagram.com/teamsupernova",
+  instagramUrl: "https://www.instagram.com/team__supernova?stkn=b2VhdThlYXduaTVj",
   youtubeUrl: "https://youtube.com",
   tiktokUrl: "https://tiktok.com/@teamsupernova"
 };
@@ -106,7 +106,7 @@ export default function AdminSettingsPage() {
               className={styles.fieldInput}
               value={settings.instagramUrl}
               onChange={(e) => setSettings({ ...settings, instagramUrl: e.target.value })}
-              placeholder="https://instagram.com/teamsupernova"
+              placeholder="https://www.instagram.com/team__supernova?stkn=b2VhdThlYXduaTVj"
               required
             />
           </div>
