@@ -1,11 +1,15 @@
 export const SESSION_COOKIE_NAME = "supernova_admin_session";
 
+export function getAdminUsername(): string {
+  return process.env.ADMIN_USERNAME || "nayssa";
+}
+
 export function getAdminPassword(): string {
-  return process.env.ADMIN_PASSWORD || "supernova2026";
+  return process.env.ADMIN_PASSWORD || "Nayssa1305";
 }
 
 function getSecretKey(): string {
-  return process.env.ADMIN_SESSION_SECRET || getAdminPassword() + "-supernova-secret-salt-2026";
+  return process.env.ADMIN_SESSION_SECRET || `${getAdminUsername()}-${getAdminPassword()}-supernova-secret-2026`;
 }
 
 async function getCryptoKey(secret: string): Promise<CryptoKey> {
@@ -42,12 +46,13 @@ function base64UrlDecode(str: string): Uint8Array {
   return bytes;
 }
 
-export async function createSessionToken(maxAgeSeconds = 7 * 24 * 3600): Promise<string> {
+export async function createSessionToken(username: string = "nayssa", maxAgeSeconds = 7 * 24 * 3600): Promise<string> {
   const secret = getSecretKey();
   const key = await getCryptoKey(secret);
   const encoder = new TextEncoder();
 
   const payload = JSON.stringify({
+    username,
     role: "admin",
     exp: Date.now() + maxAgeSeconds * 1000,
   });

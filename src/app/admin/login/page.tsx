@@ -7,6 +7,7 @@ import styles from "./login.module.css";
 
 export default function AdminLoginPage() {
   const router = useRouter();
+  const [username, setUsername] = useState("nayssa");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -14,7 +15,7 @@ export default function AdminLoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!password) return;
+    if (!username || !password) return;
 
     setError(null);
     setIsLoading(true);
@@ -25,13 +26,13 @@ export default function AdminLoginPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ username, password }),
       });
 
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        setError(data.error || "Contraseña inválida");
+        setError(data.error || "Usuario o contraseña inválidos");
         setIsLoading(false);
         return;
       }
@@ -62,8 +63,25 @@ export default function AdminLoginPage() {
           )}
 
           <div className={styles.inputGroup}>
+            <label htmlFor="admin-username" className={styles.label}>
+              Usuario
+            </label>
+            <div className={styles.inputWrapper}>
+              <input
+                id="admin-username"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Ingresa tu usuario..."
+                className={styles.input}
+                required
+              />
+            </div>
+          </div>
+
+          <div className={styles.inputGroup}>
             <label htmlFor="admin-password" className={styles.label}>
-              Contraseña de Acceso
+              Contraseña
             </label>
             <div className={styles.inputWrapper}>
               <input
@@ -91,7 +109,7 @@ export default function AdminLoginPage() {
           <button
             type="submit"
             className={styles.submitBtn}
-            disabled={isLoading || !password}
+            disabled={isLoading || !username || !password}
           >
             {isLoading ? "Validando acceso..." : "Entrar al Panel"}
           </button>

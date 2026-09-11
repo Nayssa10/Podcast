@@ -1,21 +1,26 @@
 import { NextResponse } from "next/server";
-import { getAdminPassword, createSessionToken, SESSION_COOKIE_NAME } from "@/lib/auth";
+import { getAdminUsername, getAdminPassword, createSessionToken, SESSION_COOKIE_NAME } from "@/lib/auth";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { password } = body;
+    const { username, password } = body;
 
+    const expectedUsername = getAdminUsername();
     const expectedPassword = getAdminPassword();
 
-    if (!password || password !== expectedPassword) {
+    const normalizedUsername = (username || "").trim().toLowerCase();
+    const isUserValid = normalizedUsername === expectedUsername.toLowerCase();
+    const isPassValid = password === expectedPassword;
+
+    if (!isUserValid || !isPassValid) {
       return NextResponse.json(
-        { success: false, error: "Contraseña incorrecta" },
+        { success: false, error: "Usuario o contraseña incorrectos" },
         { status: 401 }
       );
     }
 
-    const token = await createSessionToken();
+    const token = await createSessionToken(expectedUsername);
     const response = NextResponse.json({ success: true, message: "Sesión iniciada correctamente" });
 
     response.cookies.set({
