@@ -11,7 +11,7 @@ const DEFAULT_SETTINGS: SiteSettings = {
   spotifyUrl: "https://open.spotify.com",
   instagramUrl: "https://www.instagram.com/team__supernova?stkn=b2VhdThlYXduaTVj",
   youtubeUrl: "https://youtube.com",
-  tiktokUrl: "https://tiktok.com/@teamsupernova"
+  tiktokUrl: "https://www.tiktok.com/@team.supernova20?_r=1&_t=ZS-99ehGDfkl1E"
 };
 
 export default function AdminSettingsPage() {
@@ -130,7 +130,7 @@ export default function AdminSettingsPage() {
               className={styles.fieldInput}
               value={settings.tiktokUrl}
               onChange={(e) => setSettings({ ...settings, tiktokUrl: e.target.value })}
-              placeholder="https://tiktok.com/@teamsupernova"
+              placeholder="https://www.tiktok.com/@team.supernova20?_r=1&_t=ZS-99ehGDfkl1E"
               required
             />
           </div>
