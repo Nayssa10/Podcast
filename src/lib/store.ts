@@ -315,8 +315,10 @@ export async function saveStore(data: StoreData): Promise<void> {
 
   const redis = getRedis();
   if (redis) {
-    redis.set('podcast_store_data', data).catch((error) => {
-      console.error('Error background-saving to Redis store:', error);
-    });
+    try {
+      await redis.set('podcast_store_data', data);
+    } catch (error) {
+      console.error('Error saving to Redis store:', error);
+    }
   }
 }

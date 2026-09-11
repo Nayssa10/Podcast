@@ -15,7 +15,7 @@ const DEFAULT_SETTINGS: SiteSettings = {
 };
 
 export default function AdminSettingsPage() {
-  const { settings: globalSettings, refreshData } = useAdminData();
+  const { settings: globalSettings, updateSettingsLocally, refreshData } = useAdminData();
   const [settings, setSettings] = useState<SiteSettings>(globalSettings || DEFAULT_SETTINGS);
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -31,6 +31,7 @@ export default function AdminSettingsPage() {
     setSaving(true);
 
     try {
+      updateSettingsLocally(settings);
       const res = await fetch("/api/settings", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -38,8 +39,12 @@ export default function AdminSettingsPage() {
       });
 
       if (res.ok) {
+        const json = await res.json();
+        if (json.data) {
+          updateSettingsLocally(json.data);
+          setSettings(json.data);
+        }
         setSaved(true);
-        refreshData();
         setTimeout(() => setSaved(false), 3000);
       } else {
         alert("Error al guardar cambios");
