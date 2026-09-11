@@ -1546,12 +1546,14 @@
     width: 100%;
   }
   
-  .skillsGrid {
-    grid-template-columns: 1fr;
+  .modalOverlay {
+    padding: 0.75rem;
   }
-  
+
   .minimalModalCard {
-    padding: 2rem 1.5rem;
+    padding: 2rem 1.25rem;
+    width: 100%;
+    max-height: 90vh;
   }
 
   .aboutSection {

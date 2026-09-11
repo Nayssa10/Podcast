@@ -623,3 +623,110 @@
     align-items: flex-start;
   }
 }
+
+@media (max-width: 600px) {
+  .modalOverlay {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .folderDossier {
+    max-height: 94vh;
+    border-radius: 12px;
+  }
+
+  .folderTopTab {
+    padding: 0.6rem 0.85rem;
+  }
+
+  .tabCaseStamp {
+    gap: 0.4rem;
+  }
+
+  .tabBadge {
+    font-size: 0.62rem;
+    letter-spacing: 0.8px;
+  }
+
+  .tabCaseNumber {
+    font-size: 0.66rem;
+    padding: 0.15rem 0.4rem;
+  }
+
+  .closeFolderBtn {
+    padding: 0.25rem 0.55rem;
+    font-size: 0.68rem;
+  }
+
+  .dossierSheet {
+    padding: 1.25rem 0.85rem;
+    gap: 1.25rem;
+  }
+
+  .dossierSheet::before {
+    left: 8px;
+  }
+
+  .sealText strong {
+    font-size: 1rem;
+  }
+
+  .caseReferenceLine {
+    flex-direction: column;
+    gap: 0.35rem;
+    width: 100%;
+    font-size: 0.68rem;
+    box-sizing: border-box;
+  }
+
+  .caseMainTitle {
+    font-size: 1.35rem;
+    line-height: 1.2;
+    word-break: break-word;
+  }
+
+  .caseBookSub {
+    font-size: 0.8rem;
+  }
+
+  .evidencePhotoFrame {
+    max-width: 240px;
+    padding: 0.5rem;
+  }
+
+  .chainOfCustodyBox {
+    padding: 1rem 0.85rem;
+  }
+
+  .typewriterSheet {
+    padding: 1rem 0.85rem;
+  }
+
+  .typewriterParagraph {
+    font-size: 0.8rem;
+    line-height: 1.55;
+    word-break: break-word;
+  }
+
+  .criminologyDictum {
+    padding: 1rem 0.85rem;
+  }
+
+  .dictumContent {
+    font-size: 0.82rem;
+    word-break: break-word;
+  }
+
+  .handwrittenStickyNote {
+    padding: 1rem 0.85rem;
+  }
+
+  .stickyQuote {
+    font-size: 1.05rem;
+    line-height: 1.4;
+  }
+
+  .audioEvidenceBar {
+    padding: 0.75rem 0.85rem;
+  }
+}
+
