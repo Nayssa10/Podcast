@@ -4,11 +4,19 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import styles from "./admin.module.css";
+import {
+  IconDashboard,
+  IconEpisodes,
+  IconMessages,
+  IconProfile,
+  IconSettings,
+  IconBell,
+  IconExternalLink,
+} from "@/components/admin/AdminIcons";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [unreadCount, setUnreadCount] = useState(0);
-  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     fetch("/api/messages")
@@ -23,11 +31,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }, [pathname]);
 
   const navItems = [
-    { href: "/admin", label: "Dashboard", icon: "⊞" },
-    { href: "/admin/episodes", label: "Episodios", icon: "🎙" },
-    { href: "/admin/messages", label: "Buzón de Mensajes", count: unreadCount, icon: "✉" },
-    { href: "/admin/profile", label: "Perfil & Dossier", icon: "✦" },
-    { href: "/admin/settings", label: "Configuración & Redes", icon: "⚙" },
+    { href: "/admin", label: "Dashboard", Icon: IconDashboard },
+    { href: "/admin/episodes", label: "Episodios", Icon: IconEpisodes },
+    { href: "/admin/messages", label: "Buzón de Mensajes", count: unreadCount, Icon: IconMessages },
+    { href: "/admin/profile", label: "Perfil & Dossier", Icon: IconProfile },
+    { href: "/admin/settings", label: "Configuración & Redes", Icon: IconSettings },
   ];
 
   return (
@@ -57,13 +65,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <nav className={styles.sidebarMenu}>
             {navItems.map((item) => {
               const isActive = pathname === item.href || (item.href !== "/admin" && pathname.startsWith(item.href));
+              const { Icon } = item;
               return (
                 <Link
                   key={item.href}
                   href={item.href}
                   className={`${styles.menuPill} ${isActive ? styles.menuPillActive : ""}`}
                 >
-                  <span className={styles.menuIcon}>{item.icon}</span>
+                  <span className={styles.menuIcon}>
+                    <Icon size={17} />
+                  </span>
                   <span className={styles.menuLabel}>{item.label}</span>
                   {Boolean(item.count && item.count > 0) && (
                     <span className={styles.menuBadge}>{item.count}</span>
@@ -76,7 +87,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           {/* Sidebar Bottom Action */}
           <div className={styles.sidebarFooterBox}>
             <Link href="/" className={styles.backToSiteBtn} target="_blank">
-              <span>➔ Ver Sitio Web</span>
+              <IconExternalLink size={15} />
+              <span>Ver Sitio Web</span>
             </Link>
           </div>
         </aside>
@@ -91,19 +103,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
 
             <div className={styles.topBarRight}>
-              <div className={styles.searchPill}>
-                <span className={styles.searchIcon}>🔍</span>
-                <input
-                  type="text"
-                  placeholder="Buscar expedientes, novelas o mensajes..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className={styles.searchInput}
-                />
-              </div>
-
               <Link href="/admin/messages" className={styles.notificationBtn} title="Buzón de correspondencia">
-                <span className={styles.bellIcon}>🔔</span>
+                <IconBell size={18} />
                 {unreadCount > 0 && <span className={styles.notifDot}></span>}
               </Link>
             </div>

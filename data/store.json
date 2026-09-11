@@ -4,34 +4,30 @@
       "id": "ep-01",
       "number": "EP 01",
       "date": "05 de Agosto, 2026",
-      "title": "Episodio 1: Sombras en la Biblioteca",
+      "title": "Episodio 1: Caso del Asesino del Zodiaco",
       "type": "forensic",
-      "coverImage": "/ep1_library_cover.jpg",
-      "description": "Analizamos el thriller romántico gótico del año, discutiendo la tensión entre los protagonistas y los métodos de criminalística forense que desvelan el misterio de la mansión Blackwood.",
+      "coverImage": "/uploads/1789136312873-images.jpeg",
+      "description": "El asesino del Zodiaco fue un criminal que aterrorizó el norte de California, Estados Unidos, entre 1968 y 1969. Se le atribuyen oficialmente cinco asesinatos y dos intentos de asesinato. Su caso se hizo famoso por las cartas y mensajes cifrados que enviaba a los medios de comunicación, desafiando a la policía a descubrir su identidad. A pesar de las investigaciones, análisis de huellas, evidencias balísticas, testimonios y estudios de sus códigos, su identidad nunca ha sido confirmada oficialmente. El caso continúa siendo uno de los misterios criminales más conocidos de Estados Unidos.",
       "url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
       "duration": "06:12",
       "status": "published",
-      "bookDetails": {
-        "title": "La Sombra de Blackwood",
-        "author": "G. H. Vance",
-        "description": "Un oscuro romance gótico donde una joven institutriz desvela secretos familiares ocultos tras las paredes de la mansión, enfrentando una red de mentiras y pasiones prohibidas.",
-        "coverIcon": "🏰"
-      },
       "forensicDetails": {
-        "criminologyDetails": "Análisis del estrangulamiento manual y reconstrucción de la trayectoria de caída desde la torre oeste de la mansión.",
+        "criminologyDetails": "Después del ataque, el agresor permaneció brevemente dentro del taxi y tomó parte de la camisa de la víctima. Posteriormente, salió del vehículo y se alejó caminando. Varios testigos observaron al sospechoso y proporcionaron una descripción física a la policía.",
         "keyPhysicalEvidence": [
-          "Cuerda de cáñamo con nudo marinero",
-          "Fragmentos de vidrio azul cobalto",
-          "Huellas de botas de montar en el lodo"
+          "Muestra de sangre: encontrada en el interior del taxi y relacionada con la víctima.",
+          "Fragmento de la camisa de la víctima: el agresor tomó parte de la camisa y posteriormente la envió junto con una de sus cartas.",
+          "Huellas dactilares: se encontraron posibles huellas en el taxi que fueron examinadas durante la investigación."
         ],
-        "forensicFocus": "Toxicología forense (arsénico) e identificación de fibras textiles."
+        "forensicFocus": [
+          "Balística forense: análisis del arma utilizada",
+          "los casquillos y las características del disparo que causó la muerte de Paul Stine.",
+          "Biología y genética forense: análisis de las muestras biológicas y manchas de sangre encontradas en la escena.",
+          "Dactiloscopía: estudio de las huellas encontradas en el taxi para determinar si podían corresponder al responsable."
+        ]
       },
       "snippet": {
-        "text": "“¿Segura de que quieres abrir esa puerta, institutriz?”, me susurró al oído. Su respiración era cálida contra mi cuello helado, pero sus manos firmes revelaban una verdad diferente.”",
-        "highlights": [
-          "institutriz",
-          "verdad diferente"
-        ]
+        "text": "Las autoridades investigaron múltiples sospechosos y analizaron huellas, evidencia balística, documentos y muestras biológicas. Sin embargo, nunca se logró confirmar oficialmente la identidad del responsable. El caso permanece sin resolver.",
+        "highlights": []
       },
       "annotations": [
         {
@@ -46,39 +42,65 @@
           "text": "no puedo con esto 💔",
           "position": "78%"
         }
-      ]
+      ],
+      "evidenceImage": "/uploads/1789060473232-ep1.jpg",
+      "photoStrip1": "/uploads/1789060473232-ep1.jpg",
+      "photoStrip2": "/uploads/1789060473232-ep1.jpg",
+      "photoStrip3": "/uploads/1789060473232-ep1.jpg"
     },
     {
       "id": "ep-02",
       "number": "EP 02",
       "date": "29 de Julio, 2026",
-      "title": "Episodio 2: El Perfume de la Coartada",
+      "title": "Episodio 2: Hasta que nos quedemos sin estrellas",
       "type": "book",
-      "coverImage": "/ep2_perfume_cover.jpg",
+      "coverImage": "/uploads/1789097138146-hastaquenosquedemossinestrellas.jpg",
       "description": "Exploramos la química del amor y el veneno. Una inmersión profunda en la literatura de misterio y romance clásico, analizando las técnicas reales de toxicología utilizadas para resolver crímenes pasionales.",
       "url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
       "duration": "07:05",
       "status": "published",
       "bookDetails": {
-        "title": "El Veneno del Amor",
-        "author": "Clara Thorne",
-        "description": "Una intriga de época victoriana donde una perfumista de la alta sociedad utiliza esencias mortales para vengar a sus seres queridos, mientras un inspector sigue su rastro aromático.",
-        "coverIcon": "🧪"
-      },
-      "forensicDetails": {
-        "criminologyDetails": "Estudio toxicológico de envenenamiento sistemático. Clasificación de toxinas orgánicas y sintomatología de la víctima.",
-        "keyPhysicalEvidence": [
-          "Frasco de perfume de cristal tallado",
-          "Manchas de cianuro de hidrógeno en la taza",
-          "Carta perfumada con trazas de belladona"
+        "title": "Hasta que nos quedemos sin estrellas",
+        "author": "Inma Rubiales",
+        "description": "Exploramos la química del amor y el veneno. Una inmersión profunda en la literatura de misterio y romance clásico, analizando las técnicas reales de toxicología utilizadas para resolver crímenes pasionales.",
+        "startDate": "27 junio",
+        "endDate": "12 julio",
+        "pages": 378,
+        "rating": 4,
+        "isRecommended": true,
+        "formats": {
+          "physical": true,
+          "digital": true,
+          "audiobook": false
+        },
+        "sagaInfo": "1",
+        "opinion": "“El veneno no tiene olor para el hombre que ama con locura. Bebió el elixir sin vacilar, mirándome directo a los ojos como si supiera que aquel trago sería su último aliento.”",
+        "characters": [
+          {
+            "name": "Marcus",
+            "role": "El Conde"
+          },
+          {
+            "name": "Dani",
+            "role": "Protagonista"
+          }
         ],
-        "forensicFocus": "Espectrometría de masas y cromatografía líquida de alta resolución."
+        "tropeRatings": {
+          "love": 5,
+          "anger": 5,
+          "sadness": 5,
+          "fantasy": 5,
+          "spicy": 5,
+          "laugh": 5,
+          "ending": 5
+        },
+        "coverIcon": "📖"
       },
       "snippet": {
         "text": "“El veneno no tiene olor para el hombre que ama con locura. Bebió el elixir sin vacilar, mirándome directo a los ojos como si supiera que aquel trago sería su último aliento.”",
         "highlights": [
-          "veneno",
-          "último aliento"
+          "Supernova: Experiencia",
+          "persona u oportunidad gracias a la que sabes que acabarás siendo una versión de si mismo."
         ]
       },
       "annotations": [
@@ -90,7 +112,11 @@
           "text": "lloro literal 🥺",
           "position": "65%"
         }
-      ]
+      ],
+      "evidenceImage": "/ep2_perfume_cover.jpg",
+      "photoStrip1": "/ep1_library_cover.jpg",
+      "photoStrip2": "/ep3_forensic_cover.jpg",
+      "photoStrip3": "/ep2_perfume_cover.jpg"
     },
     {
       "id": "ep-03",
@@ -116,7 +142,9 @@
           "Estrías de bala compatibles con cañón estriado",
           "Residuos de disparo (pólvora) en guante de cuero"
         ],
-        "forensicFocus": "Balística forense y microscopía electrónica de barrido."
+        "forensicFocus": [
+          "Balística forense y microscopía electrónica de barrido."
+        ]
       },
       "snippet": {
         "text": "“La bala había atravesado la pared de ladrillos, pero lo que realmente me detuvo fue el residuo de pólvora en su guante de cuero. Su coartada era perfecta; mi corazón, un desastre.”",
@@ -158,7 +186,7 @@
     "quote": "Deep into that darkness peering, long I stood there wondering, fearing, doubting, dreaming dreams no mortal ever dared to dream before."
   },
   "settings": {
-    "contactNotificationEmail": "nayssakristel@gmail.com",
+    "contactNotificationEmail": "nayssakris@gmail.com",
     "resendApiKey": "",
     "spotifyUrl": "https://open.spotify.com",
     "instagramUrl": "https://instagram.com/teamsupernova",

@@ -71,19 +71,8 @@ export default function AdminSettingsPage() {
               required
             />
             <span style={{ fontSize: "0.78rem", color: "#8E7F6E", marginTop: "0.25rem" }}>
-              Los mensajes enviados desde el formulario web se enviarán a esta dirección.
+              Los mensajes enviados desde el formulario web llegarán directamente a esta casilla.
             </span>
-          </div>
-
-          <div className={`${styles.formField} ${styles.fullWidth}`}>
-            <label className={styles.fieldLabel}>Resend API Key (Opcional para despacho transaccional)</label>
-            <input
-              type="password"
-              className={styles.fieldInput}
-              value={settings.resendApiKey || ""}
-              onChange={(e) => setSettings({ ...settings, resendApiKey: e.target.value })}
-              placeholder="re_xxxxxxxxxxxx"
-            />
           </div>
         </div>
 

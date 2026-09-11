@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import styles from "./episodes.module.css";
 import { Episode } from "@/lib/store";
+import { IconSearch, IconSettings, IconEpisodes } from "@/components/admin/AdminIcons";
 
 export default function AdminEpisodesPage() {
   const [episodes, setEpisodes] = useState<Episode[]>([]);
@@ -14,7 +15,7 @@ export default function AdminEpisodesPage() {
   const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
 
   const fetchEpisodes = () => {
-    fetch("/api/episodes")
+    fetch("/api/episodes", { cache: "no-store" })
       .then(res => res.json())
       .then(data => {
         setEpisodes(Array.isArray(data) ? data : []);
@@ -63,7 +64,9 @@ export default function AdminEpisodesPage() {
 
         <div className={styles.headerRightActions}>
           <div className={styles.searchBarWrapper}>
-            <span className={styles.searchIcon}>🔍</span>
+            <span className={styles.searchIcon}>
+              <IconSearch size={15} />
+            </span>
             <input
               type="text"
               placeholder="Buscar expediente..."
@@ -99,7 +102,7 @@ export default function AdminEpisodesPage() {
             onClick={() => setFilter("book")}
             className={`${styles.categoryTabBtn} ${filter === "book" ? styles.categoryTabActive : ""}`}
           >
-            Romance Gótico ({bookCount})
+            Romance ({bookCount})
           </button>
         </div>
         <span className={styles.stripNote}>Temporada 2026 &bull; {episodes.length} episodios registrados</span>
@@ -120,7 +123,9 @@ export default function AdminEpisodesPage() {
                     <span className={styles.infoIcon}>ⓘ</span>
                     <h3 className={styles.summaryTitle}>Resumen de Emisiones</h3>
                   </div>
-                  <span className={styles.gearIcon}>⚙</span>
+                  <span className={styles.gearIcon}>
+                    <IconSettings size={15} />
+                  </span>
                 </div>
 
                 <div className={styles.statBoxesRow}>
@@ -190,7 +195,7 @@ export default function AdminEpisodesPage() {
                   <div className={styles.cardDetailsBody}>
                     <h4 className={styles.cardEpTitle}>{ep.title}</h4>
                     <span className={styles.cardEpCode}>
-                      {ep.number} / {ep.type === "forensic" ? "CRIMINALÍSTICA" : "ROMANCE GÓTICO"}
+                      {ep.number} / {ep.type === "forensic" ? "CRIMINALÍSTICA" : "ROMANCE"}
                     </span>
                     <p className={styles.cardEpYear}>
                       Temporada 2026 &bull; {ep.duration} min &bull; Alta Definición
@@ -312,7 +317,7 @@ export default function AdminEpisodesPage() {
               </div>
               <div className={styles.legendDotItem}>
                 <span className={`${styles.colorDot} ${styles.dotTeal}`}></span>
-                <span>Gótico</span>
+                <span>Romance</span>
               </div>
               <div className={styles.legendDotItem}>
                 <span className={`${styles.colorDot} ${styles.dotGold}`}></span>
@@ -326,9 +331,15 @@ export default function AdminEpisodesPage() {
 
             {/* Icon Filters Tab */}
             <div className={styles.quickFilterTabs}>
-              <button className={styles.quickFilterBtn} title="Grabaciones">🎙 2</button>
-              <button className={styles.quickFilterBtn} title="Dictámenes">✎ 7</button>
-              <button className={styles.quickFilterBtn} title="Publicados">✓ 3</button>
+              <button className={styles.quickFilterBtn} title="Grabaciones">
+                <IconEpisodes size={13} style={{ verticalAlign: "middle", marginRight: "4px" }} /> {episodes.length}
+              </button>
+              <button className={styles.quickFilterBtn} title="Dictámenes">
+                Dictámenes ({episodes.length * 2})
+              </button>
+              <button className={styles.quickFilterBtn} title="Publicados">
+                Activos ({episodes.length})
+              </button>
             </div>
           </div>
 

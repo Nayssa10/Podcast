@@ -213,7 +213,7 @@ export default function Home() {
   const activeHost = 'nayssa';
 
   useEffect(() => {
-    fetch("/api/episodes")
+    fetch("/api/episodes", { cache: "no-store" })
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
@@ -364,131 +364,145 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Edgar Allan Poe Quote Section (Bridge between Hero & Episodes) */}
-      <section className={styles.quoteSection}>
-        <div className={styles.quoteContainer}>
-          <div className={styles.quoteDecorativeStar}>✦ ✦ ✦</div>
-          <blockquote className={styles.poeQuote}>
-            &ldquo;Deep into that darkness peering, long I stood there wondering, fearing, doubting, dreaming dreams no mortal ever dared to dream before.&rdquo;
-          </blockquote>
-          <cite className={styles.quoteAuthor}>&mdash; Edgar Allan Poe</cite>
+      {/* Intro / Welcome Section (Centrado y limpio) */}
+      <section id="about" className={styles.introWelcomeSection}>
+        <div className={styles.introWelcomeContainer}>
+          <div className={styles.introContentCol}>
+            <span className={styles.introCursiveHeader}>¡Hola! Te doy la bienvenida ♥</span>
+            <h3 className={styles.introMainTitle}>Me alegra que estés aquí.</h3>
+            <p className={styles.introParagraph}>
+              Soy Nayssa Kristel, creadora de <strong>Team Supernova</strong>. Un espacio donde la belleza de la literatura gótica y el romance de misterio se encuentran con el análisis riguroso, la ciencia criminal y la toxicología forense.
+            </p>
+          </div>
         </div>
       </section>
 
-      {/* Episode Grid Section */}
-      <section id="episodes" className={styles.episodesSection}>
-        <div className={styles.sectionHeader}>
-          <div className={styles.sectionDivider}>
-            <span className={styles.dividerLine}></span>
-            <span className={styles.dividerStar}>✦</span>
-            <span className={styles.dividerLine}></span>
-          </div>
-          <span className={styles.sectionOverline}>ARCHIVOS & EXPEDIENTES</span>
-          <h2 className={styles.sectionTitle}>Episodios Recientes</h2>
-          <p className={styles.sectionSubtitle}>
-            Casos forenses y análisis de novelas góticas disponibles para escuchar.
+      {/* Latest Episodes Section (3-Column Editorial Grid) */}
+      <section id="episodes" className={styles.latestEditorialSection}>
+        <div className={styles.editorialSectionHeader}>
+          <span className={styles.editorialOverline}>EXPEDIENTES &amp; LECTURAS RECIENTES</span>
+          <span className={styles.editorialHeartDivider}>♥ ✦ ♥</span>
+          <h2 className={styles.editorialSectionTitle}>Últimos Episodios Publicados</h2>
+          <p className={styles.editorialSectionSubtitle}>
+            Casos criminales, peritajes forenses y análisis literarios listos para escuchar.
           </p>
         </div>
 
-        <ScrollEpisodeNavigator
-          episodes={episodes}
-          onSelectEpisode={(i) => setSelectedEpisodeIndex(i)}
-        />
+        <div className={styles.editorialCardsGrid}>
+          {episodes.map((ep, idx) => {
+            const cleanTitle = ep.title.split(": ")[1] || ep.title;
+            const isForensic = ep.type === "forensic";
+            const categoryLabel = isForensic ? "Criminalística" : "Romance";
+            const imageSrc = ep.coverImage || ep.evidenceImage || (isForensic ? "/ep1_library_cover.jpg" : "/ep2_perfume_cover.jpg");
+            const episodeIndexStr = String(idx + 1).padStart(2, "0");
+
+            return (
+              <article
+                key={ep.number || idx}
+                className={styles.podcastCoverCard}
+                onClick={() => setSelectedEpisodeIndex(idx)}
+              >
+                {/* Giant Watermark Episode Number in Background */}
+                <span className={styles.cardWatermarkNum} aria-hidden="true">
+                  {episodeIndexStr}
+                </span>
+
+                {/* Card Top Row: Overline + Category Pill */}
+                <div className={styles.cardTopRow}>
+                  <div className={styles.cardHeaderBadge}>
+                    <span className={styles.cardHeaderStar}>✦</span>
+                    <span>NUEVO EPISODIO</span>
+                  </div>
+                  <span className={styles.cardCategoryPill}>
+                    {isForensic ? "⚖️" : "🥀"} {categoryLabel}
+                  </span>
+                </div>
+
+                {/* Centerpiece: Floating Mini Player Card */}
+                <div className={styles.miniPlayerFrame}>
+                  {/* Media Cover with Overlay Badges */}
+                  <div className={styles.miniPlayerCoverWrapper}>
+                    <Image
+                      src={imageSrc}
+                      alt={cleanTitle}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 360px"
+                      className={styles.miniPlayerCoverImg}
+                      unoptimized
+                    />
+                    <div className={styles.miniPlayerHostPill}>
+                      <span className={styles.miniPlayerHostDot}>●</span> Nayssa Kristel
+                    </div>
+                    {ep.duration && (
+                      <div className={styles.miniPlayerDurationBadge}>
+                        {ep.duration}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Track Info & Details inside Player Frame */}
+                  <div className={styles.miniPlayerInfo}>
+                    <span className={styles.miniPlayerEpNumber}>{ep.number || `EPISODIO ${episodeIndexStr}`}</span>
+                    <h3 className={styles.miniPlayerTitle}>{cleanTitle}</h3>
+                    <p className={styles.miniPlayerSubtitle}>
+                      {ep.bookDetails?.author ? `Novela de ${ep.bookDetails.author}` : "team SUPERNOVA Podcast"}
+                    </p>
+
+                    {/* Compact Audio Controller */}
+                    <div
+                      className={styles.miniPlayerAudioWrapper}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <AudioPlayer
+                        track={{
+                          title: ep.title,
+                          description: ep.description,
+                          url: ep.url,
+                          duration: ep.duration,
+                        }}
+                        variant="compact"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Bottom Action CTA Button */}
+                <div className={styles.cardBottomBar}>
+                  <button
+                    type="button"
+                    className={styles.cardDetailActionBtn}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedEpisodeIndex(idx);
+                    }}
+                  >
+                    {isForensic ? "Examinar Expediente ➔" : "Leer Diario de Lectura ➔"}
+                  </button>
+                </div>
+              </article>
+            );
+          })}
+        </div>
       </section>
 
-      {/* About Section - Carta Epistolar / Manuscrito Vintage */}
-      <section id="about" className={styles.aboutSection}>
-        <div className={styles.epistolarySectionHeader}>
-          <div className={styles.epistolaryDivider}>
-            <span className={styles.dividerLine}></span>
-            <span className={styles.dividerStar}>✦</span>
-            <span className={styles.dividerLine}></span>
-          </div>
-          <span className={styles.epistolaryOverline}>NOTA EDITORIAL • TEAM SUPERNOVA</span>
-          <h2 className={styles.epistolarySectionTitle}>Sobre el Podcast &amp; Creadora</h2>
-        </div>
-
-        <div className={styles.manuscriptSheet}>
-          {/* Top Sheet Header: Archival info + Postage Stamp */}
-          <div className={styles.sheetHeader}>
-            <div className={styles.sheetMeta}>
-              <span className={styles.sheetLocation}>ARCHIVO Nº 01 — TEAM SUPERNOVA</span>
-              <span className={styles.sheetDate}>Expediente Oficial • 2026</span>
-            </div>
-
-            <div className={styles.vintageStamp}>
-              <div className={styles.stampInner}>
-                <Image
-                  src="/logo-clean.png"
-                  alt="Sello Postal Team Supernova"
-                  width={34}
-                  height={34}
-                  className={styles.stampLogo}
-                  unoptimized
-                />
-                <span className={styles.stampText}>SUPERNOVA</span>
-                <span className={styles.stampValue}>01✦</span>
-              </div>
-              <div className={styles.stampCancelPostmark}>
-                <span>★ ARCHIVE ★</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Letter Body */}
-          <div className={styles.sheetBody}>
-            <h3 className={styles.letterSalutation}>Estimado oyente y lector de las sombras:</h3>
-
-            <p className={styles.letterParagraph}>
-              <span className={styles.dropCap}>V</span>oz única y creadora de Team Supernova. Especialista en entrelazar la belleza de la literatura gótica con la cruda realidad de la investigación criminal.
-            </p>
-
-            <p className={styles.letterParagraph}>
-              {HOST_DATA[activeHost].extraInfoText} Cada emisión es un expediente abierto donde las autopsias literarias dialogan con el rigor de la balística y la toxicología forense.
-            </p>
-
-            <blockquote className={styles.letterMotto}>
-              &ldquo;Desentrañando el misterio de la página a la escena del crimen.&rdquo;
-            </blockquote>
-          </div>
-
-          {/* Bottom Sheet Footer: Signature & Wax Seal Button */}
-          <div className={styles.sheetFooter}>
-            <div className={styles.signatureBlock}>
-              <span className={styles.signatureAttribution}>Atentamente,</span>
-              <span className={styles.cursiveSignature}>Nayssa Kristel</span>
-              <span className={styles.signatureRole}>Creadora &amp; Conductora</span>
-            </div>
-
-            <div className={styles.sealActionWrapper}>
-              <button className={styles.waxSealBtn} onClick={() => setShowDossierModal(true)}>
-                <span className={styles.waxSealIcon}>✦</span>
-                <span className={styles.waxSealLabel}>Ver Dossier de Creadora</span>
-                <span className={styles.waxSealArrow}>➔</span>
-              </button>
-            </div>
+      {/* Warm Editorial Footer Section */}
+      <footer id="contact" className={styles.warmFooterSection}>
+        <div className={styles.warmFooterContainer}>
+          <div className={styles.contactWrapper} style={{ marginBottom: 0, width: "100%" }}>
+            <ContactForm />
           </div>
         </div>
-      </section>
 
-      {/* Contact & Footer Section */}
-      <footer id="contact" className={styles.footerSection}>
-        <div className={styles.contactWrapper}>
-          <ContactForm />
-        </div>
-        <div className={styles.footerBottomBar}>
-          <div className={styles.footerBrandGroup}>
-            <span className={styles.footerBrand}>team SUPERNOVA</span>
-            <span className={styles.footerBrandSubtitle}>investigación &amp; literatura</span>
+        {/* Bottom Bar */}
+        <div className={styles.warmFooterBottomBar}>
+          <p>&copy; 2026 team SUPERNOVA. Todos los derechos reservados.</p>
+          <div className={styles.warmFooterLinks}>
+            <a href="#" onClick={scrollToTop} className={styles.warmFooterLink}>Inicio</a>
+            <a href="#about" onClick={scrollToSection("about")} className={styles.warmFooterLink}>Sobre mí</a>
+            <a href="#episodes" onClick={scrollToSection("episodes")} className={styles.warmFooterLink}>Episodios</a>
+            <a href="#contact" onClick={scrollToContact} className={styles.warmFooterLink}>Contacto</a>
+            <a href="/admin" className={styles.warmFooterLink} style={{ opacity: 0.6 }}>Gestión</a>
           </div>
-          <div className={styles.footerLinks}>
-            <a href="#" onClick={scrollToTop} className={styles.footerLink}>Inicio</a>
-            <a href="#about" className={styles.footerLink}>Sobre mí</a>
-            <a href="#episodes" className={styles.footerLink}>Episodios</a>
-            <a href="#contact" className={styles.footerLink}>Contacto</a>
-            <a href="/admin" className={styles.footerLink} style={{ opacity: 0.5 }}>Gestión</a>
-          </div>
-          <p className={styles.footerCopyright}>&copy; 2026 team SUPERNOVA. Todos los derechos reservados.</p>
         </div>
       </footer>
 

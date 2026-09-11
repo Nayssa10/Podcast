@@ -2,7 +2,7 @@ import { ContactMessage, getStore } from './store';
 
 export async function sendEmailToGmail(message: ContactMessage): Promise<{ success: boolean; provider: string; details?: string }> {
   const store = getStore();
-  const targetEmail = store.settings.contactNotificationEmail || process.env.GMAIL_RECIPIENT || 'nayssakristel@gmail.com';
+  const targetEmail = store.settings.contactNotificationEmail || process.env.GMAIL_RECIPIENT || 'nayssakris@gmail.com';
   const resendKey = store.settings.resendApiKey || process.env.RESEND_API_KEY;
 
   const htmlContent = `

@@ -1,9 +1,18 @@
 import { NextResponse } from 'next/server';
 import { getStore, saveStore, Episode } from '@/lib/store';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function GET() {
   const store = getStore();
-  return NextResponse.json(store.episodes);
+  return NextResponse.json(store.episodes, {
+    headers: {
+      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0',
+    },
+  });
 }
 
 export async function POST(req: Request) {
@@ -49,6 +58,13 @@ export async function PUT(req: Request) {
 
     if (index === -1) {
       return NextResponse.json({ error: 'Episodio no encontrado' }, { status: 404 });
+    }
+
+    if (body.type === 'forensic') {
+      delete store.episodes[index].bookDetails;
+      delete store.episodes[index].snippet;
+    } else if (body.type === 'book') {
+      delete store.episodes[index].forensicDetails;
     }
 
     store.episodes[index] = { ...store.episodes[index], ...body };

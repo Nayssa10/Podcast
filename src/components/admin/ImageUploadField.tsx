@@ -3,6 +3,7 @@
 import React, { useRef, useState } from "react";
 import Image from "next/image";
 import styles from "./ImageUploadField.module.css";
+import { IconUpload, IconTrash, IconImagePlaceholder } from "./AdminIcons";
 
 interface ImageUploadFieldProps {
   label: string;
@@ -91,15 +92,28 @@ export default function ImageUploadField({
                 className={styles.previewImg}
                 unoptimized
               />
+              <button
+                type="button"
+                className={styles.removeFloatingBtn}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onChange("");
+                }}
+                title="Eliminar imagen"
+                aria-label="Eliminar imagen"
+              >
+                <IconTrash size={13} />
+              </button>
             </div>
           ) : (
             <div className={styles.placeholderThumbnail}>
+              <IconImagePlaceholder size={24} className={styles.placeholderIcon} />
               <span className={styles.placeholderTag}>Sin Imagen</span>
             </div>
           )}
         </div>
 
-        {/* Dropzone & Actions */}
+        {/* Dropzone */}
         <div
           className={`${styles.dropZone} ${dragOver ? styles.dropZoneActive : ""} ${uploading ? styles.uploadingZone : ""}`}
           onDragOver={(e) => {
@@ -121,43 +135,20 @@ export default function ImageUploadField({
           {uploading ? (
             <div className={styles.uploadingState}>
               <div className={styles.spinner}></div>
-              <span>Subiendo imagen al servidor...</span>
+              <span>Subiendo archivo...</span>
             </div>
           ) : (
             <div className={styles.dropZoneContent}>
+              <IconUpload size={20} className={styles.uploadIconSvg} />
               <div className={styles.uploadActionText}>
-                <strong>Haz clic para examinar</strong> o arrastra la foto aquí
+                <strong>{value ? "Cambiar foto" : "Subir foto"}</strong> o arrastrar aquí
               </div>
               <div className={styles.uploadSubtext}>
-                Se guardará automáticamente en el catálogo
+                JPG, PNG o WebP
               </div>
             </div>
           )}
         </div>
-      </div>
-
-      {/* Manual URL Input / Action Bar */}
-      <div className={styles.bottomBar}>
-        <div className={styles.urlInputGroup}>
-          <span className={styles.urlPrefix}>Ruta / URL:</span>
-          <input
-            type="text"
-            className={styles.urlInput}
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-            placeholder="/ep1_library_cover.jpg o https://..."
-          />
-        </div>
-
-        {value && (
-          <button
-            type="button"
-            className={styles.clearBtn}
-            onClick={() => onChange("")}
-          >
-            Quitar
-          </button>
-        )}
       </div>
     </div>
   );

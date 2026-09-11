@@ -4,15 +4,16 @@
 .modalOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(18, 15, 13, 0.82);
+  background: rgba(43, 35, 29, 0.76);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  padding: 1rem;
+  padding: 1.5rem 1rem;
   animation: overlayFadeIn 0.25s ease-out;
+  overflow-y: auto;
 }
 
 @keyframes overlayFadeIn {
@@ -21,15 +22,29 @@
 }
 
 /* =========================================
-   SCRAPBOOK CANVAS
+   JOURNAL CANVAS (WARM CREAM EDITORIAL JOURNAL)
    ========================================= */
-.scrapbookCanvas {
+.journalCanvas {
   width: 100%;
-  max-width: 800px;
+  max-width: 820px;
+  background-color: #FAF2EA;
+  background-image: 
+    radial-gradient(#E8DACD 1.2px, transparent 1.2px),
+    radial-gradient(#E8DACD 1.2px, transparent 1.2px);
+  background-size: 20px 20px;
+  background-position: 0 0, 10px 10px;
+  border-radius: 24px;
+  padding: 2.2rem 2.5rem 2.5rem 2.5rem;
+  border: 1px solid #E8DACD;
+  box-shadow: 
+    0 25px 60px rgba(65, 50, 43, 0.28),
+    0 4px 20px rgba(0, 0, 0, 0.1);
   position: relative;
+  color: #58443B;
+  font-family: var(--font-family-sans);
   animation: modalScaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  display: flex;
-  justify-content: center;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 @keyframes modalScaleUp {
@@ -45,563 +60,664 @@
 
 .closeBtn {
   position: absolute;
-  top: -12px;
-  right: -12px;
-  width: 34px;
-  height: 34px;
+  top: 16px;
+  right: 18px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  background: #1B3B59;
-  color: #FFF;
-  border: 2px solid #FFF;
-  font-family: var(--font-family-monospace);
-  font-size: 0.8rem;
+  background: #58443B;
+  color: #FAF2EA;
+  border: 2px solid #FAF2EA;
+  font-family: var(--font-family-sans);
+  font-size: 0.85rem;
   font-weight: 800;
   cursor: pointer;
   z-index: 50;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 3px 8px rgba(65, 50, 43, 0.25);
   transition: all 0.2s ease;
 }
 
 .closeBtn:hover {
-  background: #E85D75;
+  background: #DCA29C;
   transform: scale(1.1);
 }
 
-/* Pink Textured Background Frame */
-.pinkBackdrop {
-  width: 100%;
-  background: #FCE6EE; /* Soft Pink */
-  background-image: radial-gradient(#F5CFE0 1.2px, transparent 1.2px);
-  background-size: 12px 12px;
-  padding: 1.5rem 1.8rem 1.8rem;
-  border-radius: 16px;
-  box-shadow: 
-    0 30px 70px rgba(0, 0, 0, 0.4),
-    0 8px 24px rgba(0, 0, 0, 0.2);
-  position: relative;
-  overflow: hidden;
-}
-
-/* Lace Doily Top-Left */
-.laceDoily {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100px;
-  height: 100px;
-  pointer-events: none;
-  opacity: 0.6;
-  z-index: 2;
-}
-
 /* =========================================
-   CRUMPLED POWDER BLUE BULLETIN SHEET
+   HEADER: BRAND BADGE + BOOK COVER + RESEÑA
    ========================================= */
-.crumpledBlueSheet {
-  background: #BFD7EA; /* Authentic Denim Powder Blue */
-  /* Deep multi-angle paper crumple gradients */
-  background-image: 
-    linear-gradient(120deg, rgba(255, 255, 255, 0.65) 0%, transparent 18%),
-    linear-gradient(240deg, rgba(18, 38, 58, 0.16) 0%, transparent 24%),
-    linear-gradient(40deg, rgba(255, 255, 255, 0.45) 0%, transparent 30%),
-    linear-gradient(300deg, rgba(18, 38, 58, 0.14) 0%, transparent 22%),
-    linear-gradient(180deg, #CDE0F0 0%, #B4CFE5 100%);
-  border-radius: 4px;
-  box-shadow: 
-    0 14px 32px rgba(43, 35, 29, 0.25),
-    0 3px 10px rgba(0, 0, 0, 0.12),
-    inset 0 0 35px rgba(255, 255, 255, 0.6);
-  padding: 1.5rem 1.75rem 1.5rem;
-  position: relative;
+.headerGrid {
   display: grid;
-  grid-template-columns: 130px 1fr;
-  gap: 1.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  z-index: 5;
-  overflow: hidden;
+  grid-template-columns: 140px 1fr;
+  gap: 1.8rem;
+  align-items: center;
+  margin-bottom: 1.2rem;
 }
 
-.crumpleSvgFilter {
-  position: absolute;
-  width: 0;
-  height: 0;
-  pointer-events: none;
-}
-
-/* SVG Realistic Paper Creases Overlay */
-.creasedPaperFolds {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 2;
-  opacity: 0.95;
-}
-
-.wrinkleSvg {
+.bookCoverWrapper {
   width: 100%;
-  height: 100%;
-  display: block;
 }
 
-/* Silver Metallic Pushpin */
-.silverPushpin {
-  position: absolute;
-  top: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 16px;
-  height: 16px;
-  background: radial-gradient(circle at 35% 35%, #ffffff, #dcdcdc 40%, #777777 90%);
-  border-radius: 50%;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.35);
-  z-index: 30;
-}
-
-/* =========================================
-   PHOTO STRIP OVERLAPPING THE LEFT CORNER
-   ========================================= */
-.cornerPhotoStrip {
+.bookCoverFrame {
   position: relative;
-  z-index: 15;
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
-  margin-left: -2.35rem; /* Corner overlap */
-  margin-top: -0.5rem;
-}
-
-.polaroidHero {
-  background: #FFFFFF;
-  padding: 0.35rem 0.35rem 0.6rem;
-  border-radius: 2px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-  transform: rotate(-4deg);
-  transition: transform 0.25s ease;
-}
-
-.polaroidHero:hover {
-  transform: rotate(0deg) scale(1.03);
-}
-
-.polaroidFrameImg {
-  border-radius: 2px;
-  overflow: hidden;
-  background: #2B231D;
-}
-
-.realPhoto {
-  display: block;
   width: 100%;
-  height: auto;
+  aspect-ratio: 1 / 1.45;
+  border: 2px solid #58443B;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(88, 68, 59, 0.2);
+  background: #FAF2EA;
+}
+
+.bookCoverImg {
   object-fit: cover;
 }
 
-.photoStripColumn {
+.headerInfoCol {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
-  background: #FFFFFF;
-  padding: 0.35rem;
-  border-radius: 3px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-  transform: rotate(-1.5deg);
+  gap: 0.45rem;
 }
 
-.photoFrameItem {
-  border-radius: 2px;
-  overflow: hidden;
-  background: #2B231D;
-  border: 1px solid #EAE2D2;
-}
-
-/* Lipstick Kiss Stamp */
-.lipstickKissStamp {
-  position: absolute;
-  top: 45px;
-  left: 110px;
-  width: 70px;
-  height: 45px;
-  pointer-events: none;
-  transform: rotate(-12deg);
-  z-index: 8;
-}
-
-/* Top Right Torn Note */
-.topRightTornNote {
-  position: absolute;
-  top: 8px;
-  right: 12px;
-  background: #FFFFFF;
-  padding: 0.55rem 1.35rem 0.45rem 1.15rem;
-  border-radius: 2px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.14);
-  transform: rotate(3deg);
-  z-index: 20;
+.brandBadgeRow {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
+  gap: 0.5rem;
 }
 
-.washiTapePink {
-  position: absolute;
-  top: -7px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 75px;
-  height: 15px;
-  background: rgba(247, 196, 219, 0.9);
-  border: 1px dashed rgba(232, 93, 117, 0.45);
-}
-
-.metalPaperclip {
-  position: absolute;
-  top: -4px;
-  left: 6px;
-  width: 9px;
-  height: 22px;
-  border: 1.5px solid #888;
-  border-radius: 6px;
-}
-
-.scriptPinkTitle {
-  font-family: var(--font-family-satisfy), cursive;
-  font-size: 2.1rem;
-  color: #E85D75;
-  line-height: 1.1;
-  letter-spacing: 0.4px;
-  text-shadow: 0 1px 2px rgba(232, 93, 117, 0.2);
-}
-
-.scriptSubTitle {
-  font-family: var(--font-family-sans);
+.brandBadge {
   font-size: 0.68rem;
-  font-weight: 700;
-  color: #2B231D;
-  margin-top: 0.2rem;
-}
-
-/* =========================================
-   RIGHT MAIN CONTENT ON BLUE SHEET
-   ========================================= */
-.sheetMainContent {
-  position: relative;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Header Title (LOWERED DOWN FOR HIGH VISIBILITY) */
-.playlistHeaderTitle {
-  font-family: var(--font-family-sans);
-  font-size: 2.1rem;
-  font-weight: 900;
-  color: #1B3B59; /* Bold Deep Navy */
-  letter-spacing: 2.5px;
-  margin-top: 3.25rem; /* LOWERED: Completely clear of the top right note */
-  margin-bottom: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #889AA9;
   text-transform: uppercase;
+}
+
+.brandHandlePill {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #58443B;
+  background: #F7EAE8;
+  border: 1px solid #DCA29C;
+  padding: 0.15rem 0.6rem;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+}
+
+.bubbleTitleRow {
+  margin-bottom: 0.1rem;
+}
+
+.bubbleResenaTitle {
+  font-family: var(--font-family-satisfy), cursive;
+  font-size: 3.6rem;
+  font-weight: 900;
+  color: #FAF2EA;
   line-height: 1;
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
+  margin: 0;
+  text-shadow: 
+    -2px -2px 0 #58443B,  
+     2px -2px 0 #58443B,
+    -2px  2px 0 #58443B,
+     2px  2px 0 #58443B,
+     4px  5px 0px #DCA29C;
+  letter-spacing: 1px;
 }
 
-/* Book Highlights List */
-.bookHighlightsList {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  margin-bottom: 0.65rem;
-}
-
-.bookRow {
+.metaRowField {
   display: flex;
   align-items: baseline;
-  gap: 0.35rem;
+  gap: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #58443B;
+}
+
+.metaLabelSymbol {
   font-family: var(--font-family-sans);
-  font-size: 0.76rem;
-  color: #1B3B59;
-  line-height: 1.3;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #889AA9;
 }
 
-.navyBullet {
-  font-size: 1rem;
-  line-height: 1;
-  color: #1B3B59;
-}
-
-.bookPointTitle {
-  font-weight: 900;
-  color: #1B3B59;
-  letter-spacing: 0.3px;
-}
-
-.bookPointDetail {
-  font-weight: 600;
-  color: #243E56;
-}
-
-/* Quote Box Area */
-.quoteBoxArea {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.95);
-  border-left: 3.5px solid #E85D75;
-  border-radius: 4px;
-  padding: 0.55rem 0.85rem;
-  margin-bottom: 0.65rem;
-  max-width: calc(100% - 210px);
-}
-
-.quoteBoxText {
+.metaValueHighlight {
   font-family: var(--font-family-serif);
-  font-style: italic;
-  font-size: 0.78rem;
-  line-height: 1.35;
-  color: #1B3B59;
-  background: rgba(247, 196, 219, 0.4);
-  padding: 0.15rem 0.35rem;
-  border-radius: 2px;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #58443B;
+  letter-spacing: 0.5px;
 }
 
-/* Bottom Availability Box */
-.bottomPreorderBox {
-  margin-top: auto;
+.metaValueAuthor {
+  font-family: var(--font-family-sans);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #41322B;
+  letter-spacing: 0.5px;
+}
+
+.datesAndPagesRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 0.35rem;
+  gap: 1rem;
+}
+
+.dateFieldGroup {
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
-  padding: 0.45rem 0.75rem;
-  background: rgba(255, 255, 255, 0.88);
-  border: 1px solid rgba(255, 255, 255, 0.95);
-  border-radius: 6px;
-  max-width: calc(100% - 210px);
-  box-shadow: 0 2px 8px rgba(27, 59, 89, 0.08);
+  gap: 0.35rem;
 }
 
-.pinkPreorderText {
-  font-family: var(--font-family-sans);
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  color: #E85D75;
+.dateLine {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 700;
 }
 
-.navyKindleText {
+.dateIcon {
+  font-size: 0.85rem;
+  color: #DCA29C;
+}
+
+.dateLabel {
   font-family: var(--font-family-sans);
-  font-size: 0.6rem;
+  color: #889AA9;
+}
+
+.dateUnderlineVal {
+  font-family: var(--font-family-satisfy), cursive;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #58443B;
+  border-bottom: 2px solid #DCA29C;
+  padding-bottom: 1px;
+  min-width: 90px;
+}
+
+.cloudPagesBadge {
+  background: #F7EAE8;
+  border: 2px solid #DCA29C;
+  border-radius: 40px 40px 35px 35px;
+  padding: 0.45rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(220, 162, 156, 0.2);
+  transform: rotate(-3deg);
+}
+
+.cloudLabel {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #889AA9;
+  text-transform: capitalize;
+}
+
+.cloudNumber {
+  font-family: var(--font-family-sans);
+  font-size: 1.35rem;
   font-weight: 900;
-  letter-spacing: 0.8px;
-  color: #1B3B59;
+  color: #58443B;
+  line-height: 1.1;
+}
+
+/* Divider Curves */
+.curvedLinesSeparator {
+  width: 100%;
+  height: 18px;
+  margin: 0.5rem 0 1.2rem 0;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 1.5rem;
+}
+
+.swooshSvg {
+  width: 120px;
+  height: 20px;
+  opacity: 0.85;
 }
 
 /* =========================================
-   BOTTOM RIGHT: COMPACT REALISTIC CASSETTE
+   MAIN BODY (2 COLUMNS)
    ========================================= */
-.diagonalCassette {
-  position: absolute;
-  bottom: 12px;
-  right: 12px;
-  width: 200px;
-  z-index: 30;
-  transform: rotate(-6deg);
-  transition: transform 0.25s ease;
+.mainJournalBody {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 1.8rem;
 }
 
-.diagonalCassette:hover {
-  transform: rotate(0deg) scale(1.03);
-}
-
-.realisticCassette {
-  background: linear-gradient(145deg, #2b2622, #181513);
-  border: 1px solid #423b35;
-  border-radius: 6px;
-  padding: 0.5rem;
-  box-shadow: 
-    0 12px 25px rgba(0, 0, 0, 0.45),
-    0 2px 6px rgba(0, 0, 0, 0.25),
-    inset 0 1px 1px rgba(255, 255, 255, 0.15);
-  position: relative;
+/* =========================================
+   LEFT COLUMN
+   ========================================= */
+.leftJournalCol {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 1.1rem;
 }
 
-/* Metal Screws */
-.screw {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  background: radial-gradient(circle, #e0deda, #777);
-  border-radius: 50%;
-  box-shadow: inset 0 0 1px #000;
-}
-.screwTL { top: 4px; left: 4px; }
-.screwTR { top: 4px; right: 4px; }
-.screwBL { bottom: 4px; left: 4px; }
-.screwBR { bottom: 4px; right: 4px; }
-
-/* White Printed Sticker */
-.cassetteSticker {
-  background: #FAF8F5;
-  border-radius: 2px;
-  padding: 0.2rem 0.4rem;
-  border: 1px solid #D5CEC3;
-}
-
-.stickerHeaderLine {
+.starRatingRow {
   display: flex;
-  justify-content: space-between;
-  font-family: var(--font-family-monospace);
-  font-size: 0.42rem;
-  font-weight: 800;
-  color: #7A6F62;
-  letter-spacing: 0.3px;
-  border-bottom: 1px solid #E5DED0;
-  padding-bottom: 0.06rem;
-}
-
-.cassetteHandwriting {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 0.06rem;
-}
-
-.tapeTitlePink {
-  font-family: var(--font-family-satisfy), cursive;
-  font-size: 0.95rem;
-  color: #E85D75;
+  gap: 0.35rem;
+  font-size: 1.7rem;
   line-height: 1;
 }
 
-.tapeKissMark {
-  width: 16px;
-  height: 10px;
-  background-image: radial-gradient(ellipse, rgba(232, 93, 117, 0.6) 0%, transparent 70%);
+.starFilled {
+  color: #C59B27;
 }
 
-/* Mechanical Spools Window */
-.mechanicalSection {
-  background: #110F0E;
-  border-radius: 2px;
-  padding: 0.2rem 0.4rem;
+.starEmpty {
+  color: #D4C2B2;
+}
+
+/* Recommend Card */
+.recommendCard {
+  background: #F4E8DC;
+  border: 1px solid #E8DACD;
+  border-radius: 16px;
+  padding: 1rem 1.1rem;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid #292420;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-shadow: 0 4px 12px rgba(88, 68, 59, 0.05);
 }
 
-.tapeSpoolGear {
-  width: 16px;
-  height: 16px;
-  background: #EFEBE5;
+.recommendTopRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+}
+
+.cardHeaderCute {
+  font-family: var(--font-family-sans);
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #58443B;
+}
+
+.stampCircleSi {
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  position: relative;
+  border: 2px solid #58443B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(-6deg);
+  background: #F7EAE8;
+}
+
+.checkMark {
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #58443B;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -2px;
+}
+
+.stampCircleNo {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px dashed #889AA9;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.gearTeeth {
-  width: 8px;
-  height: 8px;
-  background: #110F0E;
-  border-radius: 50%;
-  border: 1px dashed #999;
+.noText {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #889AA9;
+  line-height: 1;
 }
 
-.clearTapeWindow {
-  flex: 1;
-  height: 11px;
-  margin: 0 6px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 2px;
+.formatCheckboxList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.checkboxItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #58443B;
+  cursor: pointer;
+}
+
+.customBoxChecked {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #58443B;
+  border-radius: 4px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 2px;
-  position: relative;
+  justify-content: center;
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: #58443B;
+  background: #F7EAE8;
 }
 
-.magneticRibbonLeft,
-.magneticRibbonRight {
-  width: 11px;
-  height: 8px;
-  background: #5A3D28;
-  border-radius: 50%;
-  opacity: 0.85;
+.customBoxUnchecked {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #D4C2B2;
+  border-radius: 4px;
+  background: #FAF2EA;
 }
 
-.tapeRulerMarks {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+.sagaIndicatorRow {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #58443B;
   display: flex;
-  gap: 3px;
-  font-family: var(--font-family-monospace);
-  font-size: 0.35rem;
-  color: rgba(255, 255, 255, 0.4);
+  align-items: baseline;
+  gap: 0.3rem;
+  margin-top: 0.2rem;
 }
 
-.cassettePlayerOverlay {
-  margin-top: 0.05rem;
+.sagaUnderlineNum {
+  font-family: var(--font-family-satisfy), cursive;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #58443B;
+  border-bottom: 2px solid #DCA29C;
+  padding: 0 8px;
+}
+
+/* Mini Opinion Box */
+.miniOpinionCard {
+  background: #FAF2EA;
+  border: 2px solid #DCA29C;
+  border-radius: 12px;
+  padding: 0.9rem;
+  box-shadow: 0 4px 10px rgba(220, 162, 156, 0.12);
+}
+
+.miniOpinionHeader {
+  font-family: var(--font-family-satisfy), cursive;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #58443B;
+  display: block;
+  text-align: center;
+  margin-bottom: 0.4rem;
+}
+
+.miniOpinionParagraph {
+  font-family: var(--font-family-sans);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: #58443B;
+  margin: 0;
+}
+
+/* Trope Meters */
+.tropeMetersCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.4rem 0.2rem;
+}
+
+.tropeRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #58443B;
+}
+
+.tropeName {
+  font-family: var(--font-family-satisfy), cursive;
+  font-size: 1.15rem;
+  color: #58443B;
+  min-width: 60px;
+}
+
+.tropeIcons {
+  letter-spacing: 2px;
+  font-size: 0.92rem;
 }
 
 /* =========================================
-   RESPONSIVE
+   RIGHT COLUMN
    ========================================= */
-@media (max-width: 700px) {
-  .pinkBackdrop {
-    padding: 1rem 0.85rem;
+.rightJournalCol {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+/* Characters Box */
+.charactersCard {
+  background: #F4E8DC;
+  border: 1px solid #E8DACD;
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 4px 12px rgba(88, 68, 59, 0.05);
+}
+
+.charactersCardTitle {
+  font-family: var(--font-family-sans);
+  font-size: 0.95rem;
+  font-weight: 800;
+  text-align: center;
+  margin: 0 0 0.65rem 0;
+  color: #58443B;
+  letter-spacing: 1px;
+}
+
+.charactersTwoColGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem 1rem;
+  text-align: center;
+}
+
+.characterItem {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 0.3rem;
+  font-size: 0.82rem;
+}
+
+.characterName {
+  font-weight: 800;
+  color: #58443B;
+}
+
+.characterRole {
+  font-size: 0.74rem;
+  color: #889AA9;
+}
+
+/* Synopsis Box */
+.synopsisCard {
+  background: #F4E8DC;
+  border: 1px solid #E8DACD;
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 4px 12px rgba(88, 68, 59, 0.05);
+}
+
+.synopsisCardTitle {
+  font-family: var(--font-family-sans);
+  font-size: 0.95rem;
+  font-weight: 800;
+  text-align: center;
+  margin: 0 0 0.5rem 0;
+  color: #58443B;
+  letter-spacing: 1px;
+}
+
+.synopsisCardParagraph {
+  font-family: var(--font-family-sans);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #58443B;
+  margin: 0;
+  text-align: justify;
+}
+
+/* Moodboard Section */
+.moodboardSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.moodboardTitle {
+  font-family: var(--font-family-sans);
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #58443B;
+  margin: 0;
+  text-align: center;
+}
+
+.moodboardScrapbookGrid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.9fr;
+  gap: 0.85rem;
+  align-items: stretch;
+}
+
+.spiralNotepadItem {
+  background: #FAF2EA;
+  border-radius: 14px;
+  padding: 0.5rem;
+  box-shadow: 0 6px 18px rgba(88, 68, 59, 0.15);
+  border: 2px solid #58443B;
+  display: flex;
+  flex-direction: column;
+}
+
+.spiralBindingBar {
+  display: flex;
+  justify-content: space-around;
+  padding: 2px 0 6px 0;
+}
+
+.spiralRing {
+  width: 10px;
+  height: 16px;
+  border-radius: 5px;
+  background: #58443B;
+  border: 1px solid #41322B;
+}
+
+.spiralPhotoFrame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.spiralPhotoImg {
+  object-fit: cover;
+}
+
+.polaroidJewelItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.sparkleRaysTop, .sparkleRaysBottom {
+  display: flex;
+  gap: 4px;
+  font-size: 1rem;
+  font-weight: 900;
+  color: #DCA29C;
+  line-height: 1;
+}
+
+.polaroidFrame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: #FAF2EA;
+  border: 2px solid #58443B;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(88, 68, 59, 0.12);
+  margin: 4px 0;
+}
+
+.polaroidImg {
+  object-fit: cover;
+}
+
+/* Modal Audio Footer */
+.modalAudioFooter {
+  background: #F4E8DC;
+  border: 1px solid #E8DACD;
+  border-radius: 16px;
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.audioFooterOverline {
+  font-family: var(--font-family-sans);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  color: #58443B;
+  text-transform: uppercase;
+}
+
+/* =========================================
+   RESPONSIVE DESIGN
+   ========================================= */
+@media (max-width: 768px) {
+  .journalCanvas {
+    padding: 1.5rem 1.2rem;
   }
 
-  .crumpledBlueSheet {
+  .headerGrid {
     grid-template-columns: 1fr;
-    padding: 1rem 0.85rem 1.5rem;
+    text-align: center;
   }
 
-  .cornerPhotoStrip {
-    margin-left: 0;
-    margin-top: 0;
-    flex-direction: row;
+  .bookCoverWrapper {
+    max-width: 160px;
+    margin: 0 auto;
   }
 
-  .polaroidHero {
-    width: 90px;
-    flex-shrink: 0;
+  .datesAndPagesRow {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
   }
 
-  .photoStripColumn {
-    flex-direction: row;
-  }
-
-  .playlistHeaderTitle {
-    margin-top: 0.5rem;
-    font-size: 1.6rem;
-  }
-
-  .bookRow {
-    font-size: 0.68rem;
-  }
-
-  .topRightTornNote {
-    position: static;
-    transform: none;
-    margin-bottom: 0.5rem;
-  }
-
-  .quoteBoxArea,
-  .bottomPreorderBox {
-    max-width: 100%;
-  }
-
-  .diagonalCassette {
-    position: static;
-    transform: none !important;
-    width: 100%;
-    margin-top: 0.5rem;
+  .mainJournalBody {
+    grid-template-columns: 1fr;
   }
 }

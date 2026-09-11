@@ -1168,9 +1168,20 @@
   border-bottom: 1px dashed #DCD3C7;
 }
 
-/* =========================================
-   Responsive Breakpoints
-   ========================================= */
+.formTopRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  align-items: stretch;
+  margin-bottom: 1.25rem;
+}
+
+.formTopRow > .cardSection {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 @media (max-width: 1080px) {
   .bentoDashboard {
     grid-template-columns: 1fr;
@@ -1207,7 +1218,8 @@
   .scheduleSplit {
     grid-template-columns: 1fr;
   }
-  .formGrid {
+  .formGrid,
+  .formTopRow {
     grid-template-columns: 1fr;
   }
   .dashTopBar {

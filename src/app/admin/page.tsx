@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import styles from "./admin.module.css";
 import { Episode, ContactMessage } from "@/lib/store";
+import { IconMessages } from "@/components/admin/AdminIcons";
 
 export default function AdminDashboard() {
   const [episodes, setEpisodes] = useState<Episode[]>([]);
@@ -93,7 +94,7 @@ export default function AdminDashboard() {
                       <span className={styles.listenerSnippet}>{msg.message}</span>
                     </div>
                     <Link href="/admin/messages" className={styles.chatActionBtn} title="Ver mensaje">
-                      <span>✉</span>
+                      <IconMessages size={14} />
                     </Link>
                   </div>
                 ))
@@ -180,7 +181,7 @@ export default function AdminDashboard() {
                   <div className={styles.timelineContent}>
                     <span className={styles.timelineTitle}>{ep.title}</span>
                     <span className={styles.timelineTag}>
-                      {ep.type === "forensic" ? "Peritaje Criminalístico" : "Romance Gótico"}
+                      {ep.type === "forensic" ? "Peritaje Criminalístico" : "Romance"}
                     </span>
                   </div>
                   <Link href={`/admin/episodes/${ep.id}/edit`} className={styles.editPillBtn}>
@@ -214,7 +215,7 @@ export default function AdminDashboard() {
                     unoptimized
                   />
                   <span className={styles.projectCategoryBadge}>
-                    {ep.type === "forensic" ? "Forense" : "Gótico"}
+                    {ep.type === "forensic" ? "Forense" : "Romance"}
                   </span>
                 </div>
                 <div className={styles.projectInfo}>

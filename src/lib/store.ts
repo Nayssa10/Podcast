@@ -21,11 +21,34 @@ export interface Episode {
     author: string;
     description: string;
     coverIcon?: string;
+    startDate?: string;
+    endDate?: string;
+    pages?: number | string;
+    rating?: number;
+    isRecommended?: boolean;
+    formats?: {
+      physical?: boolean;
+      digital?: boolean;
+      audiobook?: boolean;
+    };
+    sagaInfo?: string;
+    opinion?: string;
+    characters?: Array<{ name: string; role: string }>;
+    tropeRatings?: {
+      love?: number;
+      anger?: number;
+      sadness?: number;
+      fantasy?: number;
+      spicy?: number;
+      laugh?: number;
+      ending?: number;
+    };
   };
   forensicDetails?: {
     criminologyDetails: string;
     keyPhysicalEvidence: string[];
-    forensicFocus: string;
+    forensicFocus: string | string[];
+    evidenceCaption?: string;
   };
   snippet?: {
     text: string;

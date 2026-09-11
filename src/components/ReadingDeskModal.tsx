@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import AudioPlayer from "./AudioPlayer";
 import styles from "./ReadingDeskModal.module.css";
+import { Episode } from "@/lib/store";
 
 export interface HighlightItem {
   number: string;
@@ -18,275 +19,320 @@ export interface HighlightItem {
 }
 
 interface ReadingDeskModalProps {
-  episode: {
+  episode: Partial<Episode> & {
     number: string;
     date: string;
     title: string;
     description: string;
     coverImage: string;
-    evidenceImage?: string;
-    photoStrip1?: string;
-    photoStrip2?: string;
-    photoStrip3?: string;
     url: string;
     duration: string;
-    bookDetails?: {
-      title: string;
-      author: string;
-      description: string;
-      coverIcon?: string;
-    };
-    snippet?: {
-      text: string;
-      highlights: string[];
-    };
-    annotations?: Array<{ text: string; position: string }>;
   };
   onClose: () => void;
 }
 
 export default function ReadingDeskModal({ episode, onClose }: ReadingDeskModalProps) {
-  const cleanTitle = episode.bookDetails?.title || episode.title.split(": ")[1] || episode.title;
-  const authorName = episode.bookDetails?.author || "Clara Thorne";
-  const quoteText = episode.snippet?.text || "“El veneno no tiene olor para el hombre que ama con locura. Bebió el elixir sin vacilar, mirándome directo a los ojos...”";
+  const b = episode.bookDetails;
+  const cleanTitle = b?.title || episode.title.split(": ")[1] || episode.title;
+  const authorName = b?.author || "Nayssa Kristel";
+  const startDate = b?.startDate || "27 junio";
+  const endDate = b?.endDate || "12 julio";
+  const pages = b?.pages || 378;
+  const rating = typeof b?.rating === "number" ? b.rating : 4;
+  const isRecommended = b?.isRecommended ?? true;
+  const formats = b?.formats ?? { physical: false, digital: true, audiobook: true };
+  const sagaInfo = b?.sagaInfo || "1";
+  const opinionText = b?.opinion || episode.snippet?.text || "Me encantó la ambientación gótica y la tensión narrativa. Los personajes tienen una química oscura inolvidable y el final te deja con ganas de más.";
+  const synopsis = b?.description || episode.description;
 
-  // Book analysis points
-  const bookKeyPoints = [
-    { title: "PREMISA", detail: "Una perfumista de la alta sociedad crea fragancias letales para vengar su pasado." },
-    { title: "EL ENCUENTRO", detail: "Un baile victoriano donde cruza miradas con el inspector que sigue su rastro." },
-    { title: "LA CITA CLAVE", detail: "“El veneno no tiene olor para el hombre que ama con locura.”" },
-    { title: "INTRIGA", detail: "Secretos familiares, pistas en aromas y un dilema entre la verdad y el corazón." },
+  const characters = b?.characters && b.characters.length > 0 ? b.characters : [
+    { name: "Marcus", role: "El Conde" },
+    { name: "Dani", role: "Protagonista" },
+    { name: "Lía", role: "Aliada" },
+    { name: "Yinn", role: "El Genio" },
+    { name: "Altair", role: "Investigador" },
+    { name: "Charlotte", role: "Dama de sombras" }
   ];
+
+  const tropes = b?.tropeRatings ?? {
+    love: 5,
+    anger: 5,
+    sadness: 5,
+    fantasy: 5,
+    spicy: 5,
+    laugh: 5,
+    ending: 5
+  };
+
+  const renderMeter = (icon: string, count: number = 5) => {
+    return Array.from({ length: 5 }).map((_, i) => (
+      <span key={i} style={{ opacity: i < count ? 1 : 0.25, marginRight: "2px" }}>
+        {icon}
+      </span>
+    ));
+  };
+
+  const collagePhoto1 = episode.photoStrip1 || episode.coverImage || "/ep2_perfume_cover.jpg";
+  const collagePhoto2 = episode.photoStrip2 || "/ep1_library_cover.jpg";
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
-      <div className={styles.scrapbookCanvas} onClick={(e) => e.stopPropagation()}>
+      <div className={styles.journalCanvas} onClick={(e) => e.stopPropagation()}>
         {/* Close Button */}
         <button className={styles.closeBtn} onClick={onClose} aria-label="Cerrar modal">
           ✕
         </button>
 
-        {/* Pink Textured Background with Lace Doily */}
-        <div className={styles.pinkBackdrop}>
-          {/* Subtle Lace Corner */}
-          <div className={styles.laceDoily}>
-            <svg viewBox="0 0 140 140" width="100%" height="100%">
-              <path
-                d="M0,0 Q70,18 140,0 Q120,70 140,140 Q70,120 0,140 Q18,70 0,0 Z"
-                fill="none"
-                stroke="rgba(255,255,255,0.6)"
-                strokeWidth="1.5"
-                strokeDasharray="3,3"
+        {/* Header Grid: Cover + Reseña Info */}
+        <header className={styles.headerGrid}>
+          {/* Book Cover Frame */}
+          <div className={styles.bookCoverWrapper}>
+            <div className={styles.bookCoverFrame}>
+              <Image
+                src={episode.coverImage || "/ep2_perfume_cover.jpg"}
+                alt={cleanTitle}
+                fill
+                sizes="(max-width: 768px) 100vw, 150px"
+                className={styles.bookCoverImg}
+                priority
+                unoptimized
               />
-              <circle cx="35" cy="35" r="24" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="1" strokeDasharray="2,2" />
-            </svg>
+            </div>
           </div>
 
-          {/* =========================================
-              CRUMPLED POWDER BLUE PINNED BULLETIN SHEET
-             ========================================= */}
-          <main className={styles.crumpledBlueSheet}>
-            {/* Realistic Crumpled Paper Filter & Shading Overlay */}
-            <svg className={styles.crumpleSvgFilter} aria-hidden="true">
-              <filter id="crumpleFilter" x="0%" y="0%" width="100%" height="100%">
-                <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="4" result="noise" />
-                <feDiffuseLighting in="noise" lightingColor="#ffffff" surfaceScale="2.8" result="light">
-                  <feDistantLight azimuth="55" elevation="50" />
-                </feDiffuseLighting>
-                <feBlend mode="multiply" in="SourceGraphic" in2="light" />
-              </filter>
-            </svg>
-
-            {/* Visual Deep Crumple Creases & Folds */}
-            <div className={styles.creasedPaperFolds}>
-              <svg viewBox="0 0 800 600" preserveAspectRatio="none" className={styles.wrinkleSvg}>
-                {/* Diagonal sharp paper creases */}
-                <polygon points="0,0 240,180 180,0" fill="rgba(255,255,255,0.18)" />
-                <polygon points="240,180 500,0 600,280" fill="rgba(18,38,58,0.06)" />
-                <polygon points="0,320 220,600 0,600" fill="rgba(255,255,255,0.14)" />
-                <polygon points="220,600 580,380 800,600" fill="rgba(18,38,58,0.08)" />
-                <polygon points="580,380 800,160 800,600" fill="rgba(255,255,255,0.16)" />
-
-                <line x1="0" y1="120" x2="380" y2="0" stroke="rgba(255,255,255,0.8)" strokeWidth="2.5" />
-                <line x1="0" y1="123" x2="383" y2="3" stroke="rgba(18,38,58,0.25)" strokeWidth="3" />
-
-                <line x1="180" y1="600" x2="650" y2="0" stroke="rgba(255,255,255,0.75)" strokeWidth="3" />
-                <line x1="183" y1="600" x2="653" y2="3" stroke="rgba(18,38,58,0.28)" strokeWidth="3.5" />
-
-                <line x1="0" y1="420" x2="520" y2="600" stroke="rgba(255,255,255,0.7)" strokeWidth="2.5" />
-                <line x1="0" y1="423" x2="520" y2="603" stroke="rgba(18,38,58,0.22)" strokeWidth="3" />
-
-                <line x1="450" y1="180" x2="800" y2="340" stroke="rgba(255,255,255,0.8)" strokeWidth="3" />
-                <line x1="450" y1="183" x2="800" y2="343" stroke="rgba(18,38,58,0.26)" strokeWidth="3.5" />
-              </svg>
+          {/* Header Info */}
+          <div className={styles.headerInfoCol}>
+            <div className={styles.brandBadgeRow}>
+              <span className={styles.brandBadge}>✦ DIARIO DEL CLUB ✦</span>
+              <span className={styles.brandHandlePill}>@teamsupernova</span>
             </div>
 
-            {/* Silver Metallic Pushpin */}
-            <div className={styles.silverPushpin}></div>
+            <div className={styles.bubbleTitleRow}>
+              <h1 className={styles.bubbleResenaTitle}>Reseña</h1>
+            </div>
 
-            {/* =========================================
-                PHOTO STRIP OVERLAPPING THE LEFT CORNER
-               ========================================= */}
-            <div className={styles.cornerPhotoStrip}>
-              {/* Top Polaroid: Hero Book Cover */}
-              <div className={styles.polaroidHero}>
-                <div className={styles.polaroidFrameImg}>
-                  <Image
-                    src={episode.coverImage || "/ep2_perfume_cover.jpg"}
-                    alt={cleanTitle}
-                    width={130}
-                    height={140}
-                    className={styles.realPhoto}
-                    priority
-                  />
+            <div className={styles.metaRowField}>
+              <span className={styles.metaLabelSymbol}>⫸Título:</span>
+              <span className={styles.metaValueHighlight}>{cleanTitle}</span>
+            </div>
+
+            <div className={styles.metaRowField}>
+              <span className={styles.metaLabelSymbol}>Autor:</span>
+              <span className={styles.metaValueAuthor}>{authorName}</span>
+            </div>
+
+            <div className={styles.datesAndPagesRow}>
+              <div className={styles.dateFieldGroup}>
+                <div className={styles.dateLine}>
+                  <span className={styles.dateIcon}>✦</span>
+                  <span className={styles.dateLabel}>Fecha de inicio:</span>
+                  <span className={styles.dateUnderlineVal}>{startDate}</span>
+                </div>
+                <div className={styles.dateLine}>
+                  <span className={styles.dateIcon}>◎</span>
+                  <span className={styles.dateLabel}>Fecha de término:</span>
+                  <span className={styles.dateUnderlineVal}>{endDate}</span>
                 </div>
               </div>
 
-              {/* Vertical Film Strip overlapping */}
-              <div className={styles.photoStripColumn}>
-                <div className={styles.photoFrameItem}>
-                  <Image
-                    src={episode.photoStrip1 || "/ep1_library_cover.jpg"}
-                    alt="Atmósfera"
-                    width={110}
-                    height={65}
-                    className={styles.realPhoto}
-                    unoptimized
-                  />
+              {/* Cloud Badge for Pages */}
+              <div className={styles.cloudPagesBadge}>
+                <span className={styles.cloudLabel}>Páginas:</span>
+                <span className={styles.cloudNumber}>{pages}</span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {/* Decorative Divider */}
+        <div className={styles.curvedLinesSeparator}>
+          <svg viewBox="0 0 100 20" className={styles.swooshSvg}>
+            <path d="M5,15 Q30,2 60,12 T95,5" fill="none" stroke="#DCA29C" strokeWidth="2.5" strokeLinecap="round" />
+            <path d="M15,18 Q40,5 70,15 T98,8" fill="none" stroke="#DCA29C" strokeWidth="2" strokeLinecap="round" />
+          </svg>
+        </div>
+
+        {/* =========================================
+            TWO-COLUMN MAIN BODY
+           ========================================= */}
+        <div className={styles.mainJournalBody}>
+          {/* LEFT COLUMN: RATING, RECOMMENDATION, OPINION & TROPE METERS */}
+          <div className={styles.leftJournalCol}>
+            {/* 5-Star Rating */}
+            <div className={styles.starRatingRow}>
+              {Array.from({ length: 5 }).map((_, i) => (
+                <span key={i} className={i < rating ? styles.starFilled : styles.starEmpty}>
+                  {i < rating ? "★" : "☆"}
+                </span>
+              ))}
+            </div>
+
+            {/* Recommendation & Format Card */}
+            <div className={styles.recommendCard}>
+              <div className={styles.recommendTopRow}>
+                <span className={styles.cardHeaderCute}>¿LO RECOMIENDO?</span>
+                <div className={styles.stampCircleSi} title="Recomendado" style={{ opacity: isRecommended ? 1 : 0.4 }}>
+                  {isRecommended && <span className={styles.checkMark}>✓</span>}
                 </div>
-                <div className={styles.photoFrameItem}>
-                  <Image
-                    src={episode.photoStrip2 || "/ep3_forensic_cover.jpg"}
-                    alt="Detalles"
-                    width={110}
-                    height={65}
-                    className={styles.realPhoto}
-                    unoptimized
-                  />
+                <div className={styles.stampCircleNo} title="No recomendado" style={{ opacity: !isRecommended ? 1 : 0.4 }}>
+                  {!isRecommended ? <span className={styles.checkMark} style={{ color: "#8E3B3B" }}>✕</span> : <span className={styles.noText}>NO</span>}
                 </div>
-                <div className={styles.photoFrameItem}>
-                  <Image
-                    src={episode.photoStrip3 || episode.coverImage || "/ep2_perfume_cover.jpg"}
-                    alt="Novela"
-                    width={110}
-                    height={65}
-                    className={styles.realPhoto}
-                    unoptimized
-                  />
-                </div>
+              </div>
+
+              <div className={styles.formatCheckboxList}>
+                <label className={styles.checkboxItem}>
+                  <span>Libro físico</span>
+                  <span className={formats.physical ? styles.customBoxChecked : styles.customBoxUnchecked}>
+                    {formats.physical ? "✓" : ""}
+                  </span>
+                </label>
+                <label className={styles.checkboxItem}>
+                  <span>Libro digital</span>
+                  <span className={formats.digital ? styles.customBoxChecked : styles.customBoxUnchecked}>
+                    {formats.digital ? "✓" : ""}
+                  </span>
+                </label>
+                <label className={styles.checkboxItem}>
+                  <span>Audiolibro</span>
+                  <span className={formats.audiobook ? styles.customBoxChecked : styles.customBoxUnchecked}>
+                    {formats.audiobook ? "✓" : ""}
+                  </span>
+                </label>
+              </div>
+
+              <div className={styles.sagaIndicatorRow}>
+                <span>Libro 1 de </span>
+                <span className={styles.sagaUnderlineNum}>{sagaInfo}</span>
               </div>
             </div>
 
-            {/* Lipstick Kiss Stamp Mark */}
-            <div className={styles.lipstickKissStamp}>
-              <svg viewBox="0 0 100 70" width="100%" height="100%">
-                <path
-                  d="M15,25 Q35,5 50,18 Q65,5 85,25 Q70,40 50,30 Q30,40 15,25 Z M20,40 Q50,65 80,40 Q65,55 50,52 Q35,55 20,40 Z"
-                  fill="#E85D75"
-                  opacity="0.32"
-                />
-              </svg>
+            {/* Mini Opinion Box */}
+            <div className={styles.miniOpinionCard}>
+              <span className={styles.miniOpinionHeader}>Mini Opinión</span>
+              <p className={styles.miniOpinionParagraph}>
+                {opinionText}
+              </p>
             </div>
 
-            {/* Top Right Torn Paper Scrap with Book Title */}
-            <div className={styles.topRightTornNote}>
-              <div className={styles.washiTapePink}></div>
-              <div className={styles.metalPaperclip}></div>
-              <span className={styles.scriptPinkTitle}>{cleanTitle}</span>
-              <span className={styles.scriptSubTitle}>Por {authorName} &bull; Club de Lectura</span>
+            {/* Mood / Trope Rating Meters */}
+            <div className={styles.tropeMetersCard}>
+              <div className={styles.tropeRow}>
+                <span className={styles.tropeName}>Amor</span>
+                <span className={styles.tropeIcons}>{renderMeter("♥", tropes.love ?? 5)}</span>
+              </div>
+              <div className={styles.tropeRow}>
+                <span className={styles.tropeName}>Enojo</span>
+                <span className={styles.tropeIcons}>{renderMeter("😡", tropes.anger ?? 5)}</span>
+              </div>
+              <div className={styles.tropeRow}>
+                <span className={styles.tropeName}>Tristeza</span>
+                <span className={styles.tropeIcons}>{renderMeter("😢", tropes.sadness ?? 5)}</span>
+              </div>
+              <div className={styles.tropeRow}>
+                <span className={styles.tropeName}>Fantasía</span>
+                <span className={styles.tropeIcons}>{renderMeter("✦", tropes.fantasy ?? 5)}</span>
+              </div>
+              <div className={styles.tropeRow}>
+                <span className={styles.tropeName}>Spicy</span>
+                <span className={styles.tropeIcons}>{renderMeter("🔥", tropes.spicy ?? 5)}</span>
+              </div>
+              <div className={styles.tropeRow}>
+                <span className={styles.tropeName}>Risa</span>
+                <span className={styles.tropeIcons}>{renderMeter("😆", tropes.laugh ?? 5)}</span>
+              </div>
+              <div className={styles.tropeRow}>
+                <span className={styles.tropeName}>Final</span>
+                <span className={styles.tropeIcons}>{renderMeter("✦", tropes.ending ?? 5)}</span>
+              </div>
             </div>
+          </div>
 
-            {/* Right Main Content Area on the Blue Sheet */}
-            <div className={styles.sheetMainContent}>
-              {/* Header Title (Moved down generously to avoid any overlap) */}
-              <h1 className={styles.playlistHeaderTitle}>DIARIO DE LECTURA</h1>
-
-              {/* Book Highlights List */}
-              <ul className={styles.bookHighlightsList}>
-                {bookKeyPoints.map((item, idx) => (
-                  <li key={idx} className={styles.bookRow}>
-                    <span className={styles.navyBullet}>•</span>
-                    <strong className={styles.bookPointTitle}>{item.title}:</strong>
-                    <span className={styles.bookPointDetail}>{item.detail}</span>
-                  </li>
+          {/* RIGHT COLUMN: CHARACTERS, SYNOPSIS & MOODBOARD COLLAGE */}
+          <div className={styles.rightJournalCol}>
+            {/* Characters Box */}
+            <div className={styles.charactersCard}>
+              <h3 className={styles.charactersCardTitle}>⫸ Personajes ⫷</h3>
+              <div className={styles.charactersTwoColGrid}>
+                {characters.map((char: { name: string; role: string }, idx: number) => (
+                  <div key={idx} className={styles.characterItem}>
+                    <span className={styles.characterName}>{char.name}</span>
+                    <span className={styles.characterRole}>- {char.role}</span>
+                  </div>
                 ))}
-              </ul>
-
-              {/* Quote Highlight Box */}
-              <div className={styles.quoteBoxArea}>
-                <p className={styles.quoteBoxText}>{quoteText}</p>
-              </div>
-
-              {/* Bottom Availability Box */}
-              <div className={styles.bottomPreorderBox}>
-                <p className={styles.pinkPreorderText}>
-                  🎙️ ESCUCHA EL ANÁLISIS EN SPOTIFY &bull; {cleanTitle.toUpperCase()}
-                </p>
-                <p className={styles.navyKindleText}>
-                  TEAM SUPERNOVA &bull; UNA OBRA DE {authorName.toUpperCase()}
-                </p>
               </div>
             </div>
 
-            {/* =========================================
-                BOTTOM RIGHT: PHOTOREALISTIC CASSETTE TAPE
-               ========================================= */}
-            <div className={styles.diagonalCassette}>
-              <div className={styles.realisticCassette}>
-                {/* Corner Screws */}
-                <div className={`${styles.screw} ${styles.screwTL}`}></div>
-                <div className={`${styles.screw} ${styles.screwTR}`}></div>
-                <div className={`${styles.screw} ${styles.screwBL}`}></div>
-                <div className={`${styles.screw} ${styles.screwBR}`}></div>
+            {/* Synopsis Box */}
+            <div className={styles.synopsisCard}>
+              <h3 className={styles.synopsisCardTitle}>— Sinopsis —</h3>
+              <p className={styles.synopsisCardParagraph}>
+                {synopsis}
+              </p>
+            </div>
 
-                {/* White Stamped Label */}
-                <div className={styles.cassetteSticker}>
-                  <div className={styles.stickerHeaderLine}>
-                    <span className={styles.sideLabel}>SIDE A • {episode.number}</span>
-                    <span className={styles.typeLabel}>{episode.duration}</span>
-                  </div>
-                  <div className={styles.cassetteHandwriting}>
-                    <span className={styles.tapeTitlePink}>{cleanTitle}</span>
-                    <span className={styles.tapeKissMark}></span>
-                  </div>
-                </div>
+            {/* Moodboard / Images Describing the Book */}
+            <div className={styles.moodboardSection}>
+              <h3 className={styles.moodboardTitle}>IMÁGENES QUE DESCRIBAN EL LIBRO</h3>
 
-                {/* Realistic Tape Mechanism */}
-                <div className={styles.mechanicalSection}>
-                  <div className={styles.tapeSpoolGear}>
-                    <div className={styles.gearTeeth}></div>
+              <div className={styles.moodboardScrapbookGrid}>
+                {/* Spiral Notepad Main Photo */}
+                <div className={styles.spiralNotepadItem}>
+                  {/* Spiral Rings Header */}
+                  <div className={styles.spiralBindingBar}>
+                    {Array.from({ length: 8 }).map((_, i) => (
+                      <span key={i} className={styles.spiralRing}></span>
+                    ))}
                   </div>
-
-                  <div className={styles.clearTapeWindow}>
-                    <div className={styles.magneticRibbonLeft}></div>
-                    <div className={styles.magneticRibbonRight}></div>
-                    <div className={styles.tapeRulerMarks}>
-                      <span>100</span>
-                      <span>50</span>
-                      <span>0</span>
-                    </div>
-                  </div>
-
-                  <div className={styles.tapeSpoolGear}>
-                    <div className={styles.gearTeeth}></div>
+                  <div className={styles.spiralPhotoFrame}>
+                    <Image
+                      src={collagePhoto1}
+                      alt="Atmósfera del libro"
+                      fill
+                      sizes="220px"
+                      className={styles.spiralPhotoImg}
+                      unoptimized
+                    />
                   </div>
                 </div>
 
-                {/* Live Embedded Audio Player */}
-                <div className={styles.cassettePlayerOverlay}>
-                  <AudioPlayer
-                    track={{
-                      title: episode.title,
-                      description: episode.description,
-                      url: episode.url,
-                      duration: episode.duration,
-                    }}
-                    variant="compact"
-                  />
+                {/* Floating Polaroid with Sparkle Accent */}
+                <div className={styles.polaroidJewelItem}>
+                  <div className={styles.sparkleRaysTop}>
+                    <span>\</span><span>|</span><span>/</span>
+                  </div>
+                  <div className={styles.polaroidFrame}>
+                    <Image
+                      src={collagePhoto2}
+                      alt="Elemento clave"
+                      fill
+                      sizes="160px"
+                      className={styles.polaroidImg}
+                      unoptimized
+                    />
+                  </div>
+                  <div className={styles.sparkleRaysBottom}>
+                    <span>/</span><span>|</span><span>\</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </main>
+
+            {/* Integrated Audio Player Bar */}
+            <div className={styles.modalAudioFooter}>
+              <span className={styles.audioFooterOverline}>
+                🎧 ESCUCHAR EPISODIO COMPLETO &bull; {episode.number}
+              </span>
+              <AudioPlayer
+                track={{
+                  title: episode.title,
+                  description: episode.description,
+                  url: episode.url,
+                  duration: episode.duration,
+                }}
+                variant="compact"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -1,18 +1,22 @@
 :root {
-  /* Exact Warm Earthy / Beige Palette (#EFE7DA, #C1B6A3, #E1DACA, #F5F5EB) */
-  --palette-cream: #EFE7DA;
-  --palette-taupe: #C1B6A3;
-  --palette-sand: #E1DACA;
-  --palette-alabaster: #F5F5EB;
+  /* Exact Palette Swatch: Classic (Cream), And (Dusty Rose), Feminine (Slate Blue), Brand (Mocha) */
+  --palette-classic: #FAF2EA;
+  --palette-rose: #DCA29C;
+  --palette-rose-hover: #CC8F88;
+  --palette-rose-light: #F7EAE8;
+  --palette-slate: #889AA9;
+  --palette-slate-dark: #6C7F90;
+  --palette-brand: #58443B;
+  --palette-brand-dark: #41322B;
 
-  --color-bg: #F5F5EB;               /* Neutral alabaster background */
-  --color-bg-subtle: #EFE7DA;        /* Warm linen/cream background */
-  --color-text: #2B231D;             /* Deep espresso charcoal */
-  --color-accent-1: #8E7F6E;         /* Soft muted taupe */
-  --color-accent-2: #C1B6A3;         /* Warm stone taupe */
-  --color-accent-3: #E1DACA;         /* Soft sand / parchment */
-  --color-border: #E1DACA;           /* Delicate sand border */
-  --color-border-dark: #C1B6A3;      /* Defined taupe border */
+  --color-bg: #FAF2EA;               /* Classic warm porcelain background */
+  --color-bg-subtle: #F4E8DC;        /* Soft linen tone */
+  --color-text: #58443B;             /* Deep warm mocha brand text */
+  --color-accent-1: #DCA29C;         /* Dusty rose */
+  --color-accent-2: #889AA9;         /* Slate blue */
+  --color-accent-3: #F7EAE8;         /* Rose blush tint */
+  --color-border: #E8DACD;           /* Delicate warm border */
+  --color-border-dark: #D4C2B2;      /* Defined mocha border */
   
   --font-family-serif: var(--font-playfair), Georgia, serif;
   --font-family-script: var(--font-monsieur), cursive;

@@ -56,95 +56,101 @@ export default function AdminProfilePage() {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className={styles.cardSection}>
-        <div className={styles.formGrid}>
-          <div className={styles.formField}>
-            <label className={styles.fieldLabel}>Nombre de la Creadora</label>
-            <input
-              type="text"
-              className={styles.fieldInput}
-              value={profile.name}
-              onChange={(e) => setProfile({ ...profile, name: e.target.value })}
-              required
-            />
-          </div>
+      <form onSubmit={handleSubmit}>
+        {/* Bloque 1: Identidad y Enfoque */}
+        <div className={styles.cardSection}>
+          <h3 className={styles.cardTitle} style={{ marginBottom: "1.25rem" }}>
+            1. Identidad &amp; Enfoque Editorial
+          </h3>
+          <div className={styles.formGrid}>
+            <div className={styles.formField}>
+              <label className={styles.fieldLabel}>Nombre de la Creadora</label>
+              <input
+                type="text"
+                className={styles.fieldInput}
+                value={profile.name}
+                onChange={(e) => setProfile({ ...profile, name: e.target.value })}
+                required
+              />
+            </div>
 
-          <div className={styles.formField}>
-            <label className={styles.fieldLabel}>Subtítulo / Rol Principal</label>
-            <input
-              type="text"
-              className={styles.fieldInput}
-              value={profile.subtitle}
-              onChange={(e) => setProfile({ ...profile, subtitle: e.target.value })}
-              required
-            />
-          </div>
+            <div className={styles.formField}>
+              <label className={styles.fieldLabel}>Subtítulo / Rol Principal</label>
+              <input
+                type="text"
+                className={styles.fieldInput}
+                value={profile.subtitle}
+                onChange={(e) => setProfile({ ...profile, subtitle: e.target.value })}
+                required
+              />
+            </div>
 
-          <div className={`${styles.formField} ${styles.fullWidth}`}>
-            <label className={styles.fieldLabel}>Etiqueta de Rol (Dossier)</label>
-            <input
-              type="text"
-              className={styles.fieldInput}
-              value={profile.roleBadge}
-              onChange={(e) => setProfile({ ...profile, roleBadge: e.target.value })}
-              required
-            />
-          </div>
+            <div className={styles.formField}>
+              <label className={styles.fieldLabel}>Etiqueta de Rol (Dossier)</label>
+              <input
+                type="text"
+                className={styles.fieldInput}
+                value={profile.roleBadge}
+                onChange={(e) => setProfile({ ...profile, roleBadge: e.target.value })}
+                required
+              />
+            </div>
 
-          <div className={`${styles.formField} ${styles.fullWidth}`}>
-            <label className={styles.fieldLabel}>Biografía Principal (Pliego Editorial y Dossier)</label>
-            <textarea
-              className={styles.fieldTextarea}
-              value={profile.basicInfo}
-              onChange={(e) => setProfile({ ...profile, basicInfo: e.target.value })}
-              rows={3}
-              required
-            />
-          </div>
-
-          <div className={`${styles.formField} ${styles.fullWidth}`}>
-            <label className={styles.fieldLabel}>Texto Descriptivo Secundario</label>
-            <textarea
-              className={styles.fieldTextarea}
-              value={profile.extraInfoText}
-              onChange={(e) => setProfile({ ...profile, extraInfoText: e.target.value })}
-              rows={3}
-              required
-            />
-          </div>
-
-          <div className={`${styles.formField} ${styles.fullWidth}`}>
-            <label className={styles.fieldLabel}>Enfoque de Investigación / Lema</label>
-            <input
-              type="text"
-              className={styles.fieldInput}
-              value={profile.investigationFocus}
-              onChange={(e) => setProfile({ ...profile, investigationFocus: e.target.value })}
-              required
-            />
-          </div>
-
-          <div className={`${styles.formField} ${styles.fullWidth}`}>
-            <label className={styles.fieldLabel}>Cita Clásica (Edgar Allan Poe / Frase Destacada)</label>
-            <textarea
-              className={styles.fieldTextarea}
-              value={profile.quote}
-              onChange={(e) => setProfile({ ...profile, quote: e.target.value })}
-              rows={2}
-              required
-            />
+            <div className={styles.formField}>
+              <label className={styles.fieldLabel}>Enfoque de Investigación / Lema</label>
+              <input
+                type="text"
+                className={styles.fieldInput}
+                value={profile.investigationFocus}
+                onChange={(e) => setProfile({ ...profile, investigationFocus: e.target.value })}
+                required
+              />
+            </div>
           </div>
         </div>
 
-        {saved && (
-          <p style={{ color: "#15803d", fontWeight: "600", fontSize: "0.88rem", margin: "1.5rem 0 0 0" }}>
-            Perfil y dossier actualizados exitosamente.
-          </p>
-        )}
+        {/* Bloque 2: Semblanza y Biografía */}
+        <div className={styles.cardSection}>
+          <h3 className={styles.cardTitle} style={{ marginBottom: "1.25rem" }}>
+            2. Semblanza &amp; Biografía Editorial
+          </h3>
+          <div className={styles.formGrid}>
+            <div className={styles.formField}>
+              <label className={styles.fieldLabel}>Biografía Principal (Pliego Editorial)</label>
+              <textarea
+                className={styles.fieldTextarea}
+                value={profile.basicInfo}
+                onChange={(e) => setProfile({ ...profile, basicInfo: e.target.value })}
+                rows={5}
+                required
+              />
+            </div>
 
-        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "2rem" }}>
-          <button type="submit" className={styles.primaryBtn}>
-            Guardar Cambios
+            <div className={styles.formField}>
+              <label className={styles.fieldLabel}>Texto Descriptivo Secundario</label>
+              <textarea
+                className={styles.fieldTextarea}
+                value={profile.extraInfoText}
+                onChange={(e) => setProfile({ ...profile, extraInfoText: e.target.value })}
+                rows={5}
+                required
+              />
+            </div>
+          </div>
+        </div>
+
+        <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: "1rem", marginTop: "1.5rem" }}>
+          {saved && (
+            <span style={{ color: "#2E7D32", fontSize: "0.85rem", fontWeight: 700 }}>
+              ✓ Perfil y dossier actualizados correctamente
+            </span>
+          )}
+          <button
+            type="submit"
+            className={styles.primaryBtn}
+            style={saved ? { backgroundColor: "#2E7D32", borderColor: "#2E7D32" } : undefined}
+          >
+            {saved ? "✓ Guardado" : "Guardar Cambios"}
           </button>
         </div>
       </form>

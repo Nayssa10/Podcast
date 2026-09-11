@@ -24,7 +24,8 @@ interface ForensicDossierModalProps {
     forensicDetails: {
       criminologyDetails: string;
       keyPhysicalEvidence: string[];
-      forensicFocus: string;
+      forensicFocus: string | string[];
+      evidenceCaption?: string;
     };
     snippet?: {
       text: string;
@@ -86,11 +87,6 @@ export default function ForensicDossierModal({ episode, onClose }: ForensicDossi
           <section className={styles.caseTitleSection}>
             <div className={styles.caseOverline}>INFORME TÉCNICO PERICIAL & ANÁLISIS FORENSE</div>
             <h1 className={styles.caseMainTitle}>{cleanTitle}</h1>
-            {book && (
-              <p className={styles.caseBookSub}>
-                Obra en investigación: <em>&ldquo;{book.title}&rdquo;</em> — Autor: <strong>{book.author}</strong>
-              </p>
-            )}
           </section>
 
           {/* Grid Layout: Visual Evidence & Case Summary */}
@@ -116,7 +112,7 @@ export default function ForensicDossierModal({ episode, onClose }: ForensicDossi
                 </div>
 
                 <div className={styles.photoCaption}>
-                  <p>Escena analizada: Reconstrucción balística y perimétrica.</p>
+                  <p>{forensic.evidenceCaption || "Escena analizada: Reconstrucción balística y perimétrica."}</p>
                 </div>
               </div>
 
@@ -146,13 +142,6 @@ export default function ForensicDossierModal({ episode, onClose }: ForensicDossi
                   <span className={styles.typewriterPageNum}>PÁG. 1 / 2</span>
                 </div>
                 <p className={styles.typewriterParagraph}>{episode.description}</p>
-
-                {book && (
-                  <div className={styles.literaryContextBlock}>
-                    <strong>CONTEXTO LITERARIO:</strong>
-                    <p>{book.description}</p>
-                  </div>
-                )}
               </div>
 
               {/* Criminology Dictum Box */}
@@ -165,7 +154,18 @@ export default function ForensicDossierModal({ episode, onClose }: ForensicDossi
 
                 <div className={styles.forensicFocusBadge}>
                   <span className={styles.focusLabel}>ESPECIALIDAD FORENSE APLICADA:</span>
-                  <p className={styles.focusValue}>{forensic.forensicFocus}</p>
+                  {Array.isArray(forensic.forensicFocus) ? (
+                    <div className={styles.focusList}>
+                      {forensic.forensicFocus.map((focusItem, idx) => (
+                        <div key={idx} className={styles.focusItem}>
+                          <span className={styles.focusBullet}>•</span>
+                          <p className={styles.focusValue}>{focusItem}</p>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className={styles.focusValue}>{forensic.forensicFocus}</p>
+                  )}
                 </div>
               </div>
 
@@ -174,7 +174,24 @@ export default function ForensicDossierModal({ episode, onClose }: ForensicDossi
                 <div className={styles.handwrittenStickyNote}>
                   <div className={styles.pinDot}></div>
                   <span className={styles.stickyTitle}>Nota Marginal del Perito:</span>
-                  <p className={styles.stickyQuote}>{episode.snippet.text}</p>
+                  <p className={styles.stickyQuote}>
+                    {(() => {
+                      const text = episode.snippet.text;
+                      const highlights = episode.snippet.highlights || [];
+                      if (!highlights.length) return text;
+                      const valid = highlights.map(h => h.trim()).filter(Boolean);
+                      if (!valid.length) return text;
+                      const regex = new RegExp(`(${valid.map(h => h.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'gi');
+                      const parts = text.split(regex);
+                      return parts.map((part, i) =>
+                        valid.some(h => h.toLowerCase() === part.toLowerCase()) ? (
+                          <mark key={i} className={styles.highlightMark}>
+                            {part}
+                          </mark>
+                        ) : part
+                      );
+                    })()}
+                  </p>
                 </div>
               )}
             </div>

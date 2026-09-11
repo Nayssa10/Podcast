@@ -98,67 +98,61 @@ export default function ContactForm() {
           ¿Tienes alguna teoría sobre un caso, una recomendación de novela o quieres colaborar con el podcast? Escríbenos o sigue las novedades en nuestras plataformas oficiales.
         </p>
 
-        <div className={styles.socialChannelsList}>
+        <div className={styles.socialIconsRow}>
           {SOCIAL_LINKS.map((social) => (
             <a
               key={social.name}
               href={social.url}
               target="_blank"
               rel="noopener noreferrer"
-              className={styles.socialChannelItem}
+              className={styles.socialIconBtn}
+              aria-label={social.name}
+              title={social.name}
             >
-              <div className={styles.socialIconBadge}>{social.icon}</div>
-              <div className={styles.socialChannelMeta}>
-                <span className={styles.socialChannelName}>{social.name}</span>
-                <span className={styles.socialChannelTag}>{social.tag}</span>
-              </div>
-              <span className={styles.socialChannelArrow}>➔</span>
+              {social.icon}
             </a>
           ))}
         </div>
 
         <div className={styles.directEmailNote}>
           <span className={styles.directEmailLabel}>Canal directo:</span>
-          <a href="mailto:contacto@teamsupernova.com" className={styles.directEmailLink}>
-            contacto@teamsupernova.com
+          <a href="mailto:nayssakris@gmail.com" className={styles.directEmailLink}>
+            nayssakris@gmail.com
           </a>
         </div>
       </div>
 
       {/* Right Column: Clean Open Form */}
       <div className={styles.contactFormCol}>
-        <div className={styles.formHeader}>
-          <span className={styles.formOverline}>MENSAJE DIRECTO</span>
-          <h4 className={styles.formHeading}>Déjanos tu mensaje</h4>
-        </div>
-
         <form onSubmit={handleSubmit} className={styles.contactFormClean}>
-          <div className={styles.formGroupClean}>
-            <label htmlFor="name" className={styles.formLabelClean}>Tu Nombre</label>
-            <input
-              type="text"
-              id="name"
-              className={styles.formInputClean}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Ej. Victoria Vance"
-              disabled={status === "submitting"}
-              required
-            />
-          </div>
+          <div className={styles.formRowTwoCols}>
+            <div className={styles.formGroupClean}>
+              <label htmlFor="name" className={styles.formLabelClean}>Tu Nombre</label>
+              <input
+                type="text"
+                id="name"
+                className={styles.formInputClean}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Ej. Victoria Vance"
+                disabled={status === "submitting"}
+                required
+              />
+            </div>
 
-          <div className={styles.formGroupClean}>
-            <label htmlFor="email" className={styles.formLabelClean}>Correo Electrónico</label>
-            <input
-              type="email"
-              id="email"
-              className={styles.formInputClean}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="tu.email@ejemplo.com"
-              disabled={status === "submitting"}
-              required
-            />
+            <div className={styles.formGroupClean}>
+              <label htmlFor="email" className={styles.formLabelClean}>Correo Electrónico</label>
+              <input
+                type="email"
+                id="email"
+                className={styles.formInputClean}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="tu.email@ejemplo.com"
+                disabled={status === "submitting"}
+                required
+              />
+            </div>
           </div>
 
           <div className={styles.formGroupClean}>
@@ -168,9 +162,9 @@ export default function ContactForm() {
               className={styles.formTextareaClean}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              placeholder="Escribe tu mensaje, hipótesis o comentario aquí..."
+              placeholder="Escribe tu mensaje, hipótesis o comentario..."
               disabled={status === "submitting"}
-              rows={4}
+              rows={2}
               required
             />
           </div>
