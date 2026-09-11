@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./episodes.module.css";
-import { Episode, ContactMessage } from "@/lib/store";
+import { Episode } from "@/lib/store";
+import { useAdminData } from "@/context/AdminDataContext";
 import { IconSearch, IconSettings, IconEpisodes } from "@/components/admin/AdminIcons";
 
 function calculateCompleteness(ep: Episode): number {
@@ -40,40 +41,21 @@ function getCurrentWeekRange(): string {
 }
 
 export default function AdminEpisodesPage() {
-  const [episodes, setEpisodes] = useState<Episode[]>([]);
-  const [messages, setMessages] = useState<ContactMessage[]>([]);
+  const { episodes, messages, isReady, deleteEpisodeLocally, refreshData } = useAdminData();
   const [filter, setFilter] = useState<"all" | "forensic" | "book">("all");
   const [searchQuery, setSearchQuery] = useState("");
-  const [loading, setLoading] = useState(true);
   const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
-
-  const fetchData = () => {
-    Promise.all([
-      fetch("/api/episodes", { cache: "no-store" }).then(res => res.json()),
-      fetch("/api/messages", { cache: "no-store" }).then(res => res.json())
-    ])
-      .then(([eps, msgs]) => {
-        setEpisodes(Array.isArray(eps) ? eps : []);
-        setMessages(Array.isArray(msgs) ? msgs : []);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   const handleDelete = async (id: string, title: string) => {
     if (!confirm(`¿Estás segura de eliminar el episodio "${title}"?`)) return;
 
+    deleteEpisodeLocally(id);
     try {
-      const res = await fetch(`/api/episodes?id=${id}`, { method: "DELETE" });
-      if (res.ok) {
-        fetchData();
-      }
+      await fetch(`/api/episodes?id=${id}`, { method: "DELETE" });
+      refreshData();
     } catch {
       alert("Error al eliminar episodio");
+      refreshData();
     }
   };
 
@@ -95,20 +77,16 @@ export default function AdminEpisodesPage() {
   const romancePct = totalEpisodes > 0 ? Math.round((bookCount / totalEpisodes) * 100) : 0;
   const publishedPct = totalEpisodes > 0 ? Math.round((publishedCount / totalEpisodes) * 100) : 0;
 
-  // Average completeness across all episodes
   const avgCompleteness = totalEpisodes > 0
     ? Math.round(episodes.reduce((acc, ep) => acc + calculateCompleteness(ep), 0) / totalEpisodes)
     : 0;
 
-  // Concentric SVG offsets (circumference: outer 440, middle 340, inner 240)
   const outerOffset = 440 - (440 * (forensicPct / 100));
   const middleOffset = 340 - (340 * (romancePct / 100));
   const innerOffset = 240 - (240 * (publishedPct / 100));
 
-  // Dynamic Pending Tasks
   const unreadMessages = messages.filter(m => m.status === "unread");
   const incompleteEpisodes = episodes.filter(e => calculateCompleteness(e) < 100);
-
   const currentWeekText = getCurrentWeekRange();
 
   return (
@@ -172,8 +150,20 @@ export default function AdminEpisodesPage() {
       <div className={styles.mainEpisodesGrid}>
         {/* Left Grid Area */}
         <div className={styles.cardsColumn}>
-          {loading ? (
+          {totalEpisodes === 0 && !isReady ? (
             <p style={{ color: "#8E7F6E", padding: "2rem" }}>Cargando catálogo...</p>
+          ) : totalEpisodes === 0 ? (
+            <div className={styles.cardsGrid}>
+              <div className={styles.overviewSummaryCard}>
+                <div className={styles.summaryTitleGroup}>
+                  <span className={styles.infoIcon}>ⓘ</span>
+                  <h3 className={styles.summaryTitle}>No hay episodios aún</h3>
+                </div>
+                <p style={{ color: "#8E7F6E", fontSize: "0.85rem", marginTop: "0.5rem" }}>
+                  Comienza creando tu primer episodio con el botón &quot;+ Nuevo Episodio&quot;.
+                </p>
+              </div>
+            </div>
           ) : (
             <div className={styles.cardsGrid}>
               {/* Card 1: Overview Summary Card */}
@@ -211,7 +201,6 @@ export default function AdminEpisodesPage() {
                 const epCompleteness = calculateCompleteness(ep);
                 return (
                   <article key={ep.id} className={styles.classroomEpisodeCard}>
-                    {/* Top Image Container with real calculated badges */}
                     <div className={styles.cardImageContainer}>
                       <Image
                         src={ep.coverImage || "/logo-clean.png"}
@@ -222,12 +211,10 @@ export default function AdminEpisodesPage() {
                         unoptimized
                       />
                       
-                      {/* Top Left Badge: Completeness Score */}
                       <span className={styles.percentBadge}>
                         {epCompleteness}%
                       </span>
 
-                      {/* Top Right Dots Menu */}
                       <button
                         type="button"
                         className={styles.dotsMenuBtn}
@@ -237,7 +224,6 @@ export default function AdminEpisodesPage() {
                         ⋮
                       </button>
 
-                      {/* Context Dropdown */}
                       {activeMenuId === ep.id && (
                         <div className={styles.cardDropdownMenu}>
                           <Link href={`/admin/episodes/${ep.id}/edit`} className={styles.dropdownOption}>
@@ -253,7 +239,6 @@ export default function AdminEpisodesPage() {
                       )}
                     </div>
 
-                    {/* Card Content */}
                     <div className={styles.cardDetailsBody}>
                       <h4 className={styles.cardEpTitle}>{ep.title}</h4>
                       <span className={styles.cardEpCode}>
@@ -263,7 +248,6 @@ export default function AdminEpisodesPage() {
                         Temporada 2026 &bull; {ep.duration || "00:00"} min &bull; {ep.status === "draft" ? "Borrador" : "Publicado"}
                       </p>
 
-                      {/* Action Icons Row */}
                       <div className={styles.cardActionRow}>
                         <Link
                           href={`/admin/episodes/${ep.id}/edit`}
@@ -294,7 +278,6 @@ export default function AdminEpisodesPage() {
                         </button>
                       </div>
 
-                      {/* Card Footer: Date info & Chevron */}
                       <div className={styles.cardBottomFooter}>
                         <div className={styles.dueInfoGroup}>
                           <span className={styles.dueLabel}>Emisión:</span>
@@ -312,15 +295,13 @@ export default function AdminEpisodesPage() {
           )}
         </div>
 
-        {/* Right To-Do & Activity Sidebar (Calculated from Real Data) */}
+        {/* Right Sidebar */}
         <aside className={styles.rightActivityPanel}>
-          {/* Header */}
           <div className={styles.todoPanelHeader}>
             <h3 className={styles.todoTitle}>Control &amp; Métricas</h3>
             <span className={styles.syncBadge}>✦ En Vivo</span>
           </div>
 
-          {/* Week Selector with current date */}
           <div className={styles.weekSelectorRow}>
             <span className={styles.weekPillLabel}>Semana</span>
             <div className={styles.weekNavArrows}>
@@ -328,11 +309,9 @@ export default function AdminEpisodesPage() {
             </div>
           </div>
 
-          {/* Multi-Ring Activity Chart Widget */}
           <div className={styles.multiRingChartCard}>
             <div className={styles.concentricCirclesWrapper}>
               <svg className={styles.concentricSvg} viewBox="0 0 160 160">
-                {/* Outer Ring: Forense */}
                 <circle cx="80" cy="80" r="70" className={styles.ringTrack} />
                 <circle
                   cx="80"
@@ -343,7 +322,6 @@ export default function AdminEpisodesPage() {
                   strokeDashoffset={outerOffset}
                 />
 
-                {/* Middle Ring: Romance */}
                 <circle cx="80" cy="80" r="54" className={styles.ringTrack} />
                 <circle
                   cx="80"
@@ -354,7 +332,6 @@ export default function AdminEpisodesPage() {
                   strokeDashoffset={middleOffset}
                 />
 
-                {/* Inner Ring: Publicados */}
                 <circle cx="80" cy="80" r="38" className={styles.ringTrack} />
                 <circle
                   cx="80"
@@ -372,7 +349,6 @@ export default function AdminEpisodesPage() {
               </div>
             </div>
 
-            {/* Dots Category Legend with Real Percentages */}
             <div className={styles.dotsLegendGrid}>
               <div className={styles.legendDotItem}>
                 <span className={`${styles.colorDot} ${styles.dotRose}`}></span>
@@ -392,7 +368,6 @@ export default function AdminEpisodesPage() {
               </div>
             </div>
 
-            {/* Quick Filter Tabs with Real Counts */}
             <div className={styles.quickFilterTabs}>
               <button
                 onClick={() => setFilter("all")}
@@ -418,7 +393,6 @@ export default function AdminEpisodesPage() {
             </div>
           </div>
 
-          {/* Pending Tasks / Dynamic Action List */}
           <div className={styles.tasksSection}>
             <div className={styles.tasksHeaderRow}>
               <span className={styles.taskCountBadge}>

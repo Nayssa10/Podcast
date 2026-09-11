@@ -1,61 +1,48 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "../admin.module.css";
 import { ContactMessage } from "@/lib/store";
+import { useAdminData } from "@/context/AdminDataContext";
 
 export default function AdminMessagesPage() {
-  const [messages, setMessages] = useState<ContactMessage[]>([]);
+  const { messages, isReady, updateMessageStatusLocally, deleteMessageLocally, refreshData } = useAdminData();
   const [selectedMessage, setSelectedMessage] = useState<ContactMessage | null>(null);
   const [filter, setFilter] = useState<"all" | "unread" | "read" | "replied">("all");
-  const [loading, setLoading] = useState(true);
-
-  const fetchMessages = () => {
-    fetch("/api/messages")
-      .then(res => res.json())
-      .then(data => {
-        setMessages(Array.isArray(data) ? data : []);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  };
-
-  useEffect(() => {
-    fetchMessages();
-  }, []);
 
   const handleUpdateStatus = async (id: string, newStatus: "unread" | "read" | "replied") => {
+    updateMessageStatusLocally(id, newStatus);
+    if (selectedMessage && selectedMessage.id === id) {
+      setSelectedMessage({ ...selectedMessage, status: newStatus });
+    }
+
     try {
-      const res = await fetch("/api/messages", {
+      await fetch("/api/messages", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, status: newStatus })
       });
-
-      if (res.ok) {
-        if (selectedMessage && selectedMessage.id === id) {
-          setSelectedMessage({ ...selectedMessage, status: newStatus });
-        }
-        fetchMessages();
-      }
+      refreshData();
     } catch {
       alert("Error al actualizar estado");
+      refreshData();
     }
   };
 
   const handleDelete = async (id: string) => {
     if (!confirm("¿Deseas eliminar este mensaje?")) return;
 
+    deleteMessageLocally(id);
+    if (selectedMessage && selectedMessage.id === id) {
+      setSelectedMessage(null);
+    }
+
     try {
-      const res = await fetch(`/api/messages?id=${id}`, { method: "DELETE" });
-      if (res.ok) {
-        if (selectedMessage && selectedMessage.id === id) {
-          setSelectedMessage(null);
-        }
-        fetchMessages();
-      }
+      await fetch(`/api/messages?id=${id}`, { method: "DELETE" });
+      refreshData();
     } catch {
       alert("Error al eliminar mensaje");
+      refreshData();
     }
   };
 
@@ -113,7 +100,7 @@ export default function AdminMessagesPage() {
       <div style={{ display: "grid", gridTemplateColumns: selectedMessage ? "1fr 1.25fr" : "1fr", gap: "2rem", alignItems: "start" }}>
         {/* Messages List Table */}
         <div className={styles.cardSection}>
-          {loading ? (
+          {messages.length === 0 && !isReady ? (
             <p style={{ color: "#8E7F6E" }}>Cargando correspondencia...</p>
           ) : filtered.length === 0 ? (
             <p style={{ color: "#8E7F6E" }}>No hay mensajes en esta categoría.</p>

@@ -1,27 +1,14 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./admin.module.css";
-import { Episode, ContactMessage } from "@/lib/store";
+import { useAdminData } from "@/context/AdminDataContext";
 import { IconMessages } from "@/components/admin/AdminIcons";
 
 export default function AdminDashboard() {
-  const [episodes, setEpisodes] = useState<Episode[]>([]);
-  const [messages, setMessages] = useState<ContactMessage[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    Promise.all([
-      fetch("/api/episodes").then(res => res.json()),
-      fetch("/api/messages").then(res => res.json())
-    ]).then(([eps, msgs]) => {
-      setEpisodes(Array.isArray(eps) ? eps : []);
-      setMessages(Array.isArray(msgs) ? msgs : []);
-      setLoading(false);
-    }).catch(() => setLoading(false));
-  }, []);
+  const { episodes, messages, isReady } = useAdminData();
 
   const totalEpisodes = episodes.length;
   const publishedEpisodes = episodes.filter(e => e.status !== "draft");
@@ -50,7 +37,7 @@ export default function AdminDashboard() {
     };
   });
 
-  if (loading) {
+  if (totalEpisodes === 0 && !isReady) {
     return <p style={{ color: "#8E7F6E", padding: "2rem" }}>Cargando panel de control...</p>;
   }
 
@@ -223,12 +210,11 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Right Column: Performance & Metric Gauges Widget (Calculated from Real Data) */}
+      {/* Right Column: Performance & Metric Gauges Widget */}
       <aside className={styles.bentoRightColumn}>
         <div className={styles.statsCardWidget}>
           <h3 className={styles.statsWidgetTitle}>Rendimiento Real</h3>
 
-          {/* Metric 1: Publicados Gauge */}
           <div className={styles.gaugeBlock}>
             <span className={styles.gaugeLabel}>Episodios Publicados</span>
             <div className={styles.circularGaugeWrapper}>
@@ -250,7 +236,6 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          {/* Metric 2: Criminalística vs Romance Gauge */}
           <div className={styles.gaugeBlock}>
             <span className={styles.gaugeLabel}>Rigor Forense</span>
             <div className={styles.circularGaugeWrapper}>
@@ -272,7 +257,6 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          {/* Metric 3: Atención a Oyentes Gauge */}
           <div className={styles.gaugeBlock}>
             <span className={styles.gaugeLabel}>Atención a Oyentes</span>
             <div className={styles.circularGaugeWrapper}>
@@ -296,7 +280,6 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          {/* Bottom Action */}
           <div className={styles.statsBottomAction}>
             <Link href="/admin/episodes" className={styles.statsSeeMoreBtn}>
               <span>Ver reporte general ➔</span>

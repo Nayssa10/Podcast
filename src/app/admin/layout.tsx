@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import styles from "./admin.module.css";
+import { AdminDataProvider, useAdminData } from "@/context/AdminDataContext";
 import {
   IconDashboard,
   IconEpisodes,
@@ -15,24 +16,12 @@ import {
   IconLogout,
 } from "@/components/admin/AdminIcons";
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+function AdminLayoutInner({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const [unreadCount, setUnreadCount] = useState(0);
+  const { messages } = useAdminData();
 
-  useEffect(() => {
-    if (pathname === "/admin/login") return;
-
-    fetch("/api/messages")
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data)) {
-          const unread = data.filter(m => m.status === "unread").length;
-          setUnreadCount(unread);
-        }
-      })
-      .catch(() => {});
-  }, [pathname]);
+  const unreadCount = messages.filter(m => m.status === "unread").length;
 
   const handleLogout = async () => {
     try {
@@ -144,5 +133,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </main>
       </div>
     </div>
+  );
+}
+
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <AdminDataProvider>
+      <AdminLayoutInner>{children}</AdminLayoutInner>
+    </AdminDataProvider>
   );
 }
