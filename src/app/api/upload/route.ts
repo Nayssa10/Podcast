@@ -14,19 +14,24 @@ export async function POST(req: NextRequest) {
     const buffer = Buffer.from(await file.arrayBuffer());
     const uploadDir = path.join(process.cwd(), "public", "uploads");
 
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
+    // Try saving locally first (works in local dev)
+    try {
+      if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
+      }
+      const cleanFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_");
+      const uniqueFileName = `${Date.now()}-${cleanFileName}`;
+      const filePath = path.join(uploadDir, uniqueFileName);
+
+      fs.writeFileSync(filePath, buffer);
+      return NextResponse.json({ url: `/uploads/${uniqueFileName}`, success: true });
+    } catch {
+      // In serverless environments (Vercel) without persistent disk, encode as Data URI
+      const mimeType = file.type || "image/jpeg";
+      const base64Data = buffer.toString("base64");
+      const dataUri = `data:${mimeType};base64,${base64Data}`;
+      return NextResponse.json({ url: dataUri, success: true });
     }
-
-    // Generate safe unique filename
-    const cleanFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_");
-    const uniqueFileName = `${Date.now()}-${cleanFileName}`;
-    const filePath = path.join(uploadDir, uniqueFileName);
-
-    fs.writeFileSync(filePath, buffer);
-
-    const publicUrl = `/uploads/${uniqueFileName}`;
-    return NextResponse.json({ url: publicUrl, success: true });
   } catch (error) {
     console.error("Error al subir imagen:", error);
     return NextResponse.json({ error: "Error al procesar la subida del archivo" }, { status: 500 });

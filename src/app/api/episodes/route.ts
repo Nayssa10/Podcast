@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export async function GET() {
-  const store = getStore();
+  const store = await getStore();
   return NextResponse.json(store.episodes, {
     headers: {
       'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
@@ -18,7 +18,7 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const store = getStore();
+    const store = await getStore();
 
     const newEpisode: Episode = {
       id: body.id || `ep-${Date.now()}`,
@@ -42,7 +42,7 @@ export async function POST(req: Request) {
     };
 
     store.episodes.unshift(newEpisode);
-    saveStore(store);
+    await saveStore(store);
 
     return NextResponse.json({ success: true, data: newEpisode });
   } catch (error) {
@@ -53,7 +53,7 @@ export async function POST(req: Request) {
 export async function PUT(req: Request) {
   try {
     const body = await req.json();
-    const store = getStore();
+    const store = await getStore();
     const index = store.episodes.findIndex(ep => ep.id === body.id);
 
     if (index === -1) {
@@ -68,7 +68,7 @@ export async function PUT(req: Request) {
     }
 
     store.episodes[index] = { ...store.episodes[index], ...body };
-    saveStore(store);
+    await saveStore(store);
 
     return NextResponse.json({ success: true, data: store.episodes[index] });
   } catch (error) {
@@ -85,9 +85,9 @@ export async function DELETE(req: Request) {
       return NextResponse.json({ error: 'ID requerido' }, { status: 400 });
     }
 
-    const store = getStore();
+    const store = await getStore();
     store.episodes = store.episodes.filter(ep => ep.id !== id);
-    saveStore(store);
+    await saveStore(store);
 
     return NextResponse.json({ success: true });
   } catch (error) {

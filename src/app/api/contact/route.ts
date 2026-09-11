@@ -14,7 +14,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const store = getStore();
+    const store = await getStore();
 
     const newMessage: ContactMessage = {
       id: `msg-${Date.now()}`,
@@ -32,7 +32,7 @@ export async function POST(req: Request) {
 
     // Save message to store
     store.messages.unshift(newMessage);
-    saveStore(store);
+    await saveStore(store);
 
     return NextResponse.json({
       success: true,

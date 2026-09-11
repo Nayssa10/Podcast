@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getStore, saveStore } from '@/lib/store';
 
 export async function GET() {
-  const store = getStore();
+  const store = await getStore();
   return NextResponse.json(store.messages);
 }
 
@@ -10,7 +10,7 @@ export async function PATCH(req: Request) {
   try {
     const body = await req.json();
     const { id, status } = body;
-    const store = getStore();
+    const store = await getStore();
 
     const message = store.messages.find(m => m.id === id);
     if (!message) {
@@ -18,7 +18,7 @@ export async function PATCH(req: Request) {
     }
 
     message.status = status;
-    saveStore(store);
+    await saveStore(store);
 
     return NextResponse.json({ success: true, data: message });
   } catch (error) {
@@ -35,9 +35,9 @@ export async function DELETE(req: Request) {
       return NextResponse.json({ error: 'ID requerido' }, { status: 400 });
     }
 
-    const store = getStore();
+    const store = await getStore();
     store.messages = store.messages.filter(m => m.id !== id);
-    saveStore(store);
+    await saveStore(store);
 
     return NextResponse.json({ success: true });
   } catch (error) {
