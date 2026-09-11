@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import styles from "./admin.module.css";
 import {
   IconDashboard,
@@ -12,13 +12,17 @@ import {
   IconSettings,
   IconBell,
   IconExternalLink,
+  IconLogout,
 } from "@/components/admin/AdminIcons";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
+    if (pathname === "/admin/login") return;
+
     fetch("/api/messages")
       .then(res => res.json())
       .then(data => {
@@ -29,6 +33,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       })
       .catch(() => {});
   }, [pathname]);
+
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+      router.push("/admin/login");
+      router.refresh();
+    } catch {
+      router.push("/admin/login");
+    }
+  };
+
+  if (pathname === "/admin/login") {
+    return <>{children}</>;
+  }
 
   const navItems = [
     { href: "/admin", label: "Dashboard", Icon: IconDashboard },
@@ -90,6 +108,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <IconExternalLink size={15} />
               <span>Ver Sitio Web</span>
             </Link>
+            <button
+              type="button"
+              onClick={handleLogout}
+              className={styles.logoutBtn}
+              title="Cerrar sesión"
+            >
+              <IconLogout size={15} />
+              <span>Cerrar Sesión</span>
+            </button>
           </div>
         </aside>
 

@@ -169,6 +169,9 @@
 .sidebarFooterBox {
   margin-top: auto;
   padding-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .backToSiteBtn {
@@ -191,6 +194,28 @@
   background-color: #2B231D;
   color: #FFFFFF;
   border-color: #2B231D;
+}
+
+.logoutBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.6rem 0.85rem;
+  background-color: transparent;
+  border: 1px solid #E2D7CC;
+  border-radius: 12px;
+  color: #9B1C1C;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.logoutBtn:hover {
+  background-color: #FDF2F2;
+  border-color: #F8B4B4;
 }
 
 /* =========================================

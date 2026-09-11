@@ -501,7 +501,6 @@ export default function Home() {
             <a href="#about" onClick={scrollToSection("about")} className={styles.warmFooterLink}>Sobre mí</a>
             <a href="#episodes" onClick={scrollToSection("episodes")} className={styles.warmFooterLink}>Episodios</a>
             <a href="#contact" onClick={scrollToContact} className={styles.warmFooterLink}>Contacto</a>
-            <a href="/admin" className={styles.warmFooterLink} style={{ opacity: 0.6 }}>Gestión</a>
           </div>
         </div>
       </footer>
