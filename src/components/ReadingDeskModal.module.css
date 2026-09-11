@@ -201,44 +201,10 @@
 
 .datesAndPagesRow {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-top: 0.35rem;
-  gap: 1rem;
-}
-
-.dateFieldGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-
-.dateLine {
-  display: flex;
+  justify-content: flex-start;
   align-items: center;
-  gap: 0.4rem;
-  font-size: 0.9rem;
-  font-weight: 700;
-}
-
-.dateIcon {
-  font-size: 0.85rem;
-  color: #DCA29C;
-}
-
-.dateLabel {
-  font-family: var(--font-family-sans);
-  color: #889AA9;
-}
-
-.dateUnderlineVal {
-  font-family: var(--font-family-satisfy), cursive;
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #58443B;
-  border-bottom: 2px solid #DCA29C;
-  padding-bottom: 1px;
-  min-width: 90px;
+  margin-top: 0.6rem;
+  gap: 1rem;
 }
 
 .cloudPagesBadge {

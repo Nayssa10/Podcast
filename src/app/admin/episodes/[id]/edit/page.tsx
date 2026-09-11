@@ -40,8 +40,6 @@ export default function EditEpisodePage() {
   // Book
   const [bookTitle, setBookTitle] = useState("");
   const [bookAuthor, setBookAuthor] = useState("");
-  const [bookStartDate, setBookStartDate] = useState("27 junio");
-  const [bookEndDate, setBookEndDate] = useState("12 julio");
   const [bookPages, setBookPages] = useState("378");
   const [bookRating, setBookRating] = useState(4);
   const [hoverRating, setHoverRating] = useState<number | null>(null);
@@ -110,8 +108,6 @@ export default function EditEpisodePage() {
           if (ep.bookDetails) {
             setBookTitle(ep.bookDetails.title || ep.title || "");
             setBookAuthor(ep.bookDetails.author || "");
-            setBookStartDate(ep.bookDetails.startDate || "27 junio");
-            setBookEndDate(ep.bookDetails.endDate || "12 julio");
             setBookPages(String(ep.bookDetails.pages || 378));
             setBookRating(typeof ep.bookDetails.rating === "number" ? ep.bookDetails.rating : 4);
             setBookIsRecommended(ep.bookDetails.isRecommended ?? true);
@@ -181,8 +177,6 @@ export default function EditEpisodePage() {
         title: bookTitle || title,
         author: bookAuthor || "Nayssa Kristel",
         description: description,
-        startDate: bookStartDate || "27 junio",
-        endDate: bookEndDate || "12 julio",
         pages: Number(bookPages) || 378,
         rating: Number(bookRating) || 4,
         isRecommended: Boolean(bookIsRecommended),
@@ -482,28 +476,6 @@ export default function EditEpisodePage() {
                       value={bookAuthor}
                       onChange={(e) => setBookAuthor(e.target.value)}
                       placeholder="Ej. Clara Thorne"
-                    />
-                  </div>
-
-                  <div className={styles.formField}>
-                    <label className={styles.fieldLabel}>Fecha Inicio</label>
-                    <input
-                      type="text"
-                      className={styles.fieldInput}
-                      value={bookStartDate}
-                      onChange={(e) => setBookStartDate(e.target.value)}
-                      placeholder="Ej. 27 junio"
-                    />
-                  </div>
-
-                  <div className={styles.formField}>
-                    <label className={styles.fieldLabel}>Fecha Término</label>
-                    <input
-                      type="text"
-                      className={styles.fieldInput}
-                      value={bookEndDate}
-                      onChange={(e) => setBookEndDate(e.target.value)}
-                      placeholder="Ej. 12 julio"
                     />
                   </div>
 

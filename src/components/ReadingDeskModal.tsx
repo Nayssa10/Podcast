@@ -35,8 +35,6 @@ export default function ReadingDeskModal({ episode, onClose }: ReadingDeskModalP
   const b = episode.bookDetails;
   const cleanTitle = b?.title || episode.title.split(": ")[1] || episode.title;
   const authorName = b?.author || "Nayssa Kristel";
-  const startDate = b?.startDate || "27 junio";
-  const endDate = b?.endDate || "12 julio";
   const pages = b?.pages || 378;
   const rating = typeof b?.rating === "number" ? b.rating : 4;
   const isRecommended = b?.isRecommended ?? true;
@@ -122,19 +120,6 @@ export default function ReadingDeskModal({ episode, onClose }: ReadingDeskModalP
             </div>
 
             <div className={styles.datesAndPagesRow}>
-              <div className={styles.dateFieldGroup}>
-                <div className={styles.dateLine}>
-                  <span className={styles.dateIcon}>✦</span>
-                  <span className={styles.dateLabel}>Fecha de inicio:</span>
-                  <span className={styles.dateUnderlineVal}>{startDate}</span>
-                </div>
-                <div className={styles.dateLine}>
-                  <span className={styles.dateIcon}>◎</span>
-                  <span className={styles.dateLabel}>Fecha de término:</span>
-                  <span className={styles.dateUnderlineVal}>{endDate}</span>
-                </div>
-              </div>
-
               {/* Cloud Badge for Pages */}
               <div className={styles.cloudPagesBadge}>
                 <span className={styles.cloudLabel}>Páginas:</span>
