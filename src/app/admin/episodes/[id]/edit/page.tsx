@@ -228,7 +228,10 @@ export default function EditEpisodePage() {
 
       if (res.ok) {
         setSaved(true);
-        setTimeout(() => setSaved(false), 3000);
+        router.refresh();
+        setTimeout(() => {
+          router.push("/admin/episodes");
+        }, 500);
       } else {
         alert("Error al actualizar el episodio");
       }

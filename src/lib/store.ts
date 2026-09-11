@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { Redis } from '@upstash/redis';
 
 export interface Episode {
   id: string;
@@ -225,7 +226,7 @@ const DEFAULT_DATA: StoreData = {
   }
 };
 
-import { Redis } from '@upstash/redis';
+let memoryStoreCache: StoreData | null = null;
 
 function getRedis(): Redis | null {
   const url =
@@ -253,12 +254,16 @@ function getLocalStore(): StoreData {
         fs.mkdirSync(dir, { recursive: true });
       }
       fs.writeFileSync(DATA_FILE, JSON.stringify(DEFAULT_DATA, null, 2), 'utf-8');
+      memoryStoreCache = DEFAULT_DATA;
       return DEFAULT_DATA;
     }
     const raw = fs.readFileSync(DATA_FILE, 'utf-8');
-    return JSON.parse(raw);
+    const parsed = JSON.parse(raw);
+    memoryStoreCache = parsed;
+    return parsed;
   } catch (error) {
     console.error('Error reading local store data:', error);
+    memoryStoreCache = DEFAULT_DATA;
     return DEFAULT_DATA;
   }
 }
@@ -270,22 +275,32 @@ function saveLocalStore(data: StoreData): void {
       fs.mkdirSync(dir, { recursive: true });
     }
     fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), 'utf-8');
+    memoryStoreCache = data;
   } catch (error) {
     console.error('Error writing local store data:', error);
   }
 }
 
 export async function getStore(): Promise<StoreData> {
+  if (memoryStoreCache) {
+    return memoryStoreCache;
+  }
+
   const redis = getRedis();
   if (redis) {
     try {
-      const data = await redis.get<StoreData>('podcast_store_data');
+      const redisPromise = redis.get<StoreData>('podcast_store_data');
+      // Timeout after 1.2 seconds so it never freezes local or dev
+      const timeoutPromise = new Promise<null>((resolve) => setTimeout(() => resolve(null), 1200));
+      const data = await Promise.race([redisPromise, timeoutPromise]);
+
       if (data && data.episodes && Array.isArray(data.episodes)) {
+        memoryStoreCache = data;
         return data;
       }
-      // Seed Redis with current local store data if empty
       const localData = getLocalStore();
-      await redis.set('podcast_store_data', localData);
+      redis.set('podcast_store_data', localData).catch(() => {});
+      memoryStoreCache = localData;
       return localData;
     } catch (error) {
       console.error('Error accessing Redis store, using local fallback:', error);
@@ -295,15 +310,13 @@ export async function getStore(): Promise<StoreData> {
 }
 
 export async function saveStore(data: StoreData): Promise<void> {
+  memoryStoreCache = data;
+  saveLocalStore(data);
+
   const redis = getRedis();
   if (redis) {
-    try {
-      await redis.set('podcast_store_data', data);
-      return;
-    } catch (error) {
-      console.error('Error saving to Redis store, saving to local fallback:', error);
-    }
+    redis.set('podcast_store_data', data).catch((error) => {
+      console.error('Error background-saving to Redis store:', error);
+    });
   }
-  saveLocalStore(data);
 }
-
