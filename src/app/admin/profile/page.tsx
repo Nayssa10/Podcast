@@ -3,25 +3,33 @@
 import React, { useEffect, useState } from "react";
 import styles from "../admin.module.css";
 import { HostProfile } from "@/lib/store";
+import { useAdminData } from "@/context/AdminDataContext";
+
+const DEFAULT_PROFILE: HostProfile = {
+  name: "Nayssa Kristel",
+  subtitle: "Creadora & Conductora",
+  roleBadge: "voz principal, mente analítica, creadora.",
+  basicInfo: "Voz única y creadora de Team Supernova. Especialista en entrelazar la belleza de la literatura gótica con la cruda realidad de la investigación criminal.",
+  extraInfoText: "Como única creadora de Team Supernova, Nayssa fusiona el análisis literario profundo con la rigurosidad científica.",
+  investigationFocus: "Desentrañando el misterio de la página a la escena del crimen.",
+  quote: "Deep into that darkness peering, long I stood there wondering, fearing, doubting, dreaming dreams no mortal ever dared to dream before."
+};
 
 export default function AdminProfilePage() {
-  const [profile, setProfile] = useState<HostProfile | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { profile: globalProfile, refreshData } = useAdminData();
+  const [profile, setProfile] = useState<HostProfile>(globalProfile || DEFAULT_PROFILE);
   const [saved, setSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    fetch("/api/profile")
-      .then(res => res.json())
-      .then(data => {
-        setProfile(data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
+    if (globalProfile) {
+      setProfile(globalProfile);
+    }
+  }, [globalProfile]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!profile) return;
+    setSaving(true);
 
     try {
       const res = await fetch("/api/profile", {
@@ -32,18 +40,17 @@ export default function AdminProfilePage() {
 
       if (res.ok) {
         setSaved(true);
+        refreshData();
         setTimeout(() => setSaved(false), 3000);
       } else {
         alert("Error al guardar cambios");
       }
     } catch {
       alert("Error al conectar con el servidor");
+    } finally {
+      setSaving(false);
     }
   };
-
-  if (loading || !profile) {
-    return <p style={{ color: "#8E7F6E" }}>Cargando información del perfil...</p>;
-  }
 
   return (
     <div>
@@ -148,9 +155,10 @@ export default function AdminProfilePage() {
           <button
             type="submit"
             className={styles.primaryBtn}
+            disabled={saving}
             style={saved ? { backgroundColor: "#2E7D32", borderColor: "#2E7D32" } : undefined}
           >
-            {saved ? "✓ Guardado" : "Guardar Cambios"}
+            {saving ? "Guardando..." : saved ? "✓ Guardado" : "Guardar Cambios"}
           </button>
         </div>
       </form>

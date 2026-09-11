@@ -3,25 +3,32 @@
 import React, { useEffect, useState } from "react";
 import styles from "../admin.module.css";
 import { SiteSettings } from "@/lib/store";
+import { useAdminData } from "@/context/AdminDataContext";
+
+const DEFAULT_SETTINGS: SiteSettings = {
+  contactNotificationEmail: "nayssakristel@gmail.com",
+  resendApiKey: "",
+  spotifyUrl: "https://open.spotify.com",
+  instagramUrl: "https://instagram.com/teamsupernova",
+  youtubeUrl: "https://youtube.com",
+  tiktokUrl: "https://tiktok.com/@teamsupernova"
+};
 
 export default function AdminSettingsPage() {
-  const [settings, setSettings] = useState<SiteSettings | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { settings: globalSettings, refreshData } = useAdminData();
+  const [settings, setSettings] = useState<SiteSettings>(globalSettings || DEFAULT_SETTINGS);
   const [saved, setSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    fetch("/api/settings")
-      .then(res => res.json())
-      .then(data => {
-        setSettings(data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
+    if (globalSettings) {
+      setSettings(globalSettings);
+    }
+  }, [globalSettings]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!settings) return;
+    setSaving(true);
 
     try {
       const res = await fetch("/api/settings", {
@@ -32,18 +39,17 @@ export default function AdminSettingsPage() {
 
       if (res.ok) {
         setSaved(true);
+        refreshData();
         setTimeout(() => setSaved(false), 3000);
       } else {
         alert("Error al guardar cambios");
       }
     } catch {
       alert("Error al conectar con el servidor");
+    } finally {
+      setSaving(false);
     }
   };
-
-  if (loading || !settings) {
-    return <p style={{ color: "#8E7F6E" }}>Cargando configuración...</p>;
-  }
 
   return (
     <div>
@@ -132,13 +138,13 @@ export default function AdminSettingsPage() {
 
         {saved && (
           <p style={{ color: "#15803d", fontWeight: "600", fontSize: "0.88rem", margin: "1.5rem 0 0 0" }}>
-            Configuración y redes actualizadas correctamente.
+            ✓ Configuración y redes actualizadas correctamente.
           </p>
         )}
 
         <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "2rem" }}>
-          <button type="submit" className={styles.primaryBtn}>
-            Guardar Configuración
+          <button type="submit" className={styles.primaryBtn} disabled={saving}>
+            {saving ? "Guardando..." : saved ? "✓ Guardado" : "Guardar Configuración"}
           </button>
         </div>
       </form>
