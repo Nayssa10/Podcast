@@ -9,6 +9,7 @@ import ReadingNotebookCard from "@/components/ReadingNotebookCard";
 import ReadingDeskModal, { HighlightItem } from "@/components/ReadingDeskModal";
 import ForensicDossierModal from "@/components/ForensicDossierModal";
 import ScrollEpisodeNavigator from "@/components/ScrollEpisodeNavigator";
+import { HostProfile } from "@/lib/store";
 import styles from "./page.module.css";
 
 interface EpisodeData {
@@ -186,31 +187,21 @@ const MOCK_EPISODES: EpisodeData[] = [
   }
 ];
 
-const HOST_DATA = {
-  nayssa: {
-    id: 'nayssa',
-    name: 'Nayssa Kristel',
-    subtitle: 'Creadora & Conductora',
-    searchQuery: 'Q buscar en el expediente...',
-    roleBadge: 'voz principal, mente analítica, creadora.',
-    recentItemsTitle: 'Episodios Recientes',
-    recentItems: ['La Sombra de Blackwood', 'Susurros de la Bala', 'El Veneno del Amor'],
-    extraInfoText: 'Como única creadora de Team Supernova, Nayssa fusiona el análisis literario profundo con la rigurosidad científica.',
-    basicInfo: 'Voz única y creadora de Team Supernova. Especialista en entrelazar la belleza de la literatura gótica con la cruda realidad de la investigación criminal.',
-    sliderIcons: ['✦', '◆', '✦'],
-    stats: [
-      { label: 'Episodios Publicados', value: '3+', icon: '01' },
-      { label: 'Análisis Forense & Balística', value: '100%', icon: '02' },
-      { label: 'Literatura & Romance Gótico', value: '100%', icon: '03' }
-    ]
-  }
+const DEFAULT_HOST_PROFILE: HostProfile = {
+  name: 'Nayssa Kristel',
+  subtitle: 'investigación & literatura',
+  roleBadge: 'voz principal, mente analítica, creadora.',
+  basicInfo: 'Soy Nayssa Kristel, creadora de Team Supernova. Un espacio donde la belleza de la literatura gótica y el romance de misterio se encuentran con el análisis riguroso, la ciencia criminal y la toxicología forense.',
+  extraInfoText: 'Como única creadora de Team Supernova, Nayssa fusiona el análisis literario profundo con la rigurosidad científica.',
+  investigationFocus: 'Desentrañando el misterio de la página a la escena del crimen.',
+  quote: 'Deep into that darkness peering, long I stood there wondering, fearing, doubting, dreaming dreams no mortal ever dared to dream before.'
 };
 
 export default function Home() {
   const [episodes, setEpisodes] = useState<EpisodeData[]>(MOCK_EPISODES);
+  const [profile, setProfile] = useState<HostProfile>(DEFAULT_HOST_PROFILE);
   const [selectedEpisodeIndex, setSelectedEpisodeIndex] = useState<number | null>(null);
   const [showDossierModal, setShowDossierModal] = useState(false);
-  const activeHost = 'nayssa';
 
   useEffect(() => {
     fetch("/api/episodes", { cache: "no-store" })
@@ -218,6 +209,15 @@ export default function Home() {
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
           setEpisodes(data);
+        }
+      })
+      .catch(() => {});
+
+    fetch("/api/profile", { cache: "no-store" })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && !data.error && data.name) {
+          setProfile(data);
         }
       })
       .catch(() => {});
@@ -322,10 +322,10 @@ export default function Home() {
           <div className={styles.heroBadgeGroup}>
             <span className={styles.heroBadge}>✦ Podcast Literario & Forense ✦</span>
           </div>
-          <h1 className={styles.heroTitle}>Nayssa Kristel</h1>
-          <h2 className={styles.heroSubtitle}>investigación & literatura</h2>
+          <h1 className={styles.heroTitle}>{profile.name}</h1>
+          <h2 className={styles.heroSubtitle}>{profile.subtitle}</h2>
           <p className={styles.heroDescription}>
-            Un espacio donde la belleza de la literatura gótica y el romance de misterio se encuentran con el análisis riguroso y la ciencia criminal.
+            {profile.extraInfoText || "Un espacio donde la belleza de la literatura gótica y el romance de misterio se encuentran con el análisis riguroso y la ciencia criminal."}
           </p>
           <div className={styles.heroCtas}>
             <a 
@@ -345,7 +345,7 @@ export default function Home() {
           </div>
           <div className={styles.heroQuoteFooter}>
             <span className={styles.heroStar}>✦</span>
-            <span className={styles.heroTagline}>donde cada historia deja una huella</span>
+            <span className={styles.heroTagline}>{profile.investigationFocus || "donde cada historia deja una huella"}</span>
             <span className={styles.heroStar}>✦</span>
           </div>
         </div>
@@ -371,7 +371,7 @@ export default function Home() {
             <span className={styles.introCursiveHeader}>¡Hola! Te doy la bienvenida ♥</span>
             <h3 className={styles.introMainTitle}>Me alegra que estés aquí.</h3>
             <p className={styles.introParagraph}>
-              Soy Nayssa Kristel, creadora de <strong>Team Supernova</strong>. Un espacio donde la belleza de la literatura gótica y el romance de misterio se encuentran con el análisis riguroso, la ciencia criminal y la toxicología forense.
+              {profile.basicInfo}
             </p>
           </div>
         </div>
@@ -529,23 +529,33 @@ export default function Home() {
               <button className={styles.closeModalBtn} onClick={() => setShowDossierModal(false)} aria-label="Cerrar modal">✕</button>
               <div className={styles.modalHeader}>
                 <span className={styles.modalBadge}>Dossier de Creadora</span>
-                <h2 className={styles.modalTitle}>{HOST_DATA[activeHost].name}</h2>
-                <p className={styles.modalSubtitle}>{HOST_DATA[activeHost].subtitle}</p>
+                <h2 className={styles.modalTitle}>{profile.name}</h2>
+                <p className={styles.modalSubtitle}>{profile.subtitle}</p>
               </div>
               <div className={styles.modalBody}>
                 <div className={styles.modalSection}>
                   <h3>Perfil</h3>
-                  <p>{HOST_DATA[activeHost].basicInfo}</p>
+                  <p>{profile.basicInfo}</p>
                 </div>
                 <div className={styles.modalSection}>
                   <h3>Detalles y Rol</h3>
-                  <p>{HOST_DATA[activeHost].roleBadge}</p>
-                  <p style={{ marginTop: '0.5rem' }}>{HOST_DATA[activeHost].extraInfoText}</p>
+                  <p>{profile.roleBadge}</p>
+                  {profile.extraInfoText && (
+                    <p style={{ marginTop: '0.5rem' }}>{profile.extraInfoText}</p>
+                  )}
                 </div>
-                <div className={styles.modalSection}>
-                  <h3>Enfoque de Investigación</h3>
-                  <p>&quot;Desentrañando el misterio de la página a la escena del crimen.&quot;</p>
-                </div>
+                {profile.investigationFocus && (
+                  <div className={styles.modalSection}>
+                    <h3>Enfoque de Investigación</h3>
+                    <p>&quot;{profile.investigationFocus}&quot;</p>
+                  </div>
+                )}
+                {profile.quote && (
+                  <div className={styles.modalSection}>
+                    <h3>Cita Editorial</h3>
+                    <p><em>&quot;{profile.quote}&quot;</em></p>
+                  </div>
+                )}
               </div>
             </article>
           </div>

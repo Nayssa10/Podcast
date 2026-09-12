@@ -19,7 +19,7 @@ import {
 function AdminLayoutInner({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { messages } = useAdminData();
+  const { messages, profile } = useAdminData();
 
   const unreadCount = messages.filter(m => m.status === "unread").length;
 
@@ -59,11 +59,11 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
             
             <div className={styles.userProfileCard}>
               <div className={styles.userAvatarCircle}>
-                <span>N</span>
+                <span>{profile?.name ? profile.name.charAt(0).toUpperCase() : "N"}</span>
               </div>
               <div className={styles.userInfoText}>
-                <h4 className={styles.userNameHeading}>Nayssa Kristel</h4>
-                <span className={styles.userSubtitle}>Creadora &amp; Conductora</span>
+                <h4 className={styles.userNameHeading}>{profile?.name || "Nayssa Kristel"}</h4>
+                <span className={styles.userSubtitle}>{profile?.subtitle || "Creadora & Conductora"}</span>
               </div>
             </div>
           </div>

@@ -15,6 +15,7 @@ interface AdminDataContextType {
   updateMessageStatusLocally: (id: string, status: "unread" | "read" | "replied") => void;
   deleteMessageLocally: (id: string) => void;
   updateSettingsLocally: (settings: SiteSettings) => void;
+  updateProfileLocally: (profile: HostProfile) => void;
 }
 
 const AdminDataContext = createContext<AdminDataContextType>({
@@ -29,6 +30,7 @@ const AdminDataContext = createContext<AdminDataContextType>({
   updateMessageStatusLocally: () => {},
   deleteMessageLocally: () => {},
   updateSettingsLocally: () => {},
+  updateProfileLocally: () => {},
 });
 
 export function AdminDataProvider({ children }: { children: React.ReactNode }) {
@@ -97,6 +99,10 @@ export function AdminDataProvider({ children }: { children: React.ReactNode }) {
     setSettings(newSettings);
   };
 
+  const updateProfileLocally = (newProfile: HostProfile) => {
+    setProfile(newProfile);
+  };
+
   return (
     <AdminDataContext.Provider
       value={{
@@ -111,6 +117,7 @@ export function AdminDataProvider({ children }: { children: React.ReactNode }) {
         updateMessageStatusLocally,
         deleteMessageLocally,
         updateSettingsLocally,
+        updateProfileLocally,
       }}
     >
       {children}

@@ -16,7 +16,7 @@ const DEFAULT_PROFILE: HostProfile = {
 };
 
 export default function AdminProfilePage() {
-  const { profile: globalProfile, refreshData } = useAdminData();
+  const { profile: globalProfile, updateProfileLocally, refreshData } = useAdminData();
   const [profile, setProfile] = useState<HostProfile>(globalProfile || DEFAULT_PROFILE);
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -32,6 +32,7 @@ export default function AdminProfilePage() {
     setSaving(true);
 
     try {
+      updateProfileLocally(profile);
       const res = await fetch("/api/profile", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -39,8 +40,12 @@ export default function AdminProfilePage() {
       });
 
       if (res.ok) {
+        const json = await res.json();
+        if (json.data) {
+          updateProfileLocally(json.data);
+          setProfile(json.data);
+        }
         setSaved(true);
-        refreshData();
         setTimeout(() => setSaved(false), 3000);
       } else {
         alert("Error al guardar cambios");
@@ -141,6 +146,17 @@ export default function AdminProfilePage() {
                 onChange={(e) => setProfile({ ...profile, extraInfoText: e.target.value })}
                 rows={5}
                 required
+              />
+            </div>
+
+            <div className={`${styles.formField} ${styles.fullWidth}`}>
+              <label className={styles.fieldLabel}>Cita Editorial / Frase Célebre</label>
+              <textarea
+                className={styles.fieldTextarea}
+                value={profile.quote}
+                onChange={(e) => setProfile({ ...profile, quote: e.target.value })}
+                rows={3}
+                placeholder="Ej. Deep into that darkness peering..."
               />
             </div>
           </div>
