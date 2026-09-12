@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import styles from "../../admin.module.css";
 import ImageUploadField from "@/components/admin/ImageUploadField";
+import { useAdminData } from "@/context/AdminDataContext";
+import { notifyDataChanged } from "@/lib/syncEvents";
 
 const parseMultilineList = (text: string): string[] => {
   if (!text) return [];
@@ -22,6 +24,7 @@ const parseMultilineList = (text: string): string[] => {
 
 export default function NewEpisodePage() {
   const router = useRouter();
+  const { updateEpisodeLocally, refreshData } = useAdminData();
   const [submitting, setSubmitting] = useState(false);
 
   // Form states
@@ -167,6 +170,12 @@ export default function NewEpisodePage() {
       });
 
       if (res.ok) {
+        const json = await res.json();
+        if (json.data) {
+          updateEpisodeLocally(json.data);
+        }
+        await refreshData();
+        notifyDataChanged("episodes");
         router.push("/admin/episodes");
       } else {
         alert("Error al crear el episodio");

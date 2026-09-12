@@ -33,6 +33,8 @@ const AdminDataContext = createContext<AdminDataContextType>({
   updateProfileLocally: () => {},
 });
 
+import { subscribeToDataChanges, notifyDataChanged } from "@/lib/syncEvents";
+
 export function AdminDataProvider({ children }: { children: React.ReactNode }) {
   const [episodes, setEpisodes] = useState<Episode[]>([]);
   const [messages, setMessages] = useState<ContactMessage[]>([]);
@@ -42,11 +44,12 @@ export function AdminDataProvider({ children }: { children: React.ReactNode }) {
 
   const refreshData = useCallback(async () => {
     try {
+      const t = Date.now();
       const [epsRes, msgsRes, profRes, setRes] = await Promise.all([
-        fetch("/api/episodes", { cache: "no-store" }),
-        fetch("/api/messages", { cache: "no-store" }),
-        fetch("/api/profile", { cache: "no-store" }),
-        fetch("/api/settings", { cache: "no-store" }),
+        fetch(`/api/episodes?t=${t}`, { cache: "no-store" }),
+        fetch(`/api/messages?t=${t}`, { cache: "no-store" }),
+        fetch(`/api/profile?t=${t}`, { cache: "no-store" }),
+        fetch(`/api/settings?t=${t}`, { cache: "no-store" }),
       ]);
 
       const [eps, msgs, prof, sett] = await Promise.all([
@@ -69,6 +72,10 @@ export function AdminDataProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     refreshData();
+    const unsubscribe = subscribeToDataChanges(() => {
+      refreshData();
+    });
+    return unsubscribe;
   }, [refreshData]);
 
   const updateEpisodeLocally = (episode: Episode) => {
@@ -81,10 +88,12 @@ export function AdminDataProvider({ children }: { children: React.ReactNode }) {
       }
       return [episode, ...prev];
     });
+    notifyDataChanged("episodes");
   };
 
   const deleteEpisodeLocally = (id: string) => {
     setEpisodes(prev => prev.filter(e => e.id !== id));
+    notifyDataChanged("episodes");
   };
 
   const updateMessageStatusLocally = (id: string, status: "unread" | "read" | "replied") => {
@@ -97,10 +106,12 @@ export function AdminDataProvider({ children }: { children: React.ReactNode }) {
 
   const updateSettingsLocally = (newSettings: SiteSettings) => {
     setSettings(newSettings);
+    notifyDataChanged("settings");
   };
 
   const updateProfileLocally = (newProfile: HostProfile) => {
     setProfile(newProfile);
+    notifyDataChanged("profile");
   };
 
   return (

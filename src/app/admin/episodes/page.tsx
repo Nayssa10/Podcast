@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./episodes.module.css";
@@ -45,6 +45,10 @@ export default function AdminEpisodesPage() {
   const [filter, setFilter] = useState<"all" | "forensic" | "book">("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
+
+  useEffect(() => {
+    refreshData();
+  }, [refreshData]);
 
   const handleDelete = async (id: string, title: string) => {
     if (!confirm(`¿Estás segura de eliminar el episodio "${title}"?`)) return;

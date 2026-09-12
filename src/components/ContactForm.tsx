@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { subscribeToDataChanges } from "@/lib/syncEvents";
 import styles from "../app/page.module.css";
 
 const SOCIAL_LINKS = [
@@ -57,8 +58,9 @@ export default function ContactForm() {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [socialLinks, setSocialLinks] = useState(SOCIAL_LINKS);
 
-  React.useEffect(() => {
-    fetch("/api/settings")
+  const loadSettings = React.useCallback(() => {
+    const t = Date.now();
+    fetch(`/api/settings?t=${t}`, { cache: "no-store" })
       .then(res => res.json())
       .then(settings => {
         if (settings) {
@@ -81,6 +83,16 @@ export default function ContactForm() {
       })
       .catch(() => {});
   }, []);
+
+  React.useEffect(() => {
+    loadSettings();
+    const unsubscribe = subscribeToDataChanges((type) => {
+      if (type === "settings" || type === "all") {
+        loadSettings();
+      }
+    });
+    return unsubscribe;
+  }, [loadSettings]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

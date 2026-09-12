@@ -10,6 +10,7 @@ import ReadingDeskModal, { HighlightItem } from "@/components/ReadingDeskModal";
 import ForensicDossierModal from "@/components/ForensicDossierModal";
 import ScrollEpisodeNavigator from "@/components/ScrollEpisodeNavigator";
 import { HostProfile } from "@/lib/store";
+import { subscribeToDataChanges } from "@/lib/syncEvents";
 import styles from "./page.module.css";
 
 interface EpisodeData {
@@ -202,8 +203,9 @@ export default function Home() {
   const [profile, setProfile] = useState<HostProfile>(DEFAULT_HOST_PROFILE);
   const [selectedEpisodeIndex, setSelectedEpisodeIndex] = useState<number | null>(null);
 
-  useEffect(() => {
-    fetch("/api/episodes", { cache: "no-store" })
+  const loadData = React.useCallback(() => {
+    const t = Date.now();
+    fetch(`/api/episodes?t=${t}`, { cache: "no-store" })
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
@@ -212,7 +214,7 @@ export default function Home() {
       })
       .catch(() => {});
 
-    fetch("/api/profile", { cache: "no-store" })
+    fetch(`/api/profile?t=${t}`, { cache: "no-store" })
       .then((res) => res.json())
       .then((data) => {
         if (data && !data.error && data.name) {
@@ -221,6 +223,14 @@ export default function Home() {
       })
       .catch(() => {});
   }, []);
+
+  useEffect(() => {
+    loadData();
+    const unsubscribe = subscribeToDataChanges(() => {
+      loadData();
+    });
+    return unsubscribe;
+  }, [loadData]);
 
   const renderHighlightedSnippet = (text: string, highlights: string[] = []) => {
     if (!highlights.length) return text;
