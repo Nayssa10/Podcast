@@ -6,63 +6,92 @@ import Link from "next/link";
 import styles from "../../../admin.module.css";
 import ImageUploadField from "@/components/admin/ImageUploadField";
 import { Episode } from "@/lib/store";
+import { useAdminData } from "@/context/AdminDataContext";
+
+const parseMultilineList = (text: string): string[] => {
+  if (!text) return [];
+  if (text.includes("\n")) {
+    return text
+      .split("\n")
+      .map(s => s.replace(/^[-*•\d.)\]\s]+/, "").trim())
+      .filter(Boolean);
+  }
+  return text
+    .split(/[\n;]/)
+    .map(s => s.trim())
+    .filter(Boolean);
+};
 
 export default function EditEpisodePage() {
   const router = useRouter();
   const params = useParams();
   const episodeId = params?.id as string;
+  const { episodes: cachedEpisodes, updateEpisodeLocally } = useAdminData();
 
-  const [loading, setLoading] = useState(true);
+  const cachedEp = cachedEpisodes.find(item => item.id === episodeId);
+
+  const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [isPopulated, setIsPopulated] = useState(!!cachedEp);
 
-  // Form states
-  const [number, setNumber] = useState("");
-  const [title, setTitle] = useState("");
-  const [type, setType] = useState<"forensic" | "book">("forensic");
-  const [date, setDate] = useState("");
-  const [duration, setDuration] = useState("");
-  const [audioUrl, setAudioUrl] = useState("");
-  const [description, setDescription] = useState("");
+  // Form states (pre-populated from cache if available)
+  const [number, setNumber] = useState(cachedEp?.number || "");
+  const [title, setTitle] = useState(cachedEp?.title || "");
+  const [type, setType] = useState<"forensic" | "book">(cachedEp?.type || "forensic");
+  const [date, setDate] = useState(cachedEp?.date || "");
+  const [duration, setDuration] = useState(cachedEp?.duration || "");
+  const [audioUrl, setAudioUrl] = useState(cachedEp?.url || "");
+  const [description, setDescription] = useState(cachedEp?.description || "");
 
   // Images matching frontend placement
-  const [coverImage, setCoverImage] = useState("");
-  const [evidenceImage, setEvidenceImage] = useState("");
-  const [photoStrip1, setPhotoStrip1] = useState("");
-  const [photoStrip2, setPhotoStrip2] = useState("");
-  const [photoStrip3, setPhotoStrip3] = useState("");
+  const [coverImage, setCoverImage] = useState(cachedEp?.coverImage || "");
+  const [evidenceImage, setEvidenceImage] = useState(cachedEp?.evidenceImage || cachedEp?.coverImage || "");
+  const [photoStrip1, setPhotoStrip1] = useState(cachedEp?.photoStrip1 || "");
+  const [photoStrip2, setPhotoStrip2] = useState(cachedEp?.photoStrip2 || "");
+  const [photoStrip3, setPhotoStrip3] = useState(cachedEp?.photoStrip3 || "");
 
   // Forensic
-  const [criminologyDetails, setCriminologyDetails] = useState("");
-  const [keyEvidence, setKeyEvidence] = useState("");
-  const [forensicFocus, setForensicFocus] = useState("");
+  const [criminologyDetails, setCriminologyDetails] = useState(cachedEp?.forensicDetails?.criminologyDetails || "");
+  const [keyEvidence, setKeyEvidence] = useState(() => {
+    const list = cachedEp?.forensicDetails?.keyPhysicalEvidence;
+    return Array.isArray(list) ? list.join("\n") : (list || "");
+  });
+  const [forensicFocus, setForensicFocus] = useState(() => {
+    const focus = cachedEp?.forensicDetails?.forensicFocus;
+    return Array.isArray(focus) ? focus.join("\n") : (focus || "");
+  });
 
   // Book
-  const [bookTitle, setBookTitle] = useState("");
-  const [bookAuthor, setBookAuthor] = useState("");
-  const [bookPages, setBookPages] = useState("378");
-  const [bookRating, setBookRating] = useState(4);
+  const [bookTitle, setBookTitle] = useState(cachedEp?.bookDetails?.title || cachedEp?.title || "");
+  const [bookAuthor, setBookAuthor] = useState(cachedEp?.bookDetails?.author || "");
+  const [bookPages, setBookPages] = useState(String(cachedEp?.bookDetails?.pages || 378));
+  const [bookRating, setBookRating] = useState(typeof cachedEp?.bookDetails?.rating === "number" ? cachedEp.bookDetails.rating : 4);
   const [hoverRating, setHoverRating] = useState<number | null>(null);
-  const [bookIsRecommended, setBookIsRecommended] = useState(true);
-  const [bookFormatPhysical, setBookFormatPhysical] = useState(false);
-  const [bookFormatDigital, setBookFormatDigital] = useState(true);
-  const [bookFormatAudiobook, setBookFormatAudiobook] = useState(true);
-  const [bookSagaInfo, setBookSagaInfo] = useState("1");
-  const [bookOpinion, setBookOpinion] = useState("");
-  const [bookCharacters, setBookCharacters] = useState<Array<{ name: string; role: string }>>([
-    { name: "Marcus", role: "El Conde" },
-    { name: "Dani", role: "Protagonista" }
-  ]);
-  const [tropeLove, setTropeLove] = useState(5);
-  const [tropeAnger, setTropeAnger] = useState(5);
-  const [tropeSadness, setTropeSadness] = useState(5);
-  const [tropeFantasy, setTropeFantasy] = useState(5);
-  const [tropeSpicy, setTropeSpicy] = useState(5);
-  const [tropeLaugh, setTropeLaugh] = useState(5);
-  const [tropeEnding, setTropeEnding] = useState(5);
+  const [bookIsRecommended, setBookIsRecommended] = useState(cachedEp?.bookDetails?.isRecommended ?? true);
+  const [bookFormatPhysical, setBookFormatPhysical] = useState(cachedEp?.bookDetails?.formats?.physical ?? false);
+  const [bookFormatDigital, setBookFormatDigital] = useState(cachedEp?.bookDetails?.formats?.digital ?? true);
+  const [bookFormatAudiobook, setBookFormatAudiobook] = useState(cachedEp?.bookDetails?.formats?.audiobook ?? true);
+  const [bookSagaInfo, setBookSagaInfo] = useState(cachedEp?.bookDetails?.sagaInfo || "1");
+  const [bookOpinion, setBookOpinion] = useState(cachedEp?.bookDetails?.opinion || "");
+  const [bookCharacters, setBookCharacters] = useState<Array<{ name: string; role: string }>>(
+    cachedEp?.bookDetails?.characters && cachedEp.bookDetails.characters.length > 0
+      ? cachedEp.bookDetails.characters
+      : [
+          { name: "Marcus", role: "El Conde" },
+          { name: "Dani", role: "Protagonista" }
+        ]
+  );
+  const [tropeLove, setTropeLove] = useState(cachedEp?.bookDetails?.tropeRatings?.love ?? 5);
+  const [tropeAnger, setTropeAnger] = useState(cachedEp?.bookDetails?.tropeRatings?.anger ?? 5);
+  const [tropeSadness, setTropeSadness] = useState(cachedEp?.bookDetails?.tropeRatings?.sadness ?? 5);
+  const [tropeFantasy, setTropeFantasy] = useState(cachedEp?.bookDetails?.tropeRatings?.fantasy ?? 5);
+  const [tropeSpicy, setTropeSpicy] = useState(cachedEp?.bookDetails?.tropeRatings?.spicy ?? 5);
+  const [tropeLaugh, setTropeLaugh] = useState(cachedEp?.bookDetails?.tropeRatings?.laugh ?? 5);
+  const [tropeEnding, setTropeEnding] = useState(cachedEp?.bookDetails?.tropeRatings?.ending ?? 5);
 
-  const [snippetText, setSnippetText] = useState("");
-  const [snippetHighlights, setSnippetHighlights] = useState("");
+  const [snippetText, setSnippetText] = useState(cachedEp?.snippet?.text || "");
+  const [snippetHighlights, setSnippetHighlights] = useState((cachedEp?.snippet?.highlights || []).join(", "));
 
   const addCharacter = () => setBookCharacters([...bookCharacters, { name: "", role: "" }]);
   const updateCharacter = (idx: number, field: "name" | "role", val: string) => {
@@ -78,69 +107,85 @@ export default function EditEpisodePage() {
     }
   };
 
+  const populateEpisode = (ep: Episode) => {
+    setNumber(ep.number || "");
+    setTitle(ep.title || "");
+    setType(ep.type || "forensic");
+    setDate(ep.date || "");
+    setDuration(ep.duration || "");
+    setCoverImage(ep.coverImage || "");
+    setEvidenceImage(ep.evidenceImage || ep.coverImage || "");
+    setPhotoStrip1(ep.photoStrip1 || "");
+    setPhotoStrip2(ep.photoStrip2 || "");
+    setPhotoStrip3(ep.photoStrip3 || "");
+    setAudioUrl(ep.url || "");
+    setDescription(ep.description || "");
+
+    if (ep.forensicDetails) {
+      setCriminologyDetails(ep.forensicDetails.criminologyDetails || "");
+      const list = ep.forensicDetails.keyPhysicalEvidence;
+      setKeyEvidence(Array.isArray(list) ? list.join("\n") : (list || ""));
+      const focus = ep.forensicDetails.forensicFocus;
+      setForensicFocus(Array.isArray(focus) ? focus.join("\n") : (focus || ""));
+    }
+
+    if (ep.bookDetails) {
+      setBookTitle(ep.bookDetails.title || ep.title || "");
+      setBookAuthor(ep.bookDetails.author || "");
+      setBookPages(String(ep.bookDetails.pages || 378));
+      setBookRating(typeof ep.bookDetails.rating === "number" ? ep.bookDetails.rating : 4);
+      setBookIsRecommended(ep.bookDetails.isRecommended ?? true);
+      setBookFormatPhysical(ep.bookDetails.formats?.physical ?? false);
+      setBookFormatDigital(ep.bookDetails.formats?.digital ?? true);
+      setBookFormatAudiobook(ep.bookDetails.formats?.audiobook ?? true);
+      setBookSagaInfo(ep.bookDetails.sagaInfo || "1");
+      setBookOpinion(ep.bookDetails.opinion || "");
+
+      if (ep.bookDetails.characters && ep.bookDetails.characters.length > 0) {
+        setBookCharacters(ep.bookDetails.characters);
+      }
+
+      if (ep.bookDetails.tropeRatings) {
+        setTropeLove(ep.bookDetails.tropeRatings.love ?? 5);
+        setTropeAnger(ep.bookDetails.tropeRatings.anger ?? 5);
+        setTropeSadness(ep.bookDetails.tropeRatings.sadness ?? 5);
+        setTropeFantasy(ep.bookDetails.tropeRatings.fantasy ?? 5);
+        setTropeSpicy(ep.bookDetails.tropeRatings.spicy ?? 5);
+        setTropeLaugh(ep.bookDetails.tropeRatings.laugh ?? 5);
+        setTropeEnding(ep.bookDetails.tropeRatings.ending ?? 5);
+      }
+    }
+
+    if (ep.snippet) {
+      setSnippetText(ep.snippet.text || "");
+      setSnippetHighlights((ep.snippet.highlights || []).join(", "));
+    }
+    setIsPopulated(true);
+  };
+
   useEffect(() => {
-    fetch("/api/episodes")
-      .then(res => res.json())
-      .then((data: Episode[]) => {
-        const ep = data.find(item => item.id === episodeId);
-        if (ep) {
-          setNumber(ep.number || "");
-          setTitle(ep.title || "");
-          setType(ep.type || "forensic");
-          setDate(ep.date || "");
-          setDuration(ep.duration || "");
-          setCoverImage(ep.coverImage || "");
-          setEvidenceImage(ep.evidenceImage || ep.coverImage || "");
-          setPhotoStrip1(ep.photoStrip1 || "");
-          setPhotoStrip2(ep.photoStrip2 || "");
-          setPhotoStrip3(ep.photoStrip3 || "");
-          setAudioUrl(ep.url || "");
-          setDescription(ep.description || "");
+    if (isPopulated) return;
 
-          if (ep.forensicDetails) {
-            setCriminologyDetails(ep.forensicDetails.criminologyDetails || "");
-            const list = ep.forensicDetails.keyPhysicalEvidence;
-            setKeyEvidence(Array.isArray(list) ? list.join(", ") : (list || ""));
-            const focus = ep.forensicDetails.forensicFocus;
-            setForensicFocus(Array.isArray(focus) ? focus.join(", ") : (focus || ""));
+    const fromCache = cachedEpisodes.find(item => item.id === episodeId);
+    if (fromCache) {
+      populateEpisode(fromCache);
+      return;
+    }
+
+    if (cachedEpisodes.length === 0) {
+      setLoading(true);
+      fetch("/api/episodes")
+        .then(res => res.json())
+        .then((data: Episode[]) => {
+          const ep = Array.isArray(data) ? data.find(item => item.id === episodeId) : null;
+          if (ep) {
+            populateEpisode(ep);
           }
-
-          if (ep.bookDetails) {
-            setBookTitle(ep.bookDetails.title || ep.title || "");
-            setBookAuthor(ep.bookDetails.author || "");
-            setBookPages(String(ep.bookDetails.pages || 378));
-            setBookRating(typeof ep.bookDetails.rating === "number" ? ep.bookDetails.rating : 4);
-            setBookIsRecommended(ep.bookDetails.isRecommended ?? true);
-            setBookFormatPhysical(ep.bookDetails.formats?.physical ?? false);
-            setBookFormatDigital(ep.bookDetails.formats?.digital ?? true);
-            setBookFormatAudiobook(ep.bookDetails.formats?.audiobook ?? true);
-            setBookSagaInfo(ep.bookDetails.sagaInfo || "1");
-            setBookOpinion(ep.bookDetails.opinion || "");
-
-            if (ep.bookDetails.characters && ep.bookDetails.characters.length > 0) {
-              setBookCharacters(ep.bookDetails.characters);
-            }
-
-            if (ep.bookDetails.tropeRatings) {
-              setTropeLove(ep.bookDetails.tropeRatings.love ?? 5);
-              setTropeAnger(ep.bookDetails.tropeRatings.anger ?? 5);
-              setTropeSadness(ep.bookDetails.tropeRatings.sadness ?? 5);
-              setTropeFantasy(ep.bookDetails.tropeRatings.fantasy ?? 5);
-              setTropeSpicy(ep.bookDetails.tropeRatings.spicy ?? 5);
-              setTropeLaugh(ep.bookDetails.tropeRatings.laugh ?? 5);
-              setTropeEnding(ep.bookDetails.tropeRatings.ending ?? 5);
-            }
-          }
-
-          if (ep.snippet) {
-            setSnippetText(ep.snippet.text || "");
-            setSnippetHighlights((ep.snippet.highlights || []).join(", "));
-          }
-        }
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, [episodeId]);
+          setLoading(false);
+        })
+        .catch(() => setLoading(false));
+    }
+  }, [episodeId, cachedEpisodes, isPopulated]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -166,8 +211,8 @@ export default function EditEpisodePage() {
     if (type === "forensic") {
       payload.forensicDetails = {
         criminologyDetails,
-        keyPhysicalEvidence: keyEvidence.split(",").map(s => s.trim()).filter(Boolean),
-        forensicFocus: forensicFocus.split(",").map(s => s.trim()).filter(Boolean)
+        keyPhysicalEvidence: parseMultilineList(keyEvidence),
+        forensicFocus: parseMultilineList(forensicFocus)
       };
       payload.bookDetails = undefined;
       payload.snippet = undefined;
@@ -221,11 +266,12 @@ export default function EditEpisodePage() {
       });
 
       if (res.ok) {
+        updateEpisodeLocally(payload);
         setSaved(true);
         router.refresh();
         setTimeout(() => {
-          router.push("/admin/episodes");
-        }, 500);
+          setSaved(false);
+        }, 4000);
       } else {
         alert("Error al actualizar el episodio");
       }
@@ -236,8 +282,12 @@ export default function EditEpisodePage() {
     }
   };
 
-  if (loading) {
-    return <p style={{ color: "#8E7F6E" }}>Cargando datos del episodio...</p>;
+  if (loading && !isPopulated) {
+    return (
+      <div style={{ padding: "3rem", textAlign: "center", color: "#8C6B52" }}>
+        <p style={{ fontFamily: "var(--font-family-serif)", fontSize: "1.1rem" }}>Cargando expediente...</p>
+      </div>
+    );
   }
 
   return (
@@ -427,22 +477,28 @@ export default function EditEpisodePage() {
               </div>
 
               <div className={`${styles.formField} ${styles.fullWidth}`}>
-                <label className={styles.fieldLabel}>Evidencias Físicas Clave</label>
-                <input
-                  type="text"
-                  className={styles.fieldInput}
+                <label className={styles.fieldLabel}>
+                  Cadena de Custodia • Muestras y Evidencias Físicas (un elemento por línea)
+                </label>
+                <textarea
+                  rows={5}
+                  className={styles.fieldTextarea}
                   value={keyEvidence}
                   onChange={(e) => setKeyEvidence(e.target.value)}
+                  placeholder={"Escribe cada muestra o indicio en una línea separada. Ejemplo:\nMarcas de estrangulamiento: lesiones perimortem observadas...\nLesiones corporales: contusiones múltiples...\nEscenas de los hechos: indicios recolectados..."}
                 />
               </div>
 
               <div className={`${styles.formField} ${styles.fullWidth}`}>
-                <label className={styles.fieldLabel}>Foco Pericial (Balística, Toxicología, etc.)</label>
-                <input
-                  type="text"
-                  className={styles.fieldInput}
+                <label className={styles.fieldLabel}>
+                  Foco Pericial (un punto o disciplina por línea)
+                </label>
+                <textarea
+                  rows={4}
+                  className={styles.fieldTextarea}
                   value={forensicFocus}
                   onChange={(e) => setForensicFocus(e.target.value)}
+                  placeholder={"Balística forense: análisis del arma utilizada...\nBiología y genética forense: análisis de manchas de sangre...\nDactiloscopía: estudio de huellas encontradas..."}
                 />
               </div>
             </div>

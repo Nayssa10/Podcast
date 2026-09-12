@@ -6,6 +6,20 @@ import Link from "next/link";
 import styles from "../../admin.module.css";
 import ImageUploadField from "@/components/admin/ImageUploadField";
 
+const parseMultilineList = (text: string): string[] => {
+  if (!text) return [];
+  if (text.includes("\n")) {
+    return text
+      .split("\n")
+      .map(s => s.replace(/^[-*•\d.)\]\s]+/, "").trim())
+      .filter(Boolean);
+  }
+  return text
+    .split(/[\n;]/)
+    .map(s => s.trim())
+    .filter(Boolean);
+};
+
 export default function NewEpisodePage() {
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
@@ -98,8 +112,8 @@ export default function NewEpisodePage() {
     if (type === "forensic") {
       payload.forensicDetails = {
         criminologyDetails,
-        keyPhysicalEvidence: keyEvidence.split(",").map(s => s.trim()).filter(Boolean),
-        forensicFocus: forensicFocus.split(",").map(s => s.trim()).filter(Boolean)
+        keyPhysicalEvidence: parseMultilineList(keyEvidence),
+        forensicFocus: parseMultilineList(forensicFocus)
       };
       payload.bookDetails = undefined;
       payload.snippet = undefined;
@@ -356,24 +370,28 @@ export default function NewEpisodePage() {
               </div>
 
               <div className={`${styles.formField} ${styles.fullWidth}`}>
-                <label className={styles.fieldLabel}>Evidencias Físicas Clave (separadas por comas)</label>
-                <input
-                  type="text"
-                  className={styles.fieldInput}
+                <label className={styles.fieldLabel}>
+                  Cadena de Custodia • Muestras y Evidencias Físicas (un elemento por línea)
+                </label>
+                <textarea
+                  rows={5}
+                  className={styles.fieldTextarea}
                   value={keyEvidence}
                   onChange={(e) => setKeyEvidence(e.target.value)}
-                  placeholder="Ej. Casquillo percutido de 9mm, Manchas hemáticas"
+                  placeholder={"Escribe cada muestra o indicio en una línea separada. Ejemplo:\nMarcas de estrangulamiento: lesiones perimortem observadas...\nLesiones corporales: contusiones múltiples...\nEscenas de los hechos: indicios recolectados..."}
                 />
               </div>
 
               <div className={`${styles.formField} ${styles.fullWidth}`}>
-                <label className={styles.fieldLabel}>Foco Pericial (Balística, Toxicología, etc.)</label>
-                <input
-                  type="text"
-                  className={styles.fieldInput}
+                <label className={styles.fieldLabel}>
+                  Foco Pericial (un punto o disciplina por línea)
+                </label>
+                <textarea
+                  rows={4}
+                  className={styles.fieldTextarea}
                   value={forensicFocus}
                   onChange={(e) => setForensicFocus(e.target.value)}
-                  placeholder="Ej. Balística reconstructiva"
+                  placeholder={"Balística forense: análisis del arma utilizada...\nBiología y genética forense: análisis de manchas de sangre...\nDactiloscopía: estudio de huellas encontradas..."}
                 />
               </div>
             </div>

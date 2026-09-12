@@ -37,11 +37,44 @@ interface ForensicDossierModalProps {
   onClose: () => void;
 }
 
+const normalizeEvidenceList = (rawList: string[] = []): string[] => {
+  const result: string[] = [];
+  rawList.forEach((entry) => {
+    if (!entry) return;
+    const lines = entry.includes("\n") ? entry.split("\n") : [entry];
+    lines.forEach((line) => {
+      const segments = line.split(/(?<=\.)\s+(?=[A-ZÁÉÍÓÚÑ][^:\n]{2,35}:)/);
+      segments.forEach((seg) => {
+        const trimmed = seg.replace(/^[-*•\d.)\]\s]+/, "").trim();
+        if (!trimmed) return;
+        if (/^[a-z]/.test(trimmed) && result.length > 0) {
+          result[result.length - 1] = result[result.length - 1].replace(/[.,\s]+$/, "") + ", " + trimmed;
+        } else {
+          result.push(trimmed);
+        }
+      });
+    });
+  });
+  return result;
+};
+
+const parseEvidenceItem = (item: string) => {
+  const colonIndex = item.indexOf(":");
+  if (colonIndex > 0 && colonIndex < 45) {
+    return {
+      title: item.slice(0, colonIndex).trim(),
+      desc: item.slice(colonIndex + 1).trim()
+    };
+  }
+  return { title: "", desc: item };
+};
+
 export default function ForensicDossierModal({ episode, onClose }: ForensicDossierModalProps) {
   const cleanTitle = episode.title.split(": ")[1] || episode.title;
   const host = episode.authorName || "Nayssa Kristel";
   const book = episode.bookDetails;
   const forensic = episode.forensicDetails;
+  const normalizedEvidence = normalizeEvidenceList(forensic?.keyPhysicalEvidence || []);
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
@@ -123,12 +156,18 @@ export default function ForensicDossierModal({ episode, onClose }: ForensicDossi
                   <h4>CADENA DE CUSTODIA • ELEMENTOS RECOLECTADOS</h4>
                 </div>
                 <ul className={styles.evidenceItemList}>
-                  {forensic.keyPhysicalEvidence.map((item, idx) => (
-                    <li key={idx} className={styles.evidenceTagItem}>
-                      <span className={styles.evidenceNumber}>MUESTRA #{idx + 1}</span>
-                      <span className={styles.evidenceText}>{item}</span>
-                    </li>
-                  ))}
+                  {normalizedEvidence.map((item, idx) => {
+                    const { title, desc } = parseEvidenceItem(item);
+                    return (
+                      <li key={idx} className={styles.evidenceTagItem}>
+                        <span className={styles.evidenceNumber}>MUESTRA #{idx + 1}</span>
+                        <span className={styles.evidenceText}>
+                          {title ? <strong style={{ color: "#1E1A17", fontWeight: 700 }}>{title}: </strong> : null}
+                          {desc}
+                        </span>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             </div>
