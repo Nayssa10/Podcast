@@ -201,7 +201,6 @@ export default function Home() {
   const [episodes, setEpisodes] = useState<EpisodeData[]>(MOCK_EPISODES);
   const [profile, setProfile] = useState<HostProfile>(DEFAULT_HOST_PROFILE);
   const [selectedEpisodeIndex, setSelectedEpisodeIndex] = useState<number | null>(null);
-  const [showDossierModal, setShowDossierModal] = useState(false);
 
   useEffect(() => {
     fetch("/api/episodes", { cache: "no-store" })
@@ -236,7 +235,6 @@ export default function Home() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setSelectedEpisodeIndex(null);
-        setShowDossierModal(false);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -246,7 +244,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const isModalOpen = selectedEpisodeIndex !== null || showDossierModal;
+    const isModalOpen = selectedEpisodeIndex !== null;
     if (isModalOpen) {
       document.body.style.overflow = "hidden";
     } else {
@@ -255,7 +253,7 @@ export default function Home() {
     return () => {
       document.body.style.overflow = "";
     };
-  }, [selectedEpisodeIndex, showDossierModal]);
+  }, [selectedEpisodeIndex]);
 
   const scrollToSection = (id: string) => (e: React.MouseEvent) => {
     e.preventDefault();
@@ -519,47 +517,6 @@ export default function Home() {
           episode={episodes[selectedEpisodeIndex] as any}
           onClose={() => setSelectedEpisodeIndex(null)}
         />
-      )}
-
-      {/* Host Dossier Modal Overlay */}
-      {showDossierModal && (
-        <div className={styles.modalOverlay} onClick={() => setShowDossierModal(false)}>
-          <div className={styles.modalWrapper} onClick={(e) => e.stopPropagation()}>
-            <article className={styles.minimalModalCard}>
-              <button className={styles.closeModalBtn} onClick={() => setShowDossierModal(false)} aria-label="Cerrar modal">✕</button>
-              <div className={styles.modalHeader}>
-                <span className={styles.modalBadge}>Dossier de Creadora</span>
-                <h2 className={styles.modalTitle}>{profile.name}</h2>
-                <p className={styles.modalSubtitle}>{profile.subtitle}</p>
-              </div>
-              <div className={styles.modalBody}>
-                <div className={styles.modalSection}>
-                  <h3>Perfil</h3>
-                  <p>{profile.basicInfo}</p>
-                </div>
-                <div className={styles.modalSection}>
-                  <h3>Detalles y Rol</h3>
-                  <p>{profile.roleBadge}</p>
-                  {profile.extraInfoText && (
-                    <p style={{ marginTop: '0.5rem' }}>{profile.extraInfoText}</p>
-                  )}
-                </div>
-                {profile.investigationFocus && (
-                  <div className={styles.modalSection}>
-                    <h3>Enfoque de Investigación</h3>
-                    <p>&quot;{profile.investigationFocus}&quot;</p>
-                  </div>
-                )}
-                {profile.quote && (
-                  <div className={styles.modalSection}>
-                    <h3>Cita Editorial</h3>
-                    <p><em>&quot;{profile.quote}&quot;</em></p>
-                  </div>
-                )}
-              </div>
-            </article>
-          </div>
-        </div>
       )}
 
     </div>

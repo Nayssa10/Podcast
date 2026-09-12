@@ -74,11 +74,11 @@ export interface ContactMessage {
 export interface HostProfile {
   name: string;
   subtitle: string;
-  roleBadge: string;
   basicInfo: string;
   extraInfoText: string;
   investigationFocus: string;
-  quote: string;
+  roleBadge?: string;
+  quote?: string;
 }
 
 export interface SiteSettings {

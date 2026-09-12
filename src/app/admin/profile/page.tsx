@@ -61,18 +61,18 @@ export default function AdminProfilePage() {
     <div>
       <div className={styles.pageHeaderGroup}>
         <div>
-          <h2 className={styles.pageHeading}>Perfil de Creadora &amp; Dossier</h2>
+          <h2 className={styles.pageHeading}>Perfil de la Creadora</h2>
           <p className={styles.pageSubheading}>
-            Semblanza, biografía y lema editorial que se muestran en el sitio web y el dossier.
+            Información de portada y presentación que se muestran en el sitio web.
           </p>
         </div>
       </div>
 
       <form onSubmit={handleSubmit}>
-        {/* Bloque 1: Identidad y Enfoque */}
+        {/* Bloque 1: Identidad & Portada */}
         <div className={styles.cardSection}>
           <h3 className={styles.cardTitle} style={{ marginBottom: "1.25rem" }}>
-            1. Identidad &amp; Enfoque Editorial
+            1. Portada Principal (Hero)
           </h3>
           <div className={styles.formGrid}>
             <div className={styles.formField}>
@@ -82,81 +82,63 @@ export default function AdminProfilePage() {
                 className={styles.fieldInput}
                 value={profile.name}
                 onChange={(e) => setProfile({ ...profile, name: e.target.value })}
+                placeholder="Ej. Nayssa Kristel"
                 required
               />
             </div>
 
             <div className={styles.formField}>
-              <label className={styles.fieldLabel}>Subtítulo / Rol Principal</label>
+              <label className={styles.fieldLabel}>Subtítulo / Especialidad</label>
               <input
                 type="text"
                 className={styles.fieldInput}
                 value={profile.subtitle}
                 onChange={(e) => setProfile({ ...profile, subtitle: e.target.value })}
+                placeholder="Ej. investigación & literatura"
                 required
               />
             </div>
 
-            <div className={styles.formField}>
-              <label className={styles.fieldLabel}>Etiqueta de Rol (Dossier)</label>
+            <div className={`${styles.formField} ${styles.fullWidth}`}>
+              <label className={styles.fieldLabel}>Lema o Frase al Pie de Portada (Opcional)</label>
               <input
                 type="text"
                 className={styles.fieldInput}
-                value={profile.roleBadge}
-                onChange={(e) => setProfile({ ...profile, roleBadge: e.target.value })}
-                required
-              />
-            </div>
-
-            <div className={styles.formField}>
-              <label className={styles.fieldLabel}>Enfoque de Investigación / Lema</label>
-              <input
-                type="text"
-                className={styles.fieldInput}
-                value={profile.investigationFocus}
+                value={profile.investigationFocus || ""}
                 onChange={(e) => setProfile({ ...profile, investigationFocus: e.target.value })}
+                placeholder="Ej. donde cada historia deja una huella"
+              />
+            </div>
+
+            <div className={`${styles.formField} ${styles.fullWidth}`}>
+              <label className={styles.fieldLabel}>Descripción de Portada (Párrafo del Hero)</label>
+              <textarea
+                className={styles.fieldTextarea}
+                value={profile.extraInfoText || ""}
+                onChange={(e) => setProfile({ ...profile, extraInfoText: e.target.value })}
+                rows={3}
+                placeholder="Un espacio donde la belleza de la literatura gótica y el romance de misterio..."
                 required
               />
             </div>
           </div>
         </div>
 
-        {/* Bloque 2: Semblanza y Biografía */}
+        {/* Bloque 2: Sección Sobre mí */}
         <div className={styles.cardSection}>
           <h3 className={styles.cardTitle} style={{ marginBottom: "1.25rem" }}>
-            2. Semblanza &amp; Biografía Editorial
+            2. Sección &quot;Sobre mí&quot;
           </h3>
           <div className={styles.formGrid}>
-            <div className={styles.formField}>
-              <label className={styles.fieldLabel}>Biografía Principal (Pliego Editorial)</label>
+            <div className={`${styles.formField} ${styles.fullWidth}`}>
+              <label className={styles.fieldLabel}>Texto de Presentación y Bienvenida</label>
               <textarea
                 className={styles.fieldTextarea}
-                value={profile.basicInfo}
+                value={profile.basicInfo || ""}
                 onChange={(e) => setProfile({ ...profile, basicInfo: e.target.value })}
                 rows={5}
+                placeholder="Soy Nayssa Kristel, creadora de Team Supernova..."
                 required
-              />
-            </div>
-
-            <div className={styles.formField}>
-              <label className={styles.fieldLabel}>Texto Descriptivo Secundario</label>
-              <textarea
-                className={styles.fieldTextarea}
-                value={profile.extraInfoText}
-                onChange={(e) => setProfile({ ...profile, extraInfoText: e.target.value })}
-                rows={5}
-                required
-              />
-            </div>
-
-            <div className={`${styles.formField} ${styles.fullWidth}`}>
-              <label className={styles.fieldLabel}>Cita Editorial / Frase Célebre</label>
-              <textarea
-                className={styles.fieldTextarea}
-                value={profile.quote}
-                onChange={(e) => setProfile({ ...profile, quote: e.target.value })}
-                rows={3}
-                placeholder="Ej. Deep into that darkness peering..."
               />
             </div>
           </div>
